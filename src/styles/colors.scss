@@ -26,32 +26,3 @@ $color-slate-700: color.adjust($color-slate-600, $lightness:-10%);
 $color-slate-800: color.adjust($color-slate-700, $lightness:-10%);
 $color-slate-900: color.adjust($color-slate-800, $lightness:-10%);
 $color-slate-950: color.adjust($color-slate-900, $lightness:-5%);
-
-:root {
-  --color-primary: $color-primary;
-  --color-primary-50: $color-primary-50;
-  --color-primary-30: $color-primary-30;
-  --color-primary-100: $color-primary-100;
-  --color-primary-200: $color-primary-200;
-  --color-primary-300: $color-primary-300;
-  --color-primary-400: $color-primary-400;
-  --color-primary-500: $color-primary-500;
-  --color-primary-600: $color-primary-600;
-  --color-primary-700: $color-primary-700;
-  --color-primary-800: $color-primary-800;
-  --color-primary-900: $color-primary-900;
-  --color-primary-950: $color-primary-950;
-
-  --color-slate-50: $color-slate-50;
-  --color-slate-30: $color-slate-30;
-  --color-slate-100: $color-slate-100;
-  --color-slate-200: $color-slate-200;
-  --color-slate-300: $color-slate-300;
-  --color-slate-400: $color-slate-400;
-  --color-slate-500: $color-slate-500;
-  --color-slate-600: $color-slate-600;
-  --color-slate-700: $color-slate-700;
-  --color-slate-800: $color-slate-800;
-  --color-slate-900: $color-slate-900;
-  --color-slate-950: $color-slate-950;
-}

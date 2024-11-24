@@ -1,34 +1,85 @@
 ---
-import type {CollectionEntry} from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import Card from '@/components/Card.astro';
-import {GLOBAL_STYLE} from "../consts";
-import "../styles/article.scss"
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Card from "@/components/Card.astro";
+import { GLOBAL_STYLE } from "../consts";
+import "../styles/article.scss";
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<"blog">["data"];
 
-const {title, description} = Astro.props;
+const { title, description, pubDate, updatedDate } = Astro.props;
 ---
 
 <html lang="en">
-<head>
-    <BaseHead title={title} description={description}/>
-</head>
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
 
-<body>
-<Header/>
-<main>
-    <Card variant={GLOBAL_STYLE}>
+  <body>
+    <Header />
+    <main>
+      <Card variant={GLOBAL_STYLE}>
         <article>
-            <h1 class="emphasize">
-                {title}
-            </h1>
-            <slot/>
+          <h1 class="emphasize">
+            {title}
+          </h1>
+          <div class="meta">
+            <p class="date">
+              <span>
+                Published:
+                {pubDate.toLocaleDateString()}
+              </span>
+              {
+                updatedDate && (
+                  <>
+                    <span>
+                      Updated:
+                      {updatedDate.toLocaleDateString()}
+                    </span>
+                  </>
+                )
+              }
+            </p>
+            <p class="description">
+              {description}
+            </p>
+          </div>
+          <hr />
+          <slot />
         </article>
-    </Card>
-</main>
-<Footer/>
-</body>
+      </Card>
+    </main>
+    <Footer />
+  </body>
 </html>
+
+<style lang="scss">
+  @use "@/styles/colors";
+  hr {
+    border: none;
+    background-color: colors.$color-slate-400;
+    margin-block: 0;
+    height: 0.5px;
+    margin: 1rem 0;
+  }
+
+  .meta {
+    &>* {
+      margin-block: 0;
+    }
+    .date {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.8rem;
+      span {
+        color: colors.$color-slate-700;
+      }
+    }
+
+    .description {
+      font-size: 0.8rem;
+    }
+  }
+</style>

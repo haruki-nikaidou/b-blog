@@ -148,4 +148,4 @@ options nvidia NVreg_OpenRmEnableUnsupportedGpus=1
 
 Reboot, issue solved.
 
-![result](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/cde3baea-80be-4404-0917-8b9d1b718900/small)
+![result](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/cde3baea-80be-4404-0917-8b9d1b718900/public)
