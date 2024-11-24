@@ -1,7 +1,7 @@
 ---
 title: 'How a former FGO player plays Blue Archive'
 description: 'As a former FGO player, how to use timing tactic, buff optimization, and gacha optimization in Blue Archive.'
-notCompleted: true
+pinned: true
 pubDate: 'Nov 17 2024'
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/6d4828e4-e61f-4c79-4822-3cfef5800f00/small'
 ---

@@ -1,4 +1,4 @@
-@import "colors";
+@use "colors";
 
 * {
   padding: 0;
@@ -40,7 +40,7 @@ p {
   }
 
   &.emphasize {
-    color: $color-primary-500;
+    color: colors.$color-primary-500;
   }
 }
 

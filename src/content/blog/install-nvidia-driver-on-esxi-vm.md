@@ -2,8 +2,8 @@
 title: 'Install NVIDIA driver in an ESXi VM'
 description: 'Tried to install nvidia driver in an EXSi VM, but cannot find the GPU in nvidia-smi. The issue is solved with solution in the nvidia forum.'
 pubDate: 'Nov 28 2023'
-lang: 'en'
 updatedDate: 'Nov 8 2024'
+pinned: true
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/1ccd914c-455c-4eee-8bde-b28aae802100/small'
 ---
 
