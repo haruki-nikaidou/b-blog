@@ -1,0 +1,26 @@
+{
+  "name": "koibumi-astro-blog",
+  "type": "module",
+  "version": "0.2.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.5.8",
+    "@astrojs/mdx": "^2.2.0",
+    "@astrojs/rss": "^4.0.5",
+    "@astrojs/sitemap": "^3.1.1",
+    "@astrojs/solid-js": "^4.0.1",
+    "astro": "4.16.6",
+    "clsx": "^2.1.1",
+    "rehype-katex": "^7.0.0",
+    "remark-math": "^6.0.0",
+    "solid-icons": "^1.1.0",
+    "solid-js": "^1.8.16",
+    "typescript": "^5.4.2"
+  }
+}
