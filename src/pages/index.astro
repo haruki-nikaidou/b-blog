@@ -3,7 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import {getCollection} from 'astro:content';
-import {SiGithub, SiReddit} from 'solid-icons/si';
+import {SiGithub, SiReddit, SiMisskey} from 'solid-icons/si';
 import {SITE_TITLE, SITE_DESCRIPTION, GLOBAL_STYLE, BIO, AVATAR_SRC} from '../consts';
 import Card from '@/components/Card.astro';
 import PostCard from "../components/PostCard.astro";
@@ -48,6 +48,9 @@ const posts = (await getCollection('blog'))
                     </a>
                     <a class="icon-link" href="https://matrix.to/#/@nikaidou_haruki:matrix.org" target="_blank" aria-label="matrix">
                         <TbBrandMatrix size={32} />
+                    </a>
+                    <a class="icon-link" href="https://misskey.io/@nkdharuki">
+                        <SiMisskey size={32} color="#A1CA03" />
                     </a>
                     <a class="icon-link" href="https://www.reddit.com/user/Acrobatic-Cat-2005/" target="_blank" aria-label="reddit">
                         <SiReddit size={32} color='#FF4500' />
