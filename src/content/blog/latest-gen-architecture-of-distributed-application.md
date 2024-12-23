@@ -1,5 +1,5 @@
 ---
-title: 'Latest-gen Architecture of Distributed Application'
+title: 'Latest Architecture of Distributed Application'
 description: 'A modern architecture based on NATS I using in production. It's excellent for middle to large projects.'
 pinned: true
 pubDate: 'Dec 23 2024'
