@@ -3,7 +3,7 @@ title: 'Latest-gen Architecture of Distributed Application'
 description: 'A modern architecture based on NATS I using in production. It's excellent for middle to large projects.'
 pinned: true
 pubDate: 'Dec 23 2024'
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/6d4828e4-e61f-4c79-4822-3cfef5800f00/small'
+heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/5ebd2649-12d9-4b1f-6684-0477f1215300/small'
 ---
 
 Several months ago, I found an amazing message bus named [NATS](https://nats.io/). NATS has some amazing features superior than RabbitMQ or Apache Kafka:
