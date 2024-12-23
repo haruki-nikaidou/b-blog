@@ -1,6 +1,6 @@
 ---
 title: 'Latest Architecture of Distributed Application'
-description: 'A modern architecture based on NATS I using in production. It's excellent for middle to large projects.'
+description: "A modern architecture based on NATS I using in production. It's excellent for middle to large projects."
 pinned: true
 pubDate: 'Dec 23 2024'
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/5ebd2649-12d9-4b1f-6684-0477f1215300/small'
