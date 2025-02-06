@@ -8,11 +8,11 @@ interface Props {
     slug: string
     heroImage?: string
     title: string
-    pubDate: Date
-    description?: string
+    pubDate: Date,
+    updatedDate?: Date
 }
 
-const {slug, heroImage, title, pubDate, description} = Astro.props
+const {slug, heroImage, title, pubDate, updatedDate} = Astro.props
 
 ---
 
@@ -24,46 +24,55 @@ const {slug, heroImage, title, pubDate, description} = Astro.props
         class='img-container'
         href={`/blog/${slug}`}
     >
-        {
-            heroImage === undefined ?
-                (
-                    <h4 class="emphasize">
-                        {title}
-                    </h4>
-                )
-                : <img src={heroImage} alt={title} loading="lazy"/>
-        }
+        <img src={heroImage} alt={title} loading="lazy"/>
     </a>
     <h4>
         <a class="link" href={`/blog/${slug}`}>
             {title}
         </a>
     </h4>
-    <p>
-        {description}
-    </p>
-    <p class="date">
-        {pubDate.toLocaleDateString()}
-    </p>
+    <div class="date-container">
+        <p class="date">
+            {updatedDate && "Published at "}{pubDate.toLocaleDateString()}
+        </p>
+        {
+            updatedDate && (
+                <p class="date">
+                    Updated at: {updatedDate.toLocaleDateString()}
+                </p>
+            )
+        }
+    </div>
 </Card>
 
 <style lang="scss">
     @use "../styles/colors.scss";
 
     .post-card {
-        padding-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        justify-content: space-between;
+        *:not(:last-child) {
+            margin: 0;
+        }
+    
+        padding-bottom: .5rem;
 
         & > h4 {
             margin-top: 1rem;
         }
+
+        a {
+            text-decoration: none;
+        }
     }
 
-    .date {
-        text-align: right;
-        position: absolute;
-        font-size: 0.875rem;
-        bottom: 0.875rem;
-        right: 0.875rem;
+    .date-container {
+        .date {
+            color: colors.$color-slate-700;
+            font-size: 0.875rem;
+        }
     }
 
     .img-container {
@@ -79,22 +88,10 @@ const {slug, heroImage, title, pubDate, description} = Astro.props
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        & > * {
             transition: transform 0.3s ease-in-out;
-        }
-
-        & > *:hover {
-            transform: scale(1.2);
-        }
-
-        &:has(h4) {
-            background-color: rgba(colors.$color-slate-100, 0.5);
-        }
-
-        h4 {
-            wrap-option: wrap;
+            &:hover {
+                transform: scale(1.2);
+            }
         }
     }
 </style>
