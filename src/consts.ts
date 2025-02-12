@@ -9,7 +9,7 @@ export const FAVICON_SRC = '/favicon.svg';
 
 export const AVATAR_SRC = '/avatar.svg';
 
-export const BIO = "Therefore do I not cower, for a solitary exodus is an imperative.";
+export const BIO = "Wish upon stars, get meteorites.";
 
 export const GLOBAL_STYLE: 'quartz' | 'glass' | 'lightGlass' = 'lightGlass'
 
