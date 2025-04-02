@@ -1,6 +1,6 @@
 ---
 title: "What's wrong with Chinese's Ideology"
-description: ""
+description: "Delve into the complex and concerning issues plaguing Chinese ideology, including rampant chauvinism, the CCP's manipulation of feminism, and the rise of \"decentralized spontaneous detonation\" as a response to societal pressures. This article analyzes the root causes and potential consequences of these trends."
 pubDate: 'Apr 1 2025'
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/c5720f91-b2f6-459f-4b8b-556df7697100/small'
 ---
