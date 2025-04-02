@@ -3,7 +3,6 @@ title: "What's wrong with Chinese's Ideology"
 description: ""
 pubDate: 'Apr 1 2025'
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/c5720f91-b2f6-459f-4b8b-556df7697100/small'
-notCompleted: true
 ---
 
 Recently I saw this on twitter: 
@@ -93,7 +92,7 @@ Due to the linguistic and cultural specificities of Chinese, there's no exact tr
 
 It's reasonable to guess that one's level of wealth and awareness determine their mentality. We can conclude that those in the Social Darwinism (卷) quadrant are typically the most chauvinistic, with the Numbness (韭) group following closely behind. The Giga-escapism (润) and Escapism (躺) groups tend to be less chauvinistic because they recognize the need to be uncooperative with the system.
 
-However, the truly concerning aspect isn't captured in this chart.
+However, the truly concerning aspect isn't captured in this matrix.
 
 A few days later, someone added a Z-axis to this matrix:
 
@@ -118,3 +117,36 @@ The effectiveness of this approach has been grimly demonstrated by waves of stud
 Unlike traditional centralized movements where authorities can target leaders and predict developments, this phenomenon is random and decentralized. No one knows who might initiate violence or when it might occur—sometimes not even the perpetrators themselves until they act. Its frightening effectiveness comes from the fact that, unlike conventional movements requiring mass gatherings to create influence, just a few random violent incidents can make everyone fear they'll be next.
 
 This represents the darkest extreme of societal pressure in a system that provides no legitimate outlets for grievances and no hope for meaningful change through conventional means.
+
+## Epilogue
+
+That's what's happening in China.
+
+The cosplayer thought those horrific racist words were just a joke. 
+
+Meanwhile, their chauvinism drove them to frame an innocent Japanese Blue Archive cosplayer.
+
+<blockquote class="twitter-tweet"><p lang="zxx" dir="ltr"><a href="https://t.co/hwAnZ89RPL">pic.twitter.com/hwAnZ89RPL</a></p>&mdash; ちず🧀Chizu (@ChizuCheese8) <a href="https://twitter.com/ChizuCheese8/status/1906807913001386205?ref_src=twsrc%5Etfw">March 31, 2025</a></blockquote>
+
+Because of the backlash stemming from weaponized feminism, they investigated and made public the Chinese cosplayer's personal information—data collected and leaked by the government. Yet they remain unable to identify the true problem, exactly as the government intends.
+
+![The personal information of the Chinese coser](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/cff7582d-ba0a-4f15-7499-6441f472ae00/public)
+
+> The revealed personal information contains:
+>
+> - Photo
+> - Full name
+> - Date of birth
+> - Place of birth
+> - Identification number
+> - Bachelor's degree program
+> 
+> Annotated with:
+> - Unemployed due to anxiety disorder, obsessive-compulsive disorder, clinical depression, and bipolar disorder
+> - "Anime expert"
+> - Red Book & Weibo user
+> - Explicitly labeled as "Weaponized feminist"
+
+Nobody knows how to solve these deeply entrenched problems. Even worse, the CCP is waiting for an opportunity to export these ideological issues to the rest of the world.
+
+Thankfully, you weren't born in China—or even if you were, you're smart enough to understand this article and see beyond the manufactured divisions.
