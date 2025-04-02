@@ -17,10 +17,7 @@ Recently I saw this on twitter:
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 As you can see, I am (actually was) a Blue Archive player.
-
-I wrote an article [*How a former FGO player plays Blue Archive*](/blog/how-fgo-player-plays-ba) which said:
-
-> after I had played Blue Archive for a year, when the game finally passed CCP’s examination and launched in China, it underwent substantial changes due to ideological and political reasons that made it nearly unrecognizable.
+amination and launched in China, it underwent substantial changes due to ideological and political reasons that made it nearly unrecognizable.
 
 Well, for most normal people, this racialization issue should be crazy and ridiculous. But for me, this kind of situation was bound to happen someday.
 
@@ -60,6 +57,10 @@ The answer lies in how the CCP has deliberately engineered gender-based confront
 
 The implementation of this strategy is twofold. First, they manipulate public opinion through state-controlled media and online influencers who promote gender antagonism. Second, they employ selective enforcement of regulations - cracking down on genuine feminist movements while giving women a decided advantage in public opinion spheres. This isn't about supporting women's rights, but rather embedding an altered version of feminism that serves their control purposes.
 
+> An ironic aspect of this situation is that one reason the CCP can give women a decided advantage in justice and enforcement stems from existing gender bigotry.
+>
+> In China's courts and prosecutor's offices, women significantly outnumber men, making it easier to implement selective enforcement of laws. However, this gender imbalance exists primarily because girls are often steered away from STEM fields based on the sexist belief that they aren't "smart enough" to be engineers or scientists. Instead, they're pressured toward legal professions, which are paradoxically considered "lesser" career paths by many men. Thus, the very bigotry that undermines women in some fields inadvertently concentrates them in positions that can be leveraged for ideological control.
+
 True feminism would inevitably raise awareness about human rights in general. After all, women's rights are human rights, and once people start thinking critically about one form of inequality, they might begin questioning others. This is precisely what the CCP fears. So instead, they've carefully cultivated a distorted version of "feminism" to develop in China - one that's intentionally bad-faith, weaponized, and designed to create gender division rather than meaningful dialogue. This altered feminism appears to advance women's interests on the surface, but actually serves to prevent unity among citizens.
 
 This artificially created conflict has begun to spiral out of control in recent years. We've seen horrifying consequences like the [Zhuhai Car Attack](https://en.wikipedia.org/wiki/2024_Zhuhai_car_attack) and the [Suicide of Fat Cat](https://en.wikipedia.org/wiki/Suicide_of_Fat_Cat) in November 2024. These tragedies are the direct result of intensified gender antagonism that has been allowed - even encouraged - to fester.
@@ -68,22 +69,52 @@ So when Chinese netizens blame "weaponized feminism" for the racist behavior of 
 
 The irony is that both the misogynistic backlash against "feminism" and the toxic version of "feminism" that exists in China are two sides of the same coin - both are products of deliberate ideological manipulation that serves to distract from genuine political discourse. Meanwhile, actual feminist principles of equality and human dignity are suppressed because they pose a real threat to authoritarian control.
 
-## A Four Quadrants: Giga-Escapism, Social Darwinism, Escapism, and Numbness
+## When Inhibition Goes Crazy: Decentralized Spontaneous Detonation
+
+Because Chinese society is not totally isolated like North Korea, inhibition has a somewhat powerful effect. In the past, this manifested in the 1989 Tiananmen Square protests and massacre. More recently, we saw the [White Paper Protests](https://en.wikipedia.org/wiki/2022_COVID-19_protests_in_China). However, as the pace of economic growth slows down and more people start feeling hopeless, this inhibition can take on increasingly extreme forms.
+
+Here is an interesting figure from a stock company presentation:
 
 ![Analysis of China's current social mentality](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/6eb578a3-1a04-447e-721f-25371c99ce00/small)
 
-Here is a figure titled "Analysis of China's current social mentality". These four character are:
+The title of this figure is "Analysis of China's current social mentality". These four characters represent different social attitudes:
 
 |        |uncooperative|cooperative|
 |--------|-------------|-----------|
 |positive|giga-escapism(润)|social darwinism(卷)|
 |negative|escapism(躺)|numbness(韭)|
 
-Because of the peculiarities of the Chinese, there is no way to find an exact translation of these four words. But the basic idea is:
+Due to the linguistic and cultural specificities of Chinese, there's no exact translation for these four terms. But the basic concepts are:
 
-- giga-escapism(润): Taking positive action to escape from China and seek to emigrate to other countries.
-- social darwinism(卷): Compete aggressively for social status and resources. Believe winner will be better.
-- escapism(躺): Abandon goals and high-level demand. Trying to escape from huge stress.
-- numbness(韭): Accept the status quo and numbness.
+- **Giga-escapism (润)**: Taking positive action to escape from China and emigrate to other countries.
+- **Social Darwinism (卷)**: Competing aggressively for social status and resources. Believing winners deserve their success.
+- **Escapism (躺)**: Abandoning goals and higher-level demands. Trying to escape from enormous social pressure.
+- **Numbness (韭)**: Accepting the status quo with emotional numbness.
 
-## Z Axis
+It's reasonable to guess that one's level of wealth and awareness determine their mentality. We can conclude that those in the Social Darwinism (卷) quadrant are typically the most chauvinistic, with the Numbness (韭) group following closely behind. The Giga-escapism (润) and Escapism (躺) groups tend to be less chauvinistic because they recognize the need to be uncooperative with the system.
+
+However, the truly concerning aspect isn't captured in this chart.
+
+A few days later, someone added a Z-axis to this matrix:
+
+![The figure with Z axis](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/dca7681e-7da3-4586-d733-6236cbc2fb00/public)
+
+The top position is labeled 献 (Killing), and the bottom is 摘 (Sacrificed).
+
+Let's start with the less extreme dimension. The term 摘 (Sacrificed) refers to being sacrificed by the CCP. This term originated from rumors that the CCP harvests organs from young people. "摘" means "to pick" or "to harvest," and in this context, it refers to organs being harvested. While this sounds outlandish, there have been some medical research papers with unclear organ sources and suspicious murder cases where victims' organs disappeared, giving the rumor a veneer of plausibility. In this expanded chart, 摘 has been broadened to mean being sacrificed by the CCP through any destructive policy.
+
+But if organ harvesting rumors aren't considered the most extreme aspect, what is?
+
+The top position, 献 (Killing), represents something far more disturbing. The concept isn't just about killing—it embodies a nihilistic response to hopelessness. The idea is that when individuals feel completely hopeless, they may choose to kill as many people as possible or, if unable to harm others, kill themselves. The underlying belief is that these acts of violence will frighten the broader population, force societal reflection, and ultimately generate enough public pressure to force the CCP to change.
+
+This is what I call "decentralized spontaneous detonation"—a twisted manifestation of extreme inhibition against the ruling system.
+
+The effectiveness of this approach has been grimly demonstrated by waves of student suicides that have forced schools to provide rest periods that students should have received as a matter of course.
+
+> According to [611study.icu](https://611study.icu/), the standard schedule for Chinese middle and high school students is grueling: arriving at school by 6:00 a.m. and not being dismissed until 11:00 p.m., with classes running 6 or 7 days per week.
+> 
+> The 611study project aims to ensure reasonable rest periods for students, primarily through online awareness campaigns. While it has successfully raised awareness about these extreme conditions, it has made little concrete progress. Students in the most oppressive educational environments often cannot even access the internet, making it impossible to hear their voices. Moreover, the very existence of such a project highlights the absence of legitimate channels for addressing these issues—if proper outlets existed, such desperate measures wouldn't be necessary in the first place.
+
+Unlike traditional centralized movements where authorities can target leaders and predict developments, this phenomenon is random and decentralized. No one knows who might initiate violence or when it might occur—sometimes not even the perpetrators themselves until they act. Its frightening effectiveness comes from the fact that, unlike conventional movements requiring mass gatherings to create influence, just a few random violent incidents can make everyone fear they'll be next.
+
+This represents the darkest extreme of societal pressure in a system that provides no legitimate outlets for grievances and no hope for meaningful change through conventional means.
