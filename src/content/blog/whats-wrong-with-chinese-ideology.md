@@ -6,7 +6,7 @@ updatedDate: 'Apr 25 2025'
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/c5720f91-b2f6-459f-4b8b-556df7697100/small'
 ---
 
-Recently I saw this on twitter: 
+Recently, I came across this post on Twitter:
 
 <blockquote class="twitter-tweet" data-media-max-width="560">
     <p lang="qme" dir="ltr"> 
@@ -16,23 +16,21 @@ Recently I saw this on twitter:
 </blockquote> 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-As you can see, I am (actually was) a Blue Archive player.
-
-I wrote an article [*How a former FGO player plays Blue Archive*](/blog/how-fgo-player-plays-ba) which said:
+As you can tell, I was once a Blue Archive player. I previously wrote about this in an article titled [*How a former FGO player plays Blue Archive*](https://blog.plr.moe/blog/how-fgo-player-plays-ba), where I noted:
 
 > after I had played Blue Archive for a year, when the game finally passed CCP’s examination and launched in China, it underwent substantial changes due to ideological and political reasons that made it nearly unrecognizable.
 
-Well, for most normal people, this racialization issue should be crazy and ridiculous. But for me, this kind of situation was bound to happen someday.
+To most observers, the racialization controversy surrounding the game might seem absurd. But to me, it was inevitable.
 
 And as I said in that article:
 
 > it might have potential to achieve a historic status comparable to the Touhou Project, had Nexon not mishandled their employee relations, which led to the departure of key creative team members.
 
-Blue Archive is going downhill because of the departure of key creative team members. As someone who has read many light novels, at least for me, the downward trend in story quality is obvious. Because I'm busy with my business and the game became less interesting, I eventually abandoned it.
+The decline in narrative quality following their departure is obvious, especially for those familiar with Japanese light novels like me. Coupled with my increasing professional commitments and dwindling interest, I ultimately stopped playing.
 
-## The Leader: Chauvinism
+## The Root: Chauvinism
 
-Back to the topic, what's wrong with Chinese's ideology?
+Back to the main topic: what's wrong with Chinese ideology?
 
 First, **those Chinese who is reading this blog with translation software, get outta here!**
 
@@ -62,9 +60,9 @@ The implementation of this strategy is twofold. First, they manipulate public op
 
 > According to the China's criminal law, a woman rape a young boy is not a crime. And if the woman gets pregnant, the boy's family has to pay for the child, or the boy is guilty because of abandonment if the boy is over 14 years old.
 >
-> The reason is, *rape* is defined as "a man forcing a woman to have sex", not including "a woman forcing a man to have sex".
+> The reason is, China's Criminal Law defines rape only as "a man forcing a woman," excluding "a woman forcing a man."
 >
-> This incompleteness has been around for a long time. But it is only recently that attention has been drawn to its excessive abuse at cases where several middle school teachers raped their students.
+> This loophole has been around for a long time. But it just recently drew attention during cases where female middle school teachers sexually abused male students.
 
 > An ironic aspect of this situation is that one reason the CCP can give women a decided advantage in justice and enforcement stems from existing gender bigotry.
 >
