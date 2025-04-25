@@ -2,6 +2,7 @@
 title: "What's wrong with Chinese's Ideology"
 description: "Delve into the complex and concerning issues plaguing Chinese ideology, including rampant chauvinism, the CCP's manipulation of feminism, and the rise of \"decentralized spontaneous detonation\" as a response to societal pressures. This article analyzes the root causes and potential consequences of these trends."
 pubDate: 'Apr 1 2025'
+updatedDate: 'Apr 25 2025'
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/c5720f91-b2f6-459f-4b8b-556df7697100/small'
 ---
 
@@ -16,7 +17,10 @@ Recently I saw this on twitter:
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 As you can see, I am (actually was) a Blue Archive player.
-amination and launched in China, it underwent substantial changes due to ideological and political reasons that made it nearly unrecognizable.
+
+I wrote an article [*How a former FGO player plays Blue Archive*](/blog/how-fgo-player-plays-ba) which said:
+
+> after I had played Blue Archive for a year, when the game finally passed CCP’s examination and launched in China, it underwent substantial changes due to ideological and political reasons that made it nearly unrecognizable.
 
 Well, for most normal people, this racialization issue should be crazy and ridiculous. But for me, this kind of situation was bound to happen someday.
 
@@ -56,11 +60,19 @@ The answer lies in how the CCP has deliberately engineered gender-based confront
 
 The implementation of this strategy is twofold. First, they manipulate public opinion through state-controlled media and online influencers who promote gender antagonism. Second, they employ selective enforcement of regulations - cracking down on genuine feminist movements while giving women a decided advantage in public opinion spheres. This isn't about supporting women's rights, but rather embedding an altered version of feminism that serves their control purposes.
 
+> According to the China's criminal law, a woman rape a young boy is not a crime. And if the woman gets pregnant, the boy's family has to pay for the child, or the boy is guilty because of abandonment if the boy is over 14 years old.
+>
+> The reason is, *rape* is defined as "a man forcing a woman to have sex", not including "a woman forcing a man to have sex".
+>
+> This incompleteness has been around for a long time. But it is only recently that attention has been drawn to its excessive abuse at cases where several middle school teachers raped their students.
+
 > An ironic aspect of this situation is that one reason the CCP can give women a decided advantage in justice and enforcement stems from existing gender bigotry.
 >
 > In China's courts and prosecutor's offices, women significantly outnumber men, making it easier to implement selective enforcement of laws. However, this gender imbalance exists primarily because girls are often steered away from STEM fields based on the sexist belief that they aren't "smart enough" to be engineers or scientists. Instead, they're pressured toward legal professions, which are paradoxically considered "lesser" career paths by many men. Thus, the very bigotry that undermines women in some fields inadvertently concentrates them in positions that can be leveraged for ideological control.
 
 True feminism would inevitably raise awareness about human rights in general. After all, women's rights are human rights, and once people start thinking critically about one form of inequality, they might begin questioning others. This is precisely what the CCP fears. So instead, they've carefully cultivated a distorted version of "feminism" to develop in China - one that's intentionally bad-faith, weaponized, and designed to create gender division rather than meaningful dialogue. This altered feminism appears to advance women's interests on the surface, but actually serves to prevent unity among citizens.
+
+> A piece of evidence that China's justice doesn't actually protect women's human right is [Xuzhou chained woman incident](https://en.wikipedia.org/wiki/Xuzhou_chained_woman_incident), where an unlawfully imprisoned woman who was chained to a wall and birthed 8 children. After this is revealed by social media, China government tried to delete all source as fast as possible. Even eventually the incident was reported to international media, the Chinese government still tried to suppress it. By the way, the 8 children's father is not accused of rape.
 
 This artificially created conflict has begun to spiral out of control in recent years. We've seen horrifying consequences like the [Zhuhai Car Attack](https://en.wikipedia.org/wiki/2024_Zhuhai_car_attack) and the [Suicide of Fat Cat](https://en.wikipedia.org/wiki/Suicide_of_Fat_Cat) in November 2024. These tragedies are the direct result of intensified gender antagonism that has been allowed - even encouraged - to fester.
 
