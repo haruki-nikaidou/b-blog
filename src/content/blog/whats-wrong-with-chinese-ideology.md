@@ -5,6 +5,7 @@ pubDate: 'Apr 1 2025'
 updatedDate: 'Apr 25 2025'
 tags:
   - Politics
+  - Blue Archive
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/c5720f91-b2f6-459f-4b8b-556df7697100/small'
 ---
 
