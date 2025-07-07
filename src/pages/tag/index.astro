@@ -1,0 +1,64 @@
+---
+import BaseHead from '@/components/BaseHead.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
+import { getCollection } from 'astro:content';
+import Card from "../../components/Card.astro";
+import {GLOBAL_STYLE} from "../../consts";
+
+const posts = (await getCollection('blog')).filter((post) => !post.data.notCompleted);
+const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <Card variant={GLOBAL_STYLE} class="tags-card">
+        <h2>Tags</h2>
+        <ul class="tag-list">
+          {tags.map((tag) => (
+              <li><a class="tag" href={`/tag/${tag}`}>{tag}</a></li>
+          ))}
+        </ul>
+      </Card>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main {
+    max-width: 70rem;
+    margin: 3rem auto;
+    padding: 0 1rem;
+  }
+
+  .tags-card {
+      padding: 1rem;
+      width: 100%;
+  }
+
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 5rem;
+    background-color: #f3f3f1;
+    color: #374151;
+    font-size: 0.75rem;
+    text-decoration: none;
+  }
+</style>

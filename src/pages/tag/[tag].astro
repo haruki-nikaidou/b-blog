@@ -1,0 +1,61 @@
+---
+import BaseHead from '@/components/BaseHead.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import PostCard from '@/components/PostCard.astro';
+import {SITE_TITLE, SITE_DESCRIPTION} from '@/consts';
+import {getCollection} from 'astro:content';
+import Card from "../../components/Card.astro";
+import {GLOBAL_STYLE} from "../../consts";
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const tags = new Set(posts.flatMap((post) => post.data.tags));
+  return Array.from(tags).map((tag) => ({params: {tag}, props: {tag}}));
+}
+
+const {tag} = Astro.props;
+const posts = (await getCollection('blog'))
+    .filter((post) => post.data.tags.includes(tag) && !post.data.notCompleted)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <BaseHead title={`${tag} | Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION}/>
+</head>
+<body>
+<Header/>
+<main>
+  <Card variant={GLOBAL_STYLE} class="title-card">
+    <h2>Tag: {tag}</h2>
+  </Card>
+  <section class="posts">
+    {posts.map((post) => (
+        <PostCard {...post.data} slug={post.slug}/>
+    ))}
+  </section>
+</main>
+<Footer/>
+</body>
+</html>
+
+<style>
+    .title-card {
+        margin-bottom: 2rem;
+    }
+
+    main {
+        max-width: 70rem;
+        width: 100%;
+        margin: 3rem auto;
+        padding: 0 1rem;
+    }
+
+    .posts {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+    }
+</style>
