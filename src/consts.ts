@@ -9,7 +9,7 @@ export const FAVICON_SRC = '/favicon.svg';
 
 export const AVATAR_SRC = '/avatar.svg';
 
-export const BIO = "Wish upon stars, get meteorites.";
+export const BIO = "願ふこと、星に託せど。届かぬ夢に、石こそ返る。";
 
 export const GLOBAL_STYLE: 'quartz' | 'glass' | 'lightGlass' = 'lightGlass'
 
