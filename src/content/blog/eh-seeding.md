@@ -4,6 +4,9 @@ description: 'Intro 3 currency of E-Hentai and seeding method'
 pubDate: 'Apr 16 2024'
 updatedDate: 'Oct 2 2024'
 heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/814af32f-d3ff-467a-3a53-036105e93e00/small'
+tags:
+  - E-Hentai
+  - homelab
 pinned: true
 ---
 
