@@ -1,6 +1,6 @@
 ---
-title: 'Use gRPC in Frontend'
-description: 'Use gRPC to communicate between SSR (like next.js or sveltekit) and backend server'
+title: 'Modern gRPC Integration for Frontend Applications: A Complete Guide'
+description: 'Modern gRPC implementation for frontend applications: Connect SSR frameworks (SvelteKit, Next.js) to backend services with type-safe, performant communication using Connect, Buf, and Effect.'
 pubDate: 'Jul 26 2025'
 tags:
   - Distributed System
