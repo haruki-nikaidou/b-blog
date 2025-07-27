@@ -8,22 +8,31 @@ const today = new Date();
 <footer
     id="footer-container"
     class={clsx(
-        "card",
-        GLOBAL_STYLE === 'glass' && 'glass',
-        GLOBAL_STYLE === 'lightGlass' && 'light-glass',
+      "card",
+      GLOBAL_STYLE === 'glass' && 'glass',
+      GLOBAL_STYLE === 'lightGlass' && 'light-glass',
     )}
 >
-        &copy; {today.getFullYear()}&nbsp;{COPYRIGHT_NAME}. All rights reserved.<br>
-        Powered by <a class="link" href="https://github.com/koibumi-design/astro-blog">Koibumi Design</a>
+  <p>
+    &copy; {today.getFullYear()} by Nikaidou Haruki
+  </p>
+  <p>
+    Licensed under
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="link">CC BY-NC-SA 4.0</a>
+  </p>
 </footer>
 
-<style>
-    #footer-container {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-    }
+<style lang="scss">
+  #footer-container {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 
-    footer {
-        text-align: center;
+    * {
+      margin-bottom: 0;
     }
+  }
+
+  footer {
+    text-align: center;
+  }
 </style>
