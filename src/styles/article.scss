@@ -8,13 +8,11 @@ main {
 }
 
 article {
-
   width: 100%;
 
   h1, h2, h3, h4, h5, h6, p,
   ol, ul, blockquote, pre:has(code),
-  math
-  {
+  math {
     margin-bottom: .75em;
     margin-top: .75em;
   }
@@ -170,5 +168,11 @@ article {
     tr:hover {
       background: colors.$color-slate-200;
     }
+  }
+
+  img {
+    max-width: min(100%, 40rem);
+    display: block;
+    margin: 1rem auto;
   }
 }
