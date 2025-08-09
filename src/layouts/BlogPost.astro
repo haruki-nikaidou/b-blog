@@ -1,10 +1,10 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type {CollectionEntry} from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Card from "@/components/Card.astro";
-import { GLOBAL_STYLE, imageDeliveryUrl } from "../consts";
+import {GLOBAL_STYLE, imageDeliveryUrl} from "../consts";
 import "../styles/article.scss";
 
 type Props = CollectionEntry<"blog">["data"];
@@ -21,82 +21,82 @@ const {
 ---
 
 <html lang="en">
-  <head>
-    <BaseHead
+<head>
+  <BaseHead
       title={title}
       description={description}
       image={heroImageId ? imageDeliveryUrl(heroImageId, "small") : undefined}
-    />
-  </head>
+  />
+</head>
 
-  <body>
-    <Header />
-    <main>
-      <Card variant={GLOBAL_STYLE}>
-        <article>
-          {
-            heroImageId && (
-              <div class="hero-image">
-                <img
-                  src={imageDeliveryUrl(heroImageId, "public")}
-                  alt={title}
-                  loading="lazy"
-                />
-              </div>
-            )
-          }
-          <h1 class="emphasize">
-            {title}
-          </h1>
-          <div class="meta">
-            {
-              notCompleted && (
+<body>
+<Header/>
+<main>
+  <Card variant={GLOBAL_STYLE}>
+    {
+      heroImageId && (
+            <img
+                src={imageDeliveryUrl(heroImageId, "public")}
+                alt={title}
+                loading="lazy"
+                class="hero-image"
+            />
+      )
+    }
+    <article>
+      <h1 class="emphasize">
+        {title}
+      </h1>
+      <div class="meta">
+        {
+          notCompleted && (
                 <p class="meta-text">
                   <span class="tag">Draft</span>
                 </p>
-              )
-            }
-            <p class="meta-text">
+          )
+        }
+        <p class="meta-text">
               <span>
                 Published:
                 {pubDate.toLocaleDateString()}
               </span>
-              {
-                updatedDate && (
+          {
+            updatedDate && (
                   <>
                     <span>
                       Updated:
                       {updatedDate.toLocaleDateString()}
                     </span>
                   </>
-                )
-              }
-            </p>
-            {
-              tags && (
+            )
+          }
+        </p>
+        {
+          tags && (
                 <p class="meta-text mini-tag-container">
                   tags:
                   {tags.map((tag) => (
-                    <a href={`/tag/${tag}`}>{tag}</a>
+                      <a href={`/tag/${tag}`}>{tag}</a>
                   ))}
                 </p>
-              )
-            }
-            <p class="description">
-              {description}
-            </p>
-          </div>
-          <hr />
-          <slot />
-        </article>
-      </Card>
-    </main>
-    <Footer />
-  </body>
+          )
+        }
+        <p class="description">
+          {description}
+        </p>
+      </div>
+      <hr/>
+      <slot/>
+    </article>
+  </Card>
+</main>
+<Footer/>
+</body>
 </html>
 
 <style lang="scss">
   @use "@/styles/colors";
+
   hr {
     border: none;
     background-color: colors.$color-slate-400;
@@ -126,13 +126,11 @@ const {
   }
 
   .hero-image {
-    width: 100%;
     border-radius: 1rem;
     overflow: hidden;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 21/9;
   }
 </style>

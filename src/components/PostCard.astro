@@ -25,7 +25,7 @@ const {slug, heroImageId, title, pubDate, updatedDate, tags} = Astro.props
         class='img-container'
         href={`/blog/${slug}`}
     >
-        {heroImageId && <img src={imageDeliveryUrl(heroImageId, 'public')} alt={title} loading="lazy"/>}
+        {heroImageId && <img src={imageDeliveryUrl(heroImageId, 'small')} alt={title} loading="lazy"/>}
     </a>
     <h4>
         <a class="link" href={`/blog/${slug}`}>
