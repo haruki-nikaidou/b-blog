@@ -4,17 +4,29 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Card from "@/components/Card.astro";
-import { GLOBAL_STYLE } from "../consts";
+import { GLOBAL_STYLE, imageDeliveryUrl } from "../consts";
 import "../styles/article.scss";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage, tags, notCompleted } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImageId,
+  tags,
+  notCompleted,
+} = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={heroImage}/>
+    <BaseHead
+      title={title}
+      description={description}
+      image={heroImageId ? imageDeliveryUrl(heroImageId, "small") : undefined}
+    />
   </head>
 
   <body>
@@ -22,6 +34,17 @@ const { title, description, pubDate, updatedDate, heroImage, tags, notCompleted 
     <main>
       <Card variant={GLOBAL_STYLE}>
         <article>
+          {
+            heroImageId && (
+              <div class="hero-image">
+                <img
+                  src={imageDeliveryUrl(heroImageId, "public")}
+                  alt={title}
+                  loading="lazy"
+                />
+              </div>
+            )
+          }
           <h1 class="emphasize">
             {title}
           </h1>
@@ -83,7 +106,7 @@ const { title, description, pubDate, updatedDate, heroImage, tags, notCompleted 
   }
 
   .meta {
-    &>* {
+    & > * {
       margin-block: 0;
     }
 
@@ -99,6 +122,17 @@ const { title, description, pubDate, updatedDate, heroImage, tags, notCompleted 
 
     .description {
       font-size: 0.8rem;
+    }
+  }
+
+  .hero-image {
+    width: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 </style>

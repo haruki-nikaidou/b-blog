@@ -1,19 +1,19 @@
 ---
 import Card from "./Card.astro";
-import {GLOBAL_STYLE} from "@/consts";
+import {GLOBAL_STYLE, imageDeliveryUrl} from "@/consts";
 import "@/styles/components.scss";
 import '@/styles/global.scss';
 
 interface Props {
     slug: string
-    heroImage?: string
+    heroImageId?: string
     title: string
     pubDate: Date,
     tags: string[]
     updatedDate?: Date
 }
 
-const {slug, heroImage, title, pubDate, updatedDate, tags} = Astro.props
+const {slug, heroImageId, title, pubDate, updatedDate, tags} = Astro.props
 
 ---
 
@@ -25,7 +25,7 @@ const {slug, heroImage, title, pubDate, updatedDate, tags} = Astro.props
         class='img-container'
         href={`/blog/${slug}`}
     >
-        <img src={heroImage} alt={title} loading="lazy"/>
+        {heroImageId && <img src={imageDeliveryUrl(heroImageId, 'public')} alt={title} loading="lazy"/>}
     </a>
     <h4>
         <a class="link" href={`/blog/${slug}`}>

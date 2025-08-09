@@ -6,7 +6,7 @@ tags:
   - Light Novel
   - Anime
 pubDate: 'Aug 11 2025'
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/b6391612-24f0-45c1-0cfa-599dc4b01800/small'
+heroImageId: 'b6391612-24f0-45c1-0cfa-599dc4b01800'
 notCompleted: true
 ---
 

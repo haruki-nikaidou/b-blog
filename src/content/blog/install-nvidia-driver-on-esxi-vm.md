@@ -8,7 +8,7 @@ tags:
   - ESXi
   - NVIDIA
 pinned: true
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/1ccd914c-455c-4eee-8bde-b28aae802100/small'
+heroImageId: '1ccd914c-455c-4eee-8bde-b28aae802100'
 ---
 
 Recently, I wanted to set up a server for AI in my homelab. For I only have one motherboard that have enough space for a RTX 3090,

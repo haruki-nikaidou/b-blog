@@ -5,7 +5,7 @@ pinned: false
 tags:
   - Distributed System
 pubDate: 'Dec 23 2024'
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/5ebd2649-12d9-4b1f-6684-0477f1215300/small'
+heroImageId: '5ebd2649-12d9-4b1f-6684-0477f1215300'
 ---
 
 Several months ago, I found an amazing message bus named [NATS](https://nats.io/). NATS has some amazing features superior than RabbitMQ or Apache Kafka:

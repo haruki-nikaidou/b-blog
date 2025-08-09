@@ -6,7 +6,7 @@ tags:
   - Router
   - OpenWrt
 updatedDate: 'Nov 14 2024'
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/727ee92c-717e-4d32-b8f2-98b9865c8300/small'
+heroImageId: '727ee92c-717e-4d32-b8f2-98b9865c8300'
 ---
 
 I thought I should buy a router before I would move to japan. 

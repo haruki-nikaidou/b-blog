@@ -5,7 +5,7 @@ pubDate: 'Jul 26 2025'
 tags:
   - Distributed System
   - Web Development
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/1fb93ab9-0a7a-4fe2-de62-2e8dc955b900/small'
+heroImageId: '1fb93ab9-0a7a-4fe2-de62-2e8dc955b900'
 ---
 
 For large-scale projects, gRPC has emerged as the preferred method for connecting services and components, effectively replacing traditional RESTful APIs. It offers superior size efficiency and lower deserialization costs while providing excellent support across multiple programming languages and frameworks.

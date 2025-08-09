@@ -6,7 +6,7 @@ updatedDate: 'Apr 25 2025'
 tags:
   - Politics
   - Blue Archive
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/c5720f91-b2f6-459f-4b8b-556df7697100/small'
+heroImageId: 'c5720f91-b2f6-459f-4b8b-556df7697100'
 ---
 
 Recently, I came across this post on Twitter:

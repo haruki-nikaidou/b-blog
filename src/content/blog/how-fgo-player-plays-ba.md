@@ -7,7 +7,7 @@ tags:
   - Game
   - FGO
   - Blue Archive
-heroImage: 'https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/6d4828e4-e61f-4c79-4822-3cfef5800f00/small'
+heroImageId: '6d4828e4-e61f-4c79-4822-3cfef5800f00'
 ---
 
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" rel="stylesheet">
