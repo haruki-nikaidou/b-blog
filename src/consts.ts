@@ -13,7 +13,7 @@ export const BIO = "星に祈れど、空は答えず、堕ちるは常に、隕
 
 export const GLOBAL_STYLE: 'quartz' | 'glass' | 'lightGlass' = 'lightGlass'
 
-export const COPYRIGHT_NAME = 'Sakurakouji Eureka';
+export const COPYRIGHT_NAME = 'Amaki Eureka';
 
 export function imageDeliveryUrl(id: string, variant: 'public' | 'small'): string {
   return `https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/${id}/${variant}`
