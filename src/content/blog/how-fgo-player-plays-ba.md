@@ -10,8 +10,6 @@ tags:
 heroImageId: '6d4828e4-e61f-4c79-4822-3cfef5800f00'
 ---
 
-<link href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" rel="stylesheet">
-
 Two years ago, I start playing Blue Archive. 
 
 I was a FGO player before, but I deleted my Bilibili account out of dislike for the platform, and since it was the only way to access my FGO China server account, I lost access to the game completely. Starting fresh on the Japanese server would be too difficult to catch up. Besides, since FGO's main value lies in its story, which I can read in either Japanese or English from YouTube, I don't feel the need to continue playing.

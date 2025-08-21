@@ -10,8 +10,6 @@ heroImageId: 'b6391612-24f0-45c1-0cfa-599dc4b01800'
 notCompleted: true
 ---
 
-<link href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" rel="stylesheet">
-
 As I develop a light novel review website and English-speaking anime community (as Rust full-stack practice), I developed a six-tier ranking system from S (masterpiece) to F (unpublishable) to establish objective criteria for evaluating light novels. Each tier reflects specific, measurable standards rather than personal preference.
 
 For example, 「涼宮ハルヒ」ranks A-tier instead of S-tier due to accessibility issues—its complex narrative structure creates unnecessary barriers for readers. Meanwhile, 「はぐれ勇者の鬼畜美学」falls to D-tier because its uncritical portrayal of patriarchal dynamics alienates significant portions of its audience.
