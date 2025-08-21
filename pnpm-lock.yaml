@@ -23,6 +23,15 @@ importers:
       '@astrojs/solid-js':
         specifier: ^5.1.0
         version: 5.1.0(@types/node@24.0.10)(sass@1.89.2)(solid-js@1.9.7)(yaml@2.8.0)
+      '@fontsource-variable/jetbrains-mono':
+        specifier: ^5.2.6
+        version: 5.2.6
+      '@fontsource/comic-neue':
+        specifier: ^5.2.6
+        version: 5.2.6
+      '@fontsource/klee-one':
+        specifier: ^5.2.6
+        version: 5.2.6
       '@vercel/analytics':
         specifier: ^1.4.1
         version: 1.5.0
@@ -374,6 +383,15 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource-variable/jetbrains-mono@5.2.6':
+    resolution: {integrity: sha512-1pvtyK6H1paBOixbtZ9xfQgArVQ4SJMW3WSGZPOd5PiW3yg0t8umwKnjDMzW2ofb7qSdiXnsnIaHPT36vEOdlg==}
+
+  '@fontsource/comic-neue@5.2.6':
+    resolution: {integrity: sha512-FhI/0GU20Dgv/7K50UqyFSNAThevYk2hDv9D9UFYYd3HaGJxH82ujtssJD5am36kxy6nFlSM8rafL3lEoSshJQ==}
+
+  '@fontsource/klee-one@5.2.6':
+    resolution: {integrity: sha512-fajZuLIDHWsQhj3vZbYGe+DZwtqLLASQt60AOruoODMr58qJE/wdSL689uj2Q1MtUyMvnv+d1EoXmGf7vXraFQ==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -2723,6 +2741,12 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.5':
     optional: true
+
+  '@fontsource-variable/jetbrains-mono@5.2.6': {}
+
+  '@fontsource/comic-neue@5.2.6': {}
+
+  '@fontsource/klee-one@5.2.6': {}
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:

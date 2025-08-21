@@ -24,7 +24,6 @@ article {
   h5,
   h6,
   p {
-    font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
     color: #1b1b17;
   }
@@ -36,12 +35,12 @@ article {
 
   h2 {
     font-size: 2rem;
-    font-weight: normal;
+    font-weight: bold;
   }
 
   h3 {
     font-size: 1.6rem;
-    font-weight: normal;
+    font-weight: bold;
   }
 
   h4 {
@@ -100,7 +99,7 @@ article {
 
     code span {
       color: colors.$color-slate-50;
-      font-family: 'Fira Code', monospace;
+      font-family: 'JetBrains Mono', monospace;
     }
   }
 
@@ -112,7 +111,7 @@ article {
   }
 
   code {
-    font-family: 'Fira Code', monospace;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   a {
