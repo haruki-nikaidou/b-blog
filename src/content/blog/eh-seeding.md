@@ -3,7 +3,7 @@ title: 'How to and why seed on E-Hentai'
 description: 'Intro 3 currency of E-Hentai and seeding method'
 pubDate: 'Apr 16 2024'
 updatedDate: 'Oct 2 2024'
-heroImageId: '814af32f-d3ff-467a-3a53-036105e93e00'
+heroImageId: '3f37a35a-06f7-44f4-ecca-b2a3d5a6b700'
 tags:
   - E-Hentai
   - homelab
