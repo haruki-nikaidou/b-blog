@@ -36,16 +36,35 @@ article {
   h2 {
     font-size: 2rem;
     font-weight: bold;
+    border-bottom: solid;
+    border-bottom-width: medium;
+    border-bottom-color: colors.$color-primary-400;
+    &::before {
+      content: '#';
+      color: colors.$color-primary;
+      margin-right: .5rem;
+    }
   }
 
   h3 {
     font-size: 1.6rem;
     font-weight: bold;
+    &::before {
+      content: '##';
+      letter-spacing: -.2rem;
+      margin-right: .5rem;
+      color: colors.$color-primary;
+    }
   }
 
   h4 {
     font-size: 1.35rem;
     font-weight: bold;
+    &::before {
+      content: '###';
+      letter-spacing: -.125rem;
+      margin-right: .375rem;
+    }
   }
 
   h5 {
