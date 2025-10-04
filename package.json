@@ -22,6 +22,7 @@
     "astro": "5.14.1",
     "clsx": "^2.1.1",
     "rehype-katex": "^7.0.1",
+    "rehype-mermaid": "^3.0.0",
     "remark-math": "^6.0.0",
     "sass": "^1.84.0",
     "solid-icons": "^1.1.0",
