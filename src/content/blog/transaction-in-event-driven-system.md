@@ -19,6 +19,18 @@ But these are two separate systems. What happens when your database transaction 
 
 This is the **dual-write problem**, and it's the bane of event-driven architectures.
 
+## Transactional Outbox
+
+The [Transactional Outbox pattern](https://microservices.io/patterns/data/transactional-outbox.html) solves this by:
+1. Writing events to an outbox table within the same database transaction
+2. A separate process reads the outbox and publishes to the message queue
+3. Events are marked as published after successful delivery
+
+This works, but it comes with trade-offs:
+- **Polling adds latency**: Checking the database every few seconds delays event delivery
+- **Change Data Capture is complex**: Real-time CDC solutions like Debezium are powerful but add operational overhead
+- **Large payloads in MQ**: Full event data flows through the message queue
+
 ## Real-World Example: Multi-Provider AI Chat Platform
 
 Let's ground this in a concrete example: building a chat platform that supports multiple AI providers (OpenAI, Anthropic, Google, etc.). This system needs to handle:
@@ -30,21 +42,9 @@ Let's ground this in a concrete example: building a chat platform that supports 
 
 Each of these has different consistency and latency requirements, making it a perfect case study for our hybrid pattern.
 
-## Transactional Outbox
-
-The Transactional Outbox pattern solves this by:
-1. Writing events to an outbox table within the same database transaction
-2. A separate process reads the outbox and publishes to the message queue
-3. Events are marked as published after successful delivery
-
-This works, but it comes with trade-offs:
-- **Polling adds latency**: Checking the database every few seconds delays event delivery
-- **Change Data Capture is complex**: Real-time CDC solutions like Debezium are powerful but add operational overhead
-- **Large payloads in MQ**: Full event data flows through the message queue
-
 ## A Better Approach: Hybrid Outbox with Claim Check and Buffer
 
-In a production AI chat platform, I implemented a pattern that separates different delivery mechanisms into dedicated tables. The key insight: **different event types have different requirements and should use optimized storage**.
+In a production AI chat platform, I implemented a pattern that separates different delivery mechanisms into dedicated tables. The key insight: **different event types have different requirements and should use optimized storage**. And using [claim check](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check) pattern by only publishing the ID of the event into message queue.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -89,53 +89,6 @@ In a production AI chat platform, I implemented a pattern that separates differe
 ```
 
 The beauty of this pattern is **using purpose-built tables optimized for each delivery mechanism**.
-
-Here are the three specialized tables:
-
-```sql
--- Table 1: Hybrid events (eager publish + scanner fallback)
-CREATE TABLE outbox_events (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    event_type VARCHAR(100) NOT NULL,
-    payload JSONB NOT NULL,
-    status event_status NOT NULL DEFAULT 'pending',
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    sent_at TIMESTAMPTZ,
-    processed_at TIMESTAMPTZ,
-    
-    -- Optimized for scanning recent failures
-    INDEX idx_outbox_status_created (status, created_at)
-);
-
--- Table 2: Scheduled events (poll at specific time)
-CREATE TABLE scheduled_events (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    event_type VARCHAR(100) NOT NULL,
-    payload JSONB NOT NULL,
-    scheduled_at TIMESTAMPTZ NOT NULL,
-    status event_status NOT NULL DEFAULT 'pending',
-    sent_at TIMESTAMPTZ,
-    processed_at TIMESTAMPTZ,
-    
-    -- Optimized for time-based queries
-    INDEX idx_scheduled_time_status (scheduled_at, status)
-);
-
--- Table 3: Accumulation buffer (batch aggregation, no MQ)
-CREATE TABLE accumulation_buffer (
-    id BIGSERIAL PRIMARY KEY,
-    user_id UUID NOT NULL,
-    tokens INTEGER NOT NULL,
-    model VARCHAR(100) NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    
-    -- Optimized for grouping by user
-    INDEX idx_accumulation_user_created (user_id, created_at)
-);
-
--- Shared enum for event status
-CREATE TYPE event_status AS ENUM ('pending', 'sent', 'processed', 'failed');
-```
 
 **Key design decisions:**
 - `outbox_events`: No `scheduled_at` column (not needed)
@@ -188,44 +141,10 @@ async fn save_ai_response(
     response: AiResponse,
 ) -> Result<()> {
     let mut tx = pool.begin().await?;
-    
-    // Store response metadata in database
-    sqlx::query!(
-        "INSERT INTO messages (id, conversation_id, role, created_at) 
-         VALUES ($1, $2, $3, NOW())",
-        response.message_id,
-        response.conversation_id,
-        "assistant",
-    )
-    .execute(&mut *tx)
-    .await?;
-    
-    // Cache full response in Redis (fast, temporary)
-    redis_client.set_ex(
-        &response.redis_key,
-        &response.content,
-        3600, // 1 hour TTL
-    ).await?;
-    
-    // Create outbox event for persistence (hybrid delivery)
-    let event = sqlx::query_as!(
-        OutboxEvent,
-        r#"
-        INSERT INTO outbox_events (event_type, payload, status)
-        VALUES ($1, $2, $3)
-        RETURNING id, event_type, payload, status as "status: EventStatus",
-                  created_at, sent_at, processed_at
-        "#,
-        "ai_response_ready",
-        EventPayload::AiResponseReady { /* ... */ },
-        EventStatus::Pending as EventStatus,
-    )
-    .fetch_one(&mut *tx)
-    .await?;
-    
+    // do something here
     tx.commit().await?;
     
-    // Eager publish (non-blocking)
+    // Eager publish after the commit (non-blocking)
     let event_id = event.id;
     let mq = mq.clone();
     tokio::spawn(async move {
@@ -234,49 +153,6 @@ async fn save_ai_response(
             // Scanner will catch it within 30 seconds
         }
     });
-    
-    Ok(())
-}
-
-// Consumer: Sync Redis to PostgreSQL
-async fn handle_ai_response_event(
-    pool: &PgPool,
-    redis: &RedisClient,
-    event: OutboxEvent,
-) -> Result<()> {
-    let payload: EventPayload = serde_json::from_value(event.payload)?;
-    
-    if let EventPayload::AiResponseReady { 
-        message_id, 
-        redis_key, 
-        tokens_used,
-        .. 
-    } = payload {
-        // Fetch full content from Redis
-        let content: Option<String> = redis.get(&redis_key).await?;
-        
-        let content = match content {
-            Some(c) => c,
-            None => {
-                tracing::warn!("Redis key expired: {}", redis_key);
-                // Could fetch from backup or skip
-                return Ok(());
-            }
-        };
-        
-        // Persist to PostgreSQL
-        sqlx::query!(
-            "UPDATE messages SET content = $1, tokens_used = $2 WHERE id = $3",
-            content,
-            tokens_used,
-            message_id,
-        )
-        .execute(pool)
-        .await?;
-        
-        // Clean up Redis (optional, TTL will handle it)
-        redis.del(&redis_key).await?;
-    }
     
     Ok(())
 }
@@ -393,29 +269,6 @@ async fn handle_subscription_expiry(
 Every AI API call generates token usage. Tracking this in real-time would overwhelm the system with millions of events per day. Instead, we **accumulate usage locally and batch-update periodically**.
 
 ```rust
-// Don't even use MQ for this - just polling!
-async fn record_token_usage(
-    pool: &PgPool,
-    user_id: Uuid,
-    tokens: i32,
-    model: String,
-) -> Result<()> {
-    // Simple insert into accumulation buffer
-    sqlx::query!(
-        r#"
-        INSERT INTO accumulation_buffer (user_id, tokens, model)
-        VALUES ($1, $2, $3)
-        "#,
-        user_id,
-        tokens,
-        model,
-    )
-    .execute(pool)
-    .await?;
-    
-    Ok(())
-}
-
 // Background job runs every 5 minutes
 async fn accumulate_token_usage(pool: &PgPool) -> Result<()> {
     // Find all pending token usage from accumulation buffer
@@ -443,26 +296,7 @@ async fn accumulate_token_usage(pool: &PgPool) -> Result<()> {
     
     // Batch update user quotas
     let mut tx = pool.begin().await?;
-    
-    for (user_id, total_tokens) in usage_by_user {
-        sqlx::query!(
-            "UPDATE users SET tokens_used = tokens_used + $1 WHERE id = $2",
-            total_tokens,
-            user_id,
-        )
-        .execute(&mut *tx)
-        .await?;
-    }
-    
-    // Delete processed records immediately (no need to keep them)
-    let record_ids: Vec<i64> = usage_records.iter().map(|r| r.id).collect();
-    sqlx::query!(
-        "DELETE FROM accumulation_buffer WHERE id = ANY($1)",
-        &record_ids,
-    )
-    .execute(&mut *tx)
-    .await?;
-    
+    // do something here
     tx.commit().await?;
     
     tracing::info!(
@@ -495,7 +329,7 @@ async fn run_token_accumulator(pool: PgPool) {
 
 Using MQ here would be wasteful. The `accumulation_buffer` table acts as a **simple batching mechanism**, and periodic polling aggregates efficiently.
 
-### Summary: Choose the Right Tool
+### Choose the Right Tool
 
 | Use Case | Table | Pattern | Latency | Why |
 |----------|-------|---------|---------|-----|
@@ -565,34 +399,9 @@ Every hybrid consumer must query the database to fetch event details. For high t
 ### Event Cleanup Strategy
 Each table has its own cleanup strategy based on its purpose:
 
-```rust
-// Cleanup for outbox_events: Archive after 30 days (audit trail)
-sqlx::query!(
-    r#"
-    DELETE FROM outbox_events
-    WHERE status = $1 
-      AND processed_at < NOW() - INTERVAL '30 days'
-    "#,
-    EventStatus::Processed as EventStatus,
-)
-.execute(pool)
-.await?;
-
-// Cleanup for scheduled_events: Delete immediately after execution
-sqlx::query!(
-    r#"
-    DELETE FROM scheduled_events
-    WHERE status = $1 
-      AND processed_at < NOW() - INTERVAL '1 day'
-    "#,
-    EventStatus::Processed as EventStatus,
-)
-.execute(pool)
-.await?;
-
-// Cleanup for accumulation_buffer: Delete after aggregation (see above)
-// This happens inline during the accumulation process
-```
+- Cleanup for outbox_events: Archive after 30 days (audit trail)
+- Cleanup for scheduled_events: Delete immediately after execution
+- Cleanup for accumulation_buffer: Delete after aggregation (see above). This happens inline during the accumulation process.
 
 **Benefits of table-specific cleanup:**
 - No "one size fits all" retention policy compromises
@@ -610,37 +419,9 @@ The 30-second backlog threshold and 5-minute token accumulation intervals are de
 
 **Pro tip**: Start with longer intervals and decrease based on actual user needs. Premature optimization wastes resources.
 
-## Why Rust Makes This Pattern Better
+## Rust Make This Pattern Better
 
 Beyond the code examples above, Rust provides unique advantages for this architecture:
-
-### Compile-Time Database Schema Validation
-
-This is the killer feature. When you run `cargo build`, sqlx:
-1. Connects to your development database
-2. Validates every query against the actual schema
-3. Generates type-safe Rust structs
-4. Catches mismatches before deployment
-
-```bash
-$ cargo sqlx prepare
-Connecting to database...
-Building query metadata for 47 queries...
-Successfully saved query metadata to .sqlx/
-
-$ cargo build
-   Compiling outbox-service v0.1.0
-    Finished dev [unoptimized + debuginfo] target(s) in 3.42s
-```
-
-If you change the database schema, queries break at compile time:
-```bash
-$ cargo build
-error: error returned from database: column "scheduled_for" does not exist
-  --> src/scanner.rs:23:5
-```
-
-This eliminates an entire class of production bugs.
 
 ### Type-Safe Schema and Event State
 
@@ -712,7 +493,35 @@ pub struct AccumulationRecord {
 }
 ```
 
-### When to Use This Pattern
+### Compile-Time Database Schema Validation
+
+This is the killer feature. When you run `cargo build`, sqlx:
+1. Connects to your development database
+2. Validates every query against the actual schema
+3. Generates type-safe Rust structs
+4. Catches mismatches before deployment
+
+```bash
+$ cargo sqlx prepare
+Connecting to database...
+Building query metadata for 47 queries...
+Successfully saved query metadata to .sqlx/
+
+$ cargo build
+   Compiling outbox-service v0.1.0
+    Finished dev [unoptimized + debuginfo] target(s) in 3.42s
+```
+
+If you change the database schema, queries break at compile time:
+```bash
+$ cargo build
+error: error returned from database: column "scheduled_for" does not exist
+  --> src/scanner.rs:23:5
+```
+
+This eliminates an entire class of production bugs.
+
+## When to Use This Pattern
 
 **Great fit when you have:**
 - Mixed latency requirements across different event types
@@ -726,10 +535,3 @@ pub struct AccumulationRecord {
 - You need cross-datacenter replication (consider event streaming platforms)
 - Events are truly ephemeral with no persistence needs
 - Your team lacks operational capacity for managing scanners
-
-### Further Reading
-
-- [Transactional Outbox Pattern](https://microservices.io/patterns/data/transactional-outbox.html) - Chris Richardson's original pattern description
-- [Claim Check Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check) - Enterprise Integration Patterns
-- [sqlx Documentation](https://github.com/launchbadge/sqlx) - Compile-time SQL verification in Rust
-- [Designing Data-Intensive Applications](https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321) - Deep dive into consistency patterns
