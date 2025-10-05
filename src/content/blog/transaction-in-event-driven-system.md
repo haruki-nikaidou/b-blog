@@ -57,14 +57,14 @@ In a production AI chat platform, I implemented a hybrid pattern that combines t
 ┌─────────────────────────────────────────────────────────────┐
 │                      Outbox Table                           │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │ Hybrid Events: AI Response Sync, Payment Processing │   │
-│  │   → Eager publish + 30s scanner fallback            │   │
+│  │ Hybrid Events: AI Response Sync, Payment Processing  │   │
+│  │   → Eager publish + 30s scanner fallback             │   │
 │  ├──────────────────────────────────────────────────────┤   │
-│  │ Scheduled Events: Subscription Expiry               │   │
-│  │   → Only polling, no eager publish                  │   │
+│  │ Scheduled Events: Subscription Expiry                │   │
+│  │   → Only polling, no eager publish                   │   │
 │  ├──────────────────────────────────────────────────────┤   │
-│  │ Poll-Only Events: Token Usage Accumulation          │   │
-│  │   → Simple polling every 5 minutes, no MQ at all    │   │
+│  │ Poll-Only Events: Token Usage Accumulation           │   │
+│  │   → Simple polling every 5 minutes, no MQ at all     │   │
 │  └──────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
                           │
