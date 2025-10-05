@@ -77,6 +77,8 @@ I implemented a pattern that separates different delivery mechanisms into dedica
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                           │
+                          │ { event_id: UUID or series }
+                          │
                           ▼
                     ┌──────────┐
                     │    MQ    │
@@ -88,22 +90,18 @@ I implemented a pattern that separates different delivery mechanisms into dedica
                     └──────────┘
 ```
 
-The beauty of this pattern is **using purpose-built tables optimized for each delivery mechanism**.
+Even in the worst case (MQ failure, process crash, network partition), all events eventually get processed. The database transaction ensures events are never lost.
 
-**Key design decisions:**
+Since consumers fetch events by ID and check status, duplicate deliveries are naturally handled. This is critical when the scanner republishes events that were actually already sent.
+
+And, since there is no need for complex CDC infrastructure, maintenance is quite easy.
+
+The key insight is **different event types need different storage strategies**.
+
+**database schema design decisions:**
 - `outbox_events`: No `scheduled_at` column (not needed)
 - `scheduled_events`: Requires `scheduled_at` for future triggers
 - `accumulation_buffer`: Minimal schema, uses `BIGSERIAL` for fast inserts, no status field needed. Just delete it after processing instead.
-
-**Why not one table?**
-
-A single table would force compromises:
-- **Index bloat**: Need `(status, created_at)` + `(scheduled_at, status)` + `(user_id)` - all fighting for cache
-- **Retention conflicts**: Can't delete token records immediately while keeping audit trails for payments
-- **Lock contention**: Millions of token writes blocking latency-sensitive outbox scans
-- **Query confusion**: `WHERE scheduled_at IS NULL AND status = 'pending'` vs `WHERE scheduled_at <= NOW()` - error-prone
-
-Separate tables eliminate these issues entirely.
 
 ### Hybrid Events (Hot Path): AI Response Persistence
 
@@ -121,7 +119,20 @@ async fn save_ai_response(
     response: AiResponse,
 ) -> Result<()> {
     let mut tx = pool.begin().await?;
-    // do something here
+    // do something here, then publish the event
+    let event = sqlx::query_as!(
+        OutboxEvent,
+        r#"
+        INSERT INTO outbox_events (event_type, payload, status)
+        VALUES ($1, $2, $3)
+        RETURNING id, event_type, payload, status, created_at, sent_at, processed_at
+        "#,
+        "ai_response_ready",
+        sqlx::types::Json(EventPayload::AiResponseReady { /* ... */ }) as _,
+        EventStatus::Pending as EventStatus,
+    )
+    .fetch_one(&mut *tx)
+    .await?;
     tx.commit().await?;
     
     // Eager publish after the commit (non-blocking)
@@ -309,18 +320,32 @@ Using MQ here would be wasteful. The `accumulation_buffer` table acts as a **sim
 
 ### Choose the Right Tool
 
+```txt
+Should this event use outbox_events, scheduled_events, or accumulation_buffer?
+
+├─ Known future execution time? 
+│  └─ YES → scheduled_events
+│  
+├─ High volume (>1000/sec) + aggregatable?
+│  └─ YES → accumulation_buffer
+│  
+└─ Needs low latency delivery?
+   ├─ YES → outbox_events (hybrid)
+   └─ NO → classic_outbox (poll-only)
+```
+
 | Use Case | Table | Pattern | Latency | Why |
 |----------|-------|---------|---------|-----|
-| AI Response Sync | `outbox_events` | Hybrid (eager + scanner) | <1s (99%), <30s (100%) | User-facing analytics need speed |
-| Payment Processing | `outbox_events` | Hybrid (eager + scanner) | <1s (99%), <30s (100%) | Service activation should be quick |
+| AI Response Sync | `outbox_events` | Hybrid (eager + scanner) | <1s (99%), <30s (99.99%) | User-facing analytics need speed |
+| Payment Processing | `outbox_events` | Hybrid (eager + scanner) | <1s (99%), <30s (99.99%) | Service activation should be quick |
 | Subscription Expiry | `scheduled_events` | Scheduled (poll-only) | ~60s | Exact timing doesn't matter |
 | Token Usage | `accumulation_buffer` | Poll-only (no MQ) | ~5 min | High volume, not time-sensitive |
 
-## Benefits of This Design
+## Why and Why Not
 
-### Separation of Concerns
+### Why Not One Table?
 
-Using three dedicated tables provides significant architectural benefits:
+Using three dedicated tables provides significant architectural benefits that a single unified table cannot match:
 
 **1. Optimized Indexes**
 - `outbox_events`: Index on `(status, created_at)` for fast scanning of recent failures
@@ -347,15 +372,7 @@ Different teams or services can own different tables:
 - Subscription team: `scheduled_events` (background jobs)
 - Analytics team: `accumulation_buffer` (data pipeline)
 
-### Reliability Guarantees
-
-Even in the worst case (MQ failure, process crash, network partition), all events eventually get processed. The database transaction ensures events are never lost.
-
-Since consumers fetch events by ID and check status, duplicate deliveries are naturally handled. This is critical when the scanner republishes events that were actually already sent.
-
-And, since there is no need for complex CDC infrastructure, maintenance is quite easy.
-
-### Claim Check Pattern
+### Why Only Pass the Event ID?
 
 By only publishing event IDs to the message queue instead of full payloads (also known as [claim check](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check)), we gain several advantages:
 
