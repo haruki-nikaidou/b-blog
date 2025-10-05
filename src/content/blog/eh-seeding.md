@@ -7,7 +7,6 @@ heroImageId: '3f37a35a-06f7-44f4-ecca-b2a3d5a6b700'
 tags:
   - E-Hentai
   - homelab
-pinned: true
 ---
 
 ## What is E-Hentai
