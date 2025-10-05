@@ -316,7 +316,7 @@ Using MQ here would be wasteful. The `accumulation_buffer` table acts as a **sim
 | Subscription Expiry | `scheduled_events` | Scheduled (poll-only) | ~60s | Exact timing doesn't matter |
 | Token Usage | `accumulation_buffer` | Poll-only (no MQ) | ~5 min | High volume, not time-sensitive |
 
-## Why This Design Works
+## Benefits of This Design
 
 ### Separation of Concerns
 
@@ -355,7 +355,7 @@ Since consumers fetch events by ID and check status, duplicate deliveries are na
 
 And, since there is no need for complex CDC infrastructure, maintenance is quite easy.
 
-### Benefits of Claim Check Pattern
+### Claim Check Pattern
 
 By only publishing event IDs to the message queue instead of full payloads (also known as [claim check](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check)), we gain several advantages:
 
