@@ -3,7 +3,6 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import rehypeMermaid from 'rehype-mermaid';
 
 import solidJs from "@astrojs/solid-js";
 
