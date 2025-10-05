@@ -10,14 +10,10 @@ import solidJs from "@astrojs/solid-js";
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    syntaxHighlight: {
-      type: 'shiki',
-      excludeLangs: ['mermaid', 'math'],
-    },
     remarkPlugins: [remarkMath],
     rehypePlugins: [[rehypeKatex, {
       // Katex plugin options
-    }], rehypeMermaid]
+    }]]
   },
 
   image: {
