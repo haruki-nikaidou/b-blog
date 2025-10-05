@@ -1,6 +1,6 @@
 ---
 title: "A Hybrid Transactional Outbox Event Delivery Pattern"
-description: 'This article presents a hybrid event delivery pattern that combines three strategies within a single outbox table: eager publishing with fallback scanning for latency-sensitive events, scheduled polling for time-based events, and simple polling for high-volume aggregations.'
+description: 'This article presents a hybrid event delivery pattern that uses three specialized tables to handle different event delivery requirements: eager publishing with fallback scanning for latency-sensitive events, scheduled polling for time-based events, and batch aggregation for high-volume data.'
 tags:
   - Distributed System
   - Coding
@@ -42,30 +42,39 @@ This works, but it comes with trade-offs:
 - **Change Data Capture is complex**: Real-time CDC solutions like Debezium are powerful but add operational overhead
 - **Large payloads in MQ**: Full event data flows through the message queue
 
-## A Better Approach: Hybrid Outbox with Claim Check
+## A Better Approach: Hybrid Outbox with Claim Check and Buffer
 
-In a production AI chat platform, I implemented a hybrid pattern that combines the reliability of the Transactional Outbox with the performance of eager publishing. The key insight: **different event types have different requirements**.
+In a production AI chat platform, I implemented a pattern that separates different delivery mechanisms into dedicated tables. The key insight: **different event types have different requirements and should use optimized storage**.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      AI Chat Service                        │
-└───┬─────────────┬─────────────┬──────────────┬──────────────┘
-    │             │             │              │
-    │ 1. Write    │ 2. Eager    │ 3. Schedule  │ 4. Poll-only
-    │ Transaction │ Publish     │ Future Event │ Events
-    ▼             ▼             ▼              ▼
+└───┬─────────────────┬─────────────────┬─────────────────────┘
+    │                 │                 │
+    │ 1. Eager Event  │ 2. Schedule     │ 3. Accumulate
+    │                 │ Future Event    │ High Volume
+    ▼                 ▼                 ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                      Outbox Table                           │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │ Hybrid Events: AI Response Sync, Payment Processing  │   │
-│  │   → Eager publish + 30s scanner fallback             │   │
-│  ├──────────────────────────────────────────────────────┤   │
-│  │ Scheduled Events: Subscription Expiry                │   │
-│  │   → Only polling, no eager publish                   │   │
-│  ├──────────────────────────────────────────────────────┤   │
-│  │ Poll-Only Events: Token Usage Accumulation           │   │
-│  │   → Simple polling every 5 minutes, no MQ at all     │   │
-│  └──────────────────────────────────────────────────────┘   │
+│              Three Specialized Tables                       │
+├─────────────────────────────────────────────────────────────┤
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ outbox_events: Hybrid (AI Response, Payments)         │  │
+│  │   → Eager publish + 30s scanner fallback              │  │
+│  │   → Index: (status, created_at) for fast scanning     │  │
+│  │   → Cleanup: Archive after 30 days                    │  │
+│  └───────────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ scheduled_events: Future triggers (Subscriptions)     │  │
+│  │   → Poll for scheduled_at <= NOW()                    │  │
+│  │   → Index: (scheduled_at, status) for time queries    │  │
+│  │   → Cleanup: Delete after execution                   │  │
+│  └───────────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ accumulation_buffer: Batching (Token Usage)           │  │
+│  │   → No MQ, direct aggregation every 5 minutes         │  │
+│  │   → Index: (user_id, created_at) for grouping         │  │
+│  │   → Cleanup: Delete immediately after aggregation     │  │
+│  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
@@ -79,7 +88,69 @@ In a production AI chat platform, I implemented a hybrid pattern that combines t
                     └──────────┘
 ```
 
-The beauty of this pattern is **choosing the right delivery mechanism for each use case**.
+The beauty of this pattern is **using purpose-built tables optimized for each delivery mechanism**.
+
+Here are the three specialized tables:
+
+```sql
+-- Table 1: Hybrid events (eager publish + scanner fallback)
+CREATE TABLE outbox_events (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_type VARCHAR(100) NOT NULL,
+    payload JSONB NOT NULL,
+    status event_status NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    sent_at TIMESTAMPTZ,
+    processed_at TIMESTAMPTZ,
+    
+    -- Optimized for scanning recent failures
+    INDEX idx_outbox_status_created (status, created_at)
+);
+
+-- Table 2: Scheduled events (poll at specific time)
+CREATE TABLE scheduled_events (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_type VARCHAR(100) NOT NULL,
+    payload JSONB NOT NULL,
+    scheduled_at TIMESTAMPTZ NOT NULL,
+    status event_status NOT NULL DEFAULT 'pending',
+    sent_at TIMESTAMPTZ,
+    processed_at TIMESTAMPTZ,
+    
+    -- Optimized for time-based queries
+    INDEX idx_scheduled_time_status (scheduled_at, status)
+);
+
+-- Table 3: Accumulation buffer (batch aggregation, no MQ)
+CREATE TABLE accumulation_buffer (
+    id BIGSERIAL PRIMARY KEY,
+    user_id UUID NOT NULL,
+    tokens INTEGER NOT NULL,
+    model VARCHAR(100) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    
+    -- Optimized for grouping by user
+    INDEX idx_accumulation_user_created (user_id, created_at)
+);
+
+-- Shared enum for event status
+CREATE TYPE event_status AS ENUM ('pending', 'sent', 'processed', 'failed');
+```
+
+**Key design decisions:**
+- `outbox_events`: No `scheduled_at` column (not needed)
+- `scheduled_events`: Requires `scheduled_at` for future triggers
+- `accumulation_buffer`: Minimal schema, uses `BIGSERIAL` for fast inserts, no status field needed
+
+**Why not one table?**
+
+A single table would force compromises:
+- **Index bloat**: Need `(status, created_at)` + `(scheduled_at, status)` + `(user_id)` - all fighting for cache
+- **Retention conflicts**: Can't delete token records immediately while keeping audit trails for payments
+- **Lock contention**: Millions of token writes blocking latency-sensitive outbox scans
+- **Query confusion**: `WHERE scheduled_at IS NULL AND status = 'pending'` vs `WHERE scheduled_at <= NOW()` - error-prone
+
+Separate tables eliminate these issues entirely.
 
 ### Hybrid Events (Hot Path): AI Response Persistence
 
@@ -88,10 +159,11 @@ When a user sends a message, the AI response is initially cached in Redis for in
 - Analytics and training data
 - Audit trails
 
-This is **latency-sensitive** but not critical—if eager publish fails, a 30-second delay is acceptable.
+This is **latency-sensitive** but not critical. If eager publish fails, a 30-second delay is acceptable.
 
 ```rust
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "event_name")]
 pub enum EventPayload {
     AiResponseReady {
         conversation_id: Uuid,
@@ -135,24 +207,17 @@ async fn save_ai_response(
         3600, // 1 hour TTL
     ).await?;
     
-    // Create outbox event for persistence
+    // Create outbox event for persistence (hybrid delivery)
     let event = sqlx::query_as!(
         OutboxEvent,
         r#"
-        INSERT INTO outbox (event_type, payload, status)
+        INSERT INTO outbox_events (event_type, payload, status)
         VALUES ($1, $2, $3)
         RETURNING id, event_type, payload, status as "status: EventStatus",
-                  created_at, scheduled_at, sent_at, processed_at
+                  created_at, sent_at, processed_at
         "#,
         "ai_response_ready",
-        json!({
-            "conversation_id": response.conversation_id,
-            "message_id": response.message_id,
-            "redis_key": response.redis_key,
-            "provider": response.provider,
-            "model": response.model,
-            "tokens_used": response.tokens_used,
-        }),
+        EventPayload::AiResponseReady { /* ... */ },
         EventStatus::Pending as EventStatus,
     )
     .fetch_one(&mut *tx)
@@ -248,19 +313,16 @@ async fn create_subscription(
     .fetch_one(&mut *tx)
     .await?;
     
-    // Schedule expiry event
+    // Schedule expiry event in dedicated table
     sqlx::query!(
         r#"
-        INSERT INTO outbox (event_type, payload, status, scheduled_at)
+        INSERT INTO scheduled_events (event_type, payload, scheduled_at, status)
         VALUES ($1, $2, $3, $4)
         "#,
         "subscription_expiry",
-        json!({
-            "subscription_id": subscription.id,
-            "user_id": user_id,
-        }),
-        EventStatus::Scheduled as EventStatus,
+        ScheduledEventPayload::SubscriptionExpiry{ /* ... */ },
         expires_at,
+        EventStatus::Pending as EventStatus,
     )
     .execute(&mut *tx)
     .await?;
@@ -275,22 +337,22 @@ async fn scan_scheduled_events(pool: &PgPool, mq: &MessageQueue) -> Result<()> {
     let now = Utc::now();
     
     let due_events = sqlx::query_as!(
-        OutboxEvent,
+        ScheduledEvent,
         r#"
-        SELECT id, event_type, payload, status as "status: EventStatus",
-               created_at, scheduled_at, sent_at, processed_at
-        FROM outbox
+        SELECT id, event_type, payload, scheduled_at,
+               status as "status: EventStatus", sent_at, processed_at
+        FROM scheduled_events
         WHERE status = $1 AND scheduled_at <= $2
         LIMIT 100
         "#,
-        EventStatus::Scheduled as EventStatus,
+        EventStatus::Pending as EventStatus,
         now,
     )
     .fetch_all(pool)
     .await?;
     
     for event in due_events {
-        publish_event(pool, mq, event.id).await?;
+        publish_scheduled_event(pool, mq, event.id)?;
     }
     
     Ok(())
@@ -338,20 +400,15 @@ async fn record_token_usage(
     tokens: i32,
     model: String,
 ) -> Result<()> {
-    // Simple insert, no event publishing
+    // Simple insert into accumulation buffer
     sqlx::query!(
         r#"
-        INSERT INTO outbox (event_type, payload, status)
+        INSERT INTO accumulation_buffer (user_id, tokens, model)
         VALUES ($1, $2, $3)
         "#,
-        "token_usage",
-        json!({
-            "user_id": user_id,
-            "tokens": tokens,
-            "model": model,
-            "recorded_at": Utc::now(),
-        }),
-        EventStatus::Pending as EventStatus,
+        user_id,
+        tokens,
+        model,
     )
     .execute(pool)
     .await?;
@@ -361,22 +418,18 @@ async fn record_token_usage(
 
 // Background job runs every 5 minutes
 async fn accumulate_token_usage(pool: &PgPool) -> Result<()> {
-    // Find all pending token usage events
-    let usage_events = sqlx::query_as!(
-        OutboxEvent,
+    // Find all pending token usage from accumulation buffer
+    let usage_records = sqlx::query!(
         r#"
-        SELECT id, event_type, payload, status as "status: EventStatus",
-               created_at, scheduled_at, sent_at, processed_at
-        FROM outbox
-        WHERE event_type = 'token_usage' AND status = $1
+        SELECT id, user_id, tokens, model, created_at
+        FROM accumulation_buffer
         LIMIT 10000
         "#,
-        EventStatus::Pending as EventStatus,
     )
     .fetch_all(pool)
     .await?;
     
-    if usage_events.is_empty() {
+    if usage_records.is_empty() {
         return Ok(());
     }
     
@@ -384,15 +437,8 @@ async fn accumulate_token_usage(pool: &PgPool) -> Result<()> {
     use std::collections::HashMap;
     let mut usage_by_user: HashMap<Uuid, i32> = HashMap::new();
     
-    for event in &usage_events {
-        if let Ok(payload) = serde_json::from_value::<serde_json::Value>(event.payload.clone()) {
-            if let (Some(user_id), Some(tokens)) = (
-                payload.get("user_id").and_then(|v| v.as_str()).and_then(|s| Uuid::parse_str(s).ok()),
-                payload.get("tokens").and_then(|v| v.as_i64()),
-            ) {
-                *usage_by_user.entry(user_id).or_insert(0) += tokens as i32;
-            }
-        }
+    for record in &usage_records {
+        *usage_by_user.entry(record.user_id).or_insert(0) += record.tokens;
     }
     
     // Batch update user quotas
@@ -408,16 +454,11 @@ async fn accumulate_token_usage(pool: &PgPool) -> Result<()> {
         .await?;
     }
     
-    // Mark all events as processed
-    let event_ids: Vec<Uuid> = usage_events.iter().map(|e| e.id).collect();
+    // Delete processed records immediately (no need to keep them)
+    let record_ids: Vec<i64> = usage_records.iter().map(|r| r.id).collect();
     sqlx::query!(
-        r#"
-        UPDATE outbox 
-        SET status = $1, processed_at = NOW() 
-        WHERE id = ANY($2)
-        "#,
-        EventStatus::Processed as EventStatus,
-        &event_ids,
+        "DELETE FROM accumulation_buffer WHERE id = ANY($1)",
+        &record_ids,
     )
     .execute(&mut *tx)
     .await?;
@@ -425,8 +466,8 @@ async fn accumulate_token_usage(pool: &PgPool) -> Result<()> {
     tx.commit().await?;
     
     tracing::info!(
-        "Accumulated {} token usage events for {} users",
-        usage_events.len(),
+        "Accumulated {} token usage records for {} users",
+        usage_records.len(),
         usage_by_user.len()
     );
     
@@ -452,23 +493,49 @@ async fn run_token_accumulator(pool: PgPool) {
 - **High volume**: Millions of tiny events per day
 - **Naturally batched**: Accumulating every 5 minutes is perfectly fine
 
-Using MQ here would be wasteful. The outbox table acts as a **simple accumulator buffer**, and periodic polling aggregates efficiently.
+Using MQ here would be wasteful. The `accumulation_buffer` table acts as a **simple batching mechanism**, and periodic polling aggregates efficiently.
 
 ### Summary: Choose the Right Tool
 
-| Use Case | Pattern | Latency | Why |
-|----------|---------|---------|-----|
-| AI Response Sync | Hybrid (eager + scanner) | <1s (99%), <30s (100%) | User-facing analytics need speed |
-| Payment Processing | Hybrid (eager + scanner) | <1s (99%), <30s (100%) | Service activation should be quick |
-| Subscription Expiry | Scheduled (poll-only) | ~60s | Exact timing doesn't matter |
-| Token Usage | Poll-only (no MQ) | ~5 min | High volume, not time-sensitive |
+| Use Case | Table | Pattern | Latency | Why |
+|----------|-------|---------|---------|-----|
+| AI Response Sync | `outbox_events` | Hybrid (eager + scanner) | <1s (99%), <30s (100%) | User-facing analytics need speed |
+| Payment Processing | `outbox_events` | Hybrid (eager + scanner) | <1s (99%), <30s (100%) | Service activation should be quick |
+| Subscription Expiry | `scheduled_events` | Scheduled (poll-only) | ~60s | Exact timing doesn't matter |
+| Token Usage | `accumulation_buffer` | Poll-only (no MQ) | ~5 min | High volume, not time-sensitive |
 
 ## Why This Design Works
 
-Different events have different requirements. The hybrid approach lets you choose the right delivery mechanism:
-- **Hybrid delivery** for user-facing features that benefit from low latency
-- **Scheduled polling** for time-based events with known trigger times  
-- **Simple polling** for high-volume, latency-insensitive aggregations
+### Separation of Concerns
+
+Using three dedicated tables provides significant architectural benefits:
+
+**1. Optimized Indexes**
+- `outbox_events`: Index on `(status, created_at)` for fast scanning of recent failures
+- `scheduled_events`: Index on `(scheduled_at, status)` for efficient time-based queries
+- `accumulation_buffer`: Index on `(user_id, created_at)` for fast grouping during aggregation
+
+A single table would require multiple indexes covering different access patterns, causing index bloat and slower writes.
+
+**2. Independent Cleanup Strategies**
+- `outbox_events`: Archive after 30 days (audit trail)
+- `scheduled_events`: Delete immediately after execution (no historical value)
+- `accumulation_buffer`: Delete after aggregation (already in `users.tokens_used`)
+
+This prevents the table from growing indefinitely and keeps query performance consistent.
+
+**3. Isolated Performance Characteristics**
+- High-volume token usage writes don't block latency-sensitive AI response events
+- Scheduled event scans don't interfere with outbox scanner performance
+- Each table can be tuned independently (vacuum settings, autovacuum thresholds)
+
+**4. Clear Operational Boundaries**
+Different teams or services can own different tables:
+- Payment team: `outbox_events` (critical path)
+- Subscription team: `scheduled_events` (background jobs)
+- Analytics team: `accumulation_buffer` (data pipeline)
+
+### Reliability Guarantees
 
 Even in the worst case (MQ failure, process crash, network partition), all events eventually get processed. The database transaction ensures events are never lost.
 
@@ -489,16 +556,20 @@ Every hybrid consumer must query the database to fetch event details. For high t
 - Use read replicas for consumer queries
 - Add connection pooling (e.g., pgBouncer)
 - Cache frequently accessed events in Redis
-- Consider partitioning the outbox table by event_type
+
+**What three tables helps here:**
+- Each table is smaller = better cache hit rates
+- Scanners don't compete on the same indexes
+- Write-heavy `accumulation_buffer` doesn't block reads on `outbox_events`
 
 ### Event Cleanup Strategy
-Old events accumulate and slow down queries. Implement retention policies:
+Each table has its own cleanup strategy based on its purpose:
 
 ```rust
-// Archive processed events older than 30 days
+// Cleanup for outbox_events: Archive after 30 days (audit trail)
 sqlx::query!(
     r#"
-    DELETE FROM outbox
+    DELETE FROM outbox_events
     WHERE status = $1 
       AND processed_at < NOW() - INTERVAL '30 days'
     "#,
@@ -507,23 +578,35 @@ sqlx::query!(
 .execute(pool)
 .await?;
 
-// For token usage, clean up immediately after aggregation
-// (they're already aggregated into user quotas)
+// Cleanup for scheduled_events: Delete immediately after execution
+sqlx::query!(
+    r#"
+    DELETE FROM scheduled_events
+    WHERE status = $1 
+      AND processed_at < NOW() - INTERVAL '1 day'
+    "#,
+    EventStatus::Processed as EventStatus,
+)
+.execute(pool)
+.await?;
+
+// Cleanup for accumulation_buffer: Delete after aggregation (see above)
+// This happens inline during the accumulation process
 ```
 
-For high-volume systems like token tracking, consider:
-- Cleaning up poll-only events immediately after processing
-- Using separate tables for different event types
-- Archiving to cheaper storage (S3, cold database)
+**Benefits of table-specific cleanup:**
+- No "one size fits all" retention policy compromises
+- Smaller tables = faster queries and better vacuum performance
+- Clear data lifecycle management per use case
 
 ### Scanner Interval Tuning
 The 30-second backlog threshold and 5-minute token accumulation intervals are design choices. Tune based on your requirements:
 
-| Event Type | Interval | Rationale |
-|------------|----------|-----------|
-| Hybrid backlog scanner | 30-60s | Balance between latency and database load |
-| Scheduled event scanner | 1 min | Subscription expiry doesn't need sub-minute precision |
-| Token accumulator | 5-10 min | High volume, users check quotas infrequently |
+| Table | Scanner Type | Interval | Rationale |
+|-------|-------------|----------|-----------|
+| `outbox_events` | Hybrid backlog scanner | 30-60s | Balance between latency and database load |
+| `scheduled_events` | Scheduled event scanner | 1 min | Subscription expiry doesn't need sub-minute precision |
+| `accumulation_buffer` | Token accumulator | 5-10 min | High volume, users check quotas infrequently |
 
 **Pro tip**: Start with longer intervals and decrease based on actual user needs. Premature optimization wastes resources.
 
@@ -604,9 +687,28 @@ pub struct OutboxEvent {
     pub payload: sqlx::types::Json<EventPayload>,
     pub status: EventStatus,
     pub created_at: DateTime<Utc>,
-    pub scheduled_at: Option<DateTime<Utc>>,
     pub sent_at: Option<DateTime<Utc>>,
     pub processed_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Debug, sqlx::FromRow)]
+pub struct ScheduledEvent {
+    pub id: Uuid,
+    pub event_type: String,
+    pub payload: sqlx::types::Json<EventPayload>,
+    pub scheduled_at: DateTime<Utc>,
+    pub status: EventStatus,
+    pub sent_at: Option<DateTime<Utc>>,
+    pub processed_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Debug, sqlx::FromRow)]
+pub struct AccumulationRecord {
+    pub id: i64,
+    pub user_id: Uuid,
+    pub tokens: i32,
+    pub model: String,
+    pub created_at: DateTime<Utc>,
 }
 ```
 
