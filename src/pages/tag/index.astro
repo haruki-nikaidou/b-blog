@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content';
 import Card from "../../components/Card.astro";
 import {GLOBAL_STYLE} from "../../consts";
 
-const posts = (await getCollection('blog')).filter((post) => !post.data.notCompleted);
+const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
 const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort();
 ---
 
