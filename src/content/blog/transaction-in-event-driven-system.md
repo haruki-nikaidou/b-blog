@@ -35,16 +35,16 @@ This works, but it comes with trade-offs:
 
 Let's ground this in a concrete example: building a chat platform that supports multiple AI providers (OpenAI, Anthropic, Google, etc.). This system needs to handle:
 
-- **User subscriptions** that expire at specific times
+- User subscriptions that **expire at specific times**
 - **Token usage tracking** across millions of API calls
 - **Payment processing** that triggers service activation
-- **AI responses** cached in Redis that need eventual persistence
+- AI responses cached in Redis that need eventual **persistence**
 
 Each of these has different consistency and latency requirements, making it a perfect case study for our hybrid pattern.
 
 ## A Better Approach: Hybrid Outbox with Claim Check and Buffer
 
-In a production AI chat platform, I implemented a pattern that separates different delivery mechanisms into dedicated tables. The key insight: **different event types have different requirements and should use optimized storage**. And using [claim check](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check) pattern by only publishing the ID of the event into message queue.
+I implemented a pattern that separates different delivery mechanisms into dedicated tables. The key insight: different event types have different requirements and should use optimized storage.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -93,7 +93,7 @@ The beauty of this pattern is **using purpose-built tables optimized for each de
 **Key design decisions:**
 - `outbox_events`: No `scheduled_at` column (not needed)
 - `scheduled_events`: Requires `scheduled_at` for future triggers
-- `accumulation_buffer`: Minimal schema, uses `BIGSERIAL` for fast inserts, no status field needed
+- `accumulation_buffer`: Minimal schema, uses `BIGSERIAL` for fast inserts, no status field needed. Just delete it after processing instead.
 
 **Why not one table?**
 
@@ -115,26 +115,6 @@ When a user sends a message, the AI response is initially cached in Redis for in
 This is **latency-sensitive** but not critical. If eager publish fails, a 30-second delay is acceptable.
 
 ```rust
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "event_name")]
-pub enum EventPayload {
-    AiResponseReady {
-        conversation_id: Uuid,
-        message_id: Uuid,
-        redis_key: String,
-        provider: AiProvider,
-        model: String,
-        tokens_used: i32,
-    },
-    PaymentCompleted {
-        user_id: Uuid,
-        payment_id: Uuid,
-        plan: SubscriptionPlan,
-        amount: Decimal,
-    },
-    // ... other hybrid events
-}
-
 async fn save_ai_response(
     pool: &PgPool,
     mq: &MessageQueue,
@@ -287,9 +267,7 @@ async fn accumulate_token_usage(pool: &PgPool) -> Result<()> {
     }
     
     // Group by user_id and sum tokens
-    use std::collections::HashMap;
     let mut usage_by_user: HashMap<Uuid, i32> = HashMap::new();
-    
     for record in &usage_records {
         *usage_by_user.entry(record.user_id).or_insert(0) += record.tokens;
     }
@@ -377,6 +355,37 @@ Since consumers fetch events by ID and check status, duplicate deliveries are na
 
 And, since there is no need for complex CDC infrastructure, maintenance is quite easy.
 
+### Benefits of Claim Check Pattern
+
+By only publishing event IDs to the message queue instead of full payloads (also known as [claim check](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check)), we gain several advantages:
+
+**1. Reduced Message Queue Load**
+- Tiny messages (just a UUID) vs potentially large event payloads
+- Lower network bandwidth usage between MQ and consumers
+- MQ can handle significantly higher throughput with smaller messages
+
+**2. Avoids Message Size Limits**
+- Most message queues have size limits (e.g., RabbitMQ 128MB default, SQS 256KB)
+- AI responses with embeddings or large context can exceed these limits
+- Event payloads are unlimited in PostgreSQL
+
+**3. Single Source of Truth**
+- Event data lives only in the database, not duplicated in MQ
+- Updates to event processing logic can query the latest data
+- No stale payload issues when consumers are slow
+
+**4. Better Resource Utilization**
+- Database optimized for storing structured data with indexes
+- Message queue optimized for fast delivery, not storage
+- Each system does what it's best at
+
+**5. Simplified Debugging**
+- Query database directly to inspect event details
+- No need to capture messages from MQ for investigation
+- Event history preserved independently of MQ retention
+
+The trade-off is an additional database query per event in the consumer, but for our use case with thousands (not millions) of events per second, this is negligible compared to the benefits.
+
 ## Trade-offs and Considerations
 
 ### Potential Duplicate Deliveries
@@ -432,35 +441,34 @@ Use strong typing for event payloads with `serde` eliminate all kinds of seriali
 #[sqlx(type_name = "event_status", rename_all = "lowercase")]
 pub enum EventStatus {
     Pending,    // Awaiting delivery
-    Scheduled,  // Future-dated event
-    Sent,       // Published to MQ
     Processed,  // Consumer completed
     Failed,     // Permanent failure
 }
 ```
 
 ```rust
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "type", rename_all = "snake_case")]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "event_name")]
 pub enum EventPayload {
-    OrderCreated {
-        order_id: Uuid,
-        user_id: Uuid,
-        total_amount: Decimal,
+    AiResponseReady {
+        conversation_id: Uuid,
+        message_id: Uuid,
+        redis_key: String,
+        provider: AiProvider,
+        model: String,
+        tokens_used: i32,
     },
-    PaymentProcessed {
+    PaymentCompleted {
+        user_id: Uuid,
         payment_id: Uuid,
-        order_id: Uuid,
+        plan: SubscriptionPlan,
         amount: Decimal,
     },
-    ShipmentDispatched {
-        shipment_id: Uuid,
-        order_id: Uuid,
-        tracking_number: String,
-    },
+    // ... other hybrid events
 }
+```
 
-// Store as JSONB in PostgreSQL
+```rust
 #[derive(Debug, sqlx::FromRow)]
 pub struct OutboxEvent {
     pub id: Uuid,
@@ -474,22 +482,12 @@ pub struct OutboxEvent {
 
 #[derive(Debug, sqlx::FromRow)]
 pub struct ScheduledEvent {
-    pub id: Uuid,
-    pub event_type: String,
-    pub payload: sqlx::types::Json<EventPayload>,
-    pub scheduled_at: DateTime<Utc>,
-    pub status: EventStatus,
-    pub sent_at: Option<DateTime<Utc>>,
-    pub processed_at: Option<DateTime<Utc>>,
+    // ...
 }
 
 #[derive(Debug, sqlx::FromRow)]
 pub struct AccumulationRecord {
-    pub id: i64,
-    pub user_id: Uuid,
-    pub tokens: i32,
-    pub model: String,
-    pub created_at: DateTime<Utc>,
+    // ...
 }
 ```
 
@@ -501,19 +499,19 @@ This is the killer feature. When you run `cargo build`, sqlx:
 3. Generates type-safe Rust structs
 4. Catches mismatches before deployment
 
-```bash
+```
 $ cargo sqlx prepare
 Connecting to database...
-Building query metadata for 47 queries...
+Building query metadata for 94 queries...
 Successfully saved query metadata to .sqlx/
 
 $ cargo build
    Compiling outbox-service v0.1.0
-    Finished dev [unoptimized + debuginfo] target(s) in 3.42s
+    Finished dev [unoptimized + debuginfo] target(s) in 1.14s
 ```
 
 If you change the database schema, queries break at compile time:
-```bash
+```
 $ cargo build
 error: error returned from database: column "scheduled_for" does not exist
   --> src/scanner.rs:23:5
