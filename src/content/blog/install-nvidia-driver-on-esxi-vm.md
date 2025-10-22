@@ -7,7 +7,6 @@ tags:
   - homelab
   - ESXi
   - NVIDIA
-pinned: true
 heroImageId: '1ccd914c-455c-4eee-8bde-b28aae802100'
 ---
 
