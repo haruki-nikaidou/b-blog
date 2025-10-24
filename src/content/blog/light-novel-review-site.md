@@ -74,9 +74,15 @@ I used Cursor's latest "plan mode" to bootstrap the project. It generated an alm
 
 The catch? The colors were absolutely diabolical, unusable. I ended up rewriting all the color systems and doing extensive refactoring for component reuse.
 
+![AI generated code's color](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/a1dbed3f-2253-48ee-dd72-79c3d2c99800/public)
+
+> The articles are also AI generated btw. I removed them after test.
+
 But here's the thing: even with all that rework, going from idea to deployed site took only 5 hours. The AI handled the boilerplate, the architecture setup, and the routing logic. I focused on the parts that mattered: design refinement, data modeling, and content structure.
 
 **The lesson**: For experienced developers, AI tools aren't about writing code you couldn't write. They're about skipping past the boring parts so you can focus on the interesting decisions.
+
+[AI Prompt](https://gist.github.com/haruki-nikaidou/1654776c77b7cd5698924080d070cd53)
 
 ## Open Source: CC0
 
