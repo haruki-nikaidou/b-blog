@@ -9,14 +9,22 @@
 }
 
 body {
-  background-image: url('/bg.avif'), linear-gradient(to right, #ffcdb9, #FFC0CB);
+  background-image: linear-gradient(to right, #ffcdb9, #FFC0CB);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('/bg.avif');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  z-index: -1;
 }
 
 main {
