@@ -9,7 +9,7 @@ tags:
   - Frontend
 ---
 
-I just wrapped up a new side project: a light novel review site for Japanese readers and serious enthusiasts. The entire thing-from initialization to deployment: took about 5 hours. Here's how modern tooling and smart architecture decisions made this possible.
+I just wrapped up a new side project, a light novel review site for Japanese readers and serious enthusiasts. The entire thing, from initialization to deployment, took about 5 hours. Here's how modern tooling and smart architecture decisions made this possible.
 
 [Link to the project](https://ln.plr.moe)
 
@@ -42,11 +42,11 @@ All metadata lives in a single JSON file structured like a relational database:
 
 Content itself is in Markdown for reviews and articles. This separation keeps metadata queryable while keeping writing in a comfortable format.
 
-The build process validates all relationships: if I reference a non-existent novel or tag, the build fails. It's like foreign key constraints, but enforced by TypeScript and the Astro build pipeline.
+The build process validates all relationships. If I reference a non-existent novel or tag, the build fails. It's like foreign key constraints, but enforced by TypeScript and the Astro build pipeline.
 
 ### Search Without an API
 
-The search feature uses fuse.js for client-side fuzzy search. According to benchmarks, it handles up to 4,000 books smoothly: more than enough for my collection.
+The search feature uses fuse.js for client-side fuzzy search. According to benchmarks, it handles up to 4,000 books smoothly, more than enough for my collection.
 
 The entire search index ships with the static bundle. No API calls, no loading states, instant results.
 
@@ -78,7 +78,7 @@ The catch? The colors were absolutely diabolical, unusable. I ended up rewriting
 
 > The articles are also AI generated btw. I removed them after test.
 
-But here's the thing: even with all that rework, going from idea to deployed site took only 5 hours. The AI handled the boilerplate, the architecture setup, and the routing logic. I focused on the parts that mattered: design refinement, data modeling, and content structure.
+But here's the thing. Even with all that rework, going from idea to deployed site took only 5 hours. The AI handled the boilerplate, the architecture setup, and the routing logic. I focused on the parts that mattered: design refinement, data modeling, and content structure.
 
 **The lesson**: For experienced developers, AI tools aren't about writing code you couldn't write. They're about skipping past the boring parts so you can focus on the interesting decisions.
 
