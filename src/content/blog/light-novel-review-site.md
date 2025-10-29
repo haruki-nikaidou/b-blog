@@ -9,7 +9,7 @@ tags:
   - Frontend
 ---
 
-I just wrapped up a new side project: a light novel review site for Japanese readers and serious enthusiasts. The entire thing-from initialization to deployment—took about 5 hours. Here's how modern tooling and smart architecture decisions made this possible.
+I just wrapped up a new side project: a light novel review site for Japanese readers and serious enthusiasts. The entire thing-from initialization to deployment: took about 5 hours. Here's how modern tooling and smart architecture decisions made this possible.
 
 [Link to the project](https://ln.plr.moe)
 
@@ -46,7 +46,7 @@ The build process validates all relationships: if I reference a non-existent nov
 
 ### Search Without an API
 
-The search feature uses fuse.js for client-side fuzzy search. According to benchmarks, it handles up to 4,000 books smoothly—more than enough for my collection.
+The search feature uses fuse.js for client-side fuzzy search. According to benchmarks, it handles up to 4,000 books smoothly: more than enough for my collection.
 
 The entire search index ships with the static bundle. No API calls, no loading states, instant results.
 
@@ -70,7 +70,7 @@ The design language deliberately contrasts with typical tech blogs. Light novels
 
 ## The Cursor Experience
 
-I used Cursor's latest "plan mode" to bootstrap the project. It generated an almost-working version in minutes—routing, components, basic styling all functional.
+I used Cursor's latest "plan mode" to bootstrap the project. It generated an almost-working version in minutes: routing, components, basic styling all functional.
 
 The catch? The colors were absolutely diabolical, unusable. I ended up rewriting all the color systems and doing extensive refactoring for component reuse.
 
@@ -104,6 +104,8 @@ Building this type of site is straightforward for experienced developers working
 - **JSON** for metadata
 - **Vercel** for hosting
 
-Total complexity: Low. Total value: High—for me and my friends who want recommendations.
+Total complexity: Low. 
+
+Total value: High, for me and my friends who want recommendations.
 
 No analytics. No tracking. No SEO games. Just honest reviews of light novels, searchable in Japanese, hosted statically, built in an afternoon.
