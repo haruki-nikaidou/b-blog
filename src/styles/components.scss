@@ -65,8 +65,8 @@
   }
 
   &.light-glass {
-    background-color: rgba(colors.$color-slate-50, 0.1);
-    backdrop-filter: blur(24px);
+    background-color: rgba(colors.$color-slate-50, 0.7);
+    backdrop-filter: blur(8px);
     border: none;
   }
 }
