@@ -3,12 +3,11 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import {getCollection} from 'astro:content';
-import {SiGithub, SiReddit, SiMisskey} from 'solid-icons/si';
+import Icon from '@iconify/svelte';
 import {SITE_TITLE, SITE_DESCRIPTION, AVATAR_SRC} from '../consts';
 import Card from '@/components/Card.astro';
 import PostCard from "../components/PostCard.astro";
 import BlueSky from '@/components/icons/BlueSky.astro';
-import { TbBrandMatrix } from 'solid-icons/tb';
 
 const posts = (await getCollection('blog'))
     .filter(post => post.data.pinned)
@@ -42,19 +41,19 @@ const posts = (await getCollection('blog'))
                 </p>
                 <div id="contact">
                     <a class="icon-link" href="https://github.com/haruki-nikaidou" target="_blank" aria-label="GitHub">
-                        <SiGithub size={32} />
+                        <Icon icon="logos:github-icon" width={32} height={32} />
                     </a>
                     <a class="icon-link" href="https://bsky.app/profile/nkdharuki.bsky.social" target="_blank" aria-label="Blue Sky">
                         <BlueSky/>
                     </a>
                     <a class="icon-link" href="https://matrix.to/#/@nikaidou_haruki:matrix.org" target="_blank" aria-label="matrix">
-                        <TbBrandMatrix size={32} />
+                        <Icon icon="tabler:brand-matrix" width={32} height={32} />
                     </a>
                     <a class="icon-link" href="https://misskey.io/@nkdharuki">
-                        <SiMisskey size={32} color="#A1CA03" />
+                        <Icon icon="simple-icons:misskey" width={32} height={32} color="#A1CA03" />
                     </a>
                     <a class="icon-link" href="https://www.reddit.com/user/Acrobatic-Cat-2005/" target="_blank" aria-label="reddit">
-                        <SiReddit size={32} color='#FF4500' />
+                        <Icon icon="simple-icons:reddit" width={32} height={32} color='#FF4500' />
                     </a>
                 </div>
             </div>

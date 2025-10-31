@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 
-import solidJs from "@astrojs/solid-js";
+import svelte from "@astrojs/svelte";
 
 import expressiveCode from 'astro-expressive-code';
 
@@ -38,5 +38,5 @@ export default defineConfig({
     }
   },
   site: 'https://blog.plr.moe',
-  integrations: [expressiveCode(), mdx(), sitemap(), solidJs()]
+  integrations: [expressiveCode(), mdx(), sitemap(), svelte()]
 });

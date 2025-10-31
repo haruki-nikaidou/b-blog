@@ -14,7 +14,7 @@
     "@astrojs/mdx": "^4.3.6",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.6.0",
-    "@astrojs/solid-js": "^5.1.1",
+    "@astrojs/svelte": "^7.2.1",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "^0.41.3",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
@@ -31,8 +31,7 @@
     "rehype-mermaid": "^3.0.0",
     "remark-math": "^6.0.0",
     "sass": "^1.93.2",
-    "solid-icons": "^1.1.0",
-    "solid-js": "^1.9.9",
+    "svelte": "^5.20.0",
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.12.4"
