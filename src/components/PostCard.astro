@@ -75,7 +75,7 @@ const {slug, heroImageId, title, pubDate, updatedDate, tags} = Astro.props
 
     .date-container {
         .date {
-            color: colors.$color-slate-700;
+            color: var(--color-muted-foreground);
             font-size: 0.875rem;
         }
     }
@@ -89,8 +89,8 @@ const {slug, heroImageId, title, pubDate, updatedDate, tags} = Astro.props
         .tag {
             padding: 0.125rem 0.5rem;
             border-radius: 5rem;
-            background-color: colors.$color-slate-50;
-            color: colors.$color-slate-700;
+            background-color: color-mix(in srgb, var(--color-card), transparent 30%);
+            color: var(--color-muted-foreground);
             font-size: 0.75rem;
             margin-right: 0.25rem;
             margin-bottom: 0.25rem;

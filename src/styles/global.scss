@@ -8,10 +8,7 @@
 }
 
 * {
-  color: #1b1b17;
-  html.dark & {
-    color: #f8f8f6;
-  }
+  color: var(--color-foreground);
 }
 
 body {
@@ -69,22 +66,10 @@ h5,
 h6,
 p {
   box-sizing: border-box;
-  color: #1b1b17;
+  color: var(--color-foreground);
 
   &.emphasize {
-    color: colors.$color-primary-500;
-  }
-}
-
-html.dark {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    color: #f8f8f6;
+    color: var(--color-primary);
   }
 }
 

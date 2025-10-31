@@ -1,22 +1,14 @@
 @use "colors";
 
 .link {
-  color: colors.$color-primary-500;
+  color: var(--color-primary);
   text-decoration: underline;
   text-underline-offset: 0.1em;
   cursor: pointer;
   transition: background-color 0.25s ease;
 
   &:hover {
-    background-color: colors.$color-primary-100;
-  }
-}
-
-html.dark .link {
-  color: colors.$color-primary-400;
-
-  &:hover {
-    background-color: colors.$color-primary-800;
+    background-color: color-mix(in srgb, var(--color-highlight), transparent 90%);
   }
 }
 
@@ -24,12 +16,17 @@ html.dark .link {
 .card {
   padding: 1rem;
   border-radius: 1rem;
-  background-color: rgba(colors.$color-slate-50, 0.7);
-  backdrop-filter: blur(8px);
-  border: none;
-  box-shadow: 0.125rem 0.125rem 0.5rem rgba(colors.$color-slate-700, 0.2);
+  background-color: color-mix(in srgb, var(--color-card), transparent 70%);
 
-  > *:not(:last-child) {
+  backdrop-filter: blur(24px);
+  html.dark & {
+    backdrop-filter: blur(8px);
+  }
+
+  border: none;
+  box-shadow: 0.125rem 0.125rem 0.5rem color-mix(in srgb, var(--color-muted-foreground), transparent 80%);
+
+  >*:not(:last-child) {
     margin-bottom: 0.5rem;
   }
 
@@ -41,14 +38,3 @@ html.dark .link {
     box-shadow: none;
   }
 }
-
-html.dark .card {
-  background-color: rgba(colors.$color-slate-950, 0.1);
-  box-shadow: 0.125rem 0.125rem 0.5rem rgba(colors.$color-slate-400, 0.2);
-
-  &.no-shadow {
-    box-shadow: none;
-  }
-}
-
-

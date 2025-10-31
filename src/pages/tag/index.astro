@@ -43,8 +43,8 @@ const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort()
     display: inline-block;
     padding: 0.125rem 0.5rem;
     border-radius: 5rem;
-    background-color: #f3f3f1;
-    color: #374151;
+    background-color: color-mix(in srgb, var(--color-card), transparent 30%);
+    color: var(--color-muted-foreground);
     font-size: 0.75rem;
     text-decoration: none;
   }
