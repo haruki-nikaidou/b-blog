@@ -5,11 +5,20 @@
   margin: 0;
   outline: none;
   box-sizing: border-box;
+}
+
+* {
   color: #1b1b17;
+  html.dark & {
+    color: #f8f8f6;
+  }
 }
 
 body {
   background-image: linear-gradient(to right, #ffcdb9, #FFC0CB);
+  html.dark & {
+    background-image: linear-gradient(to right, #1b1b17, #2a2a27);
+  }
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,6 +29,9 @@ body::before {
   position: fixed;
   inset: 0;
   background-image: url('/bg.avif');
+  html.dark & {
+    background-image: url('/bg-dark.avif');
+  }
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -59,12 +71,20 @@ p {
   box-sizing: border-box;
   color: #1b1b17;
 
-  &.dark-mode {
-    color: #f8f8f6;
-  }
-
   &.emphasize {
     color: colors.$color-primary-500;
+  }
+}
+
+html.dark {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    color: #f8f8f6;
   }
 }
 

@@ -10,13 +10,13 @@
   &:hover {
     background-color: colors.$color-primary-100;
   }
+}
 
-  &.dark-mode {
-    color: colors.$color-primary-400;
+html.dark .link {
+  color: colors.$color-primary-400;
 
-    &:hover {
-      background-color: colors.$color-primary-800;
-    }
+  &:hover {
+    background-color: colors.$color-primary-800;
   }
 }
 
@@ -29,15 +29,6 @@
   border: none;
   box-shadow: 0.125rem 0.125rem 0.5rem rgba(colors.$color-slate-700, 0.2);
 
-  &.dark-mode {
-    background-color: rgba(colors.$color-slate-950, 0.1);
-    box-shadow: 0.125rem 0.125rem 0.5rem rgba(colors.$color-slate-400, 0.2);
-
-    &.no-shadow {
-      box-shadow: none;
-    }
-  }
-
   > *:not(:last-child) {
     margin-bottom: 0.5rem;
   }
@@ -45,6 +36,15 @@
   &.borderless {
     border: none;
   }
+
+  &.no-shadow {
+    box-shadow: none;
+  }
+}
+
+html.dark .card {
+  background-color: rgba(colors.$color-slate-950, 0.1);
+  box-shadow: 0.125rem 0.125rem 0.5rem rgba(colors.$color-slate-400, 0.2);
 
   &.no-shadow {
     box-shadow: none;

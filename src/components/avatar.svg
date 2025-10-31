@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459 504" >
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459 504" stroke="currentColor">
   <defs>
     <style>
       .real-line {
-      stroke: #212121;
+      stroke: currentColor;
       stroke-width: 2px;
       stroke-linecap: round;
       fill: none;

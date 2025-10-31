@@ -60,12 +60,12 @@
     border-color: colors.$color-primary-100;
     background-color: colors.$color-primary-100;
   }
+}
 
-  &.dark-mode {
-    &:hover {
-      border-color: colors.$color-primary-700;
-      background-color: colors.$color-primary-700;
-    }
+html.dark .button-light-primary {
+  &:hover {
+    border-color: colors.$color-primary-700;
+    background-color: colors.$color-primary-700;
   }
 }
 
@@ -79,12 +79,12 @@
     border-color: colors.$color-primary-300;
     color: colors.$color-primary-300;
   }
+}
 
-  &.dark-mode {
-    &:hover {
-      border-color: colors.$color-primary-700;
-      color: colors.$color-primary-700;
-    }
+html.dark .button-outline-primary {
+  &:hover {
+    border-color: colors.$color-primary-700;
+    color: colors.$color-primary-700;
   }
 }
 
@@ -99,16 +99,16 @@
     background-color: color.adjust(colors.$color-primary-100, $lightness:5%);
     border-color: color.adjust(colors.$color-primary-100, $lightness:5%);
   }
+}
 
-  &.dark-mode {
-    background-color: colors.$color-primary-700;
-    color: colors.$color-primary-50;
-    border-color: colors.$color-primary-700;
+html.dark .button-flat-primary {
+  background-color: colors.$color-primary-700;
+  color: colors.$color-primary-50;
+  border-color: colors.$color-primary-700;
 
-    &:hover {
-      background-color: colors.$color-primary-600;
-      border-color: colors.$color-primary-600;
-    }
+  &:hover {
+    background-color: colors.$color-primary-600;
+    border-color: colors.$color-primary-600;
   }
 }
 
@@ -154,10 +154,10 @@
     background-color: rgba(colors.$color-slate-50, 0.5);
     border-radius: 0.75rem;
   }
+}
 
-  &.dark-mode {
-    &::after {
-      background-color: rgba(colors.$color-slate-900, 0.5);
-    }
+html.dark .button-disabled {
+  &::after {
+    background-color: rgba(colors.$color-slate-900, 0.5);
   }
 }

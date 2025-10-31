@@ -2,9 +2,10 @@
 import RootLayout from "../layouts/RootLayout.astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
-import { SITE_TITLE, SITE_DESCRIPTION, AVATAR_SRC } from "../consts";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Card from "@/components/Card.astro";
 import PostCard from "../components/PostCard.astro";
+import BigAvatar from "@/components/avatar.svg";
 
 const posts = (await getCollection("blog"))
     .filter((post) => post.data.pinned)
@@ -13,7 +14,7 @@ const posts = (await getCollection("blog"))
 
 <RootLayout title={SITE_TITLE} description={SITE_DESCRIPTION} width="md">
     <Card id="avatar-bio">
-        <img src={AVATAR_SRC} alt="avatar" />
+        <BigAvatar class="big-avatar"/>
         <section id="bio">
             <h2 class="emphasize">
                 {SITE_TITLE}
@@ -127,7 +128,7 @@ const posts = (await getCollection("blog"))
         margin-bottom: 3rem;
     }
 
-    #avatar-bio > img {
+    .big-avatar {
         width: 15rem;
         height: 15rem;
         border-radius: 50%;
