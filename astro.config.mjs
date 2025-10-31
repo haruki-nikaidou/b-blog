@@ -9,6 +9,8 @@ import svelte from "@astrojs/svelte";
 
 import expressiveCode from 'astro-expressive-code';
 
+import icon from 'astro-icon';
+
 // https://astro.build/config
 export default defineConfig({
   markdown: {
@@ -38,5 +40,5 @@ export default defineConfig({
     }
   },
   site: 'https://blog.plr.moe',
-  integrations: [expressiveCode(), mdx(), sitemap(), svelte()]
+  integrations: [expressiveCode(), mdx(), sitemap(), svelte(), icon()]
 });
