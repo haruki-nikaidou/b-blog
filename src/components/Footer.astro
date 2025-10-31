@@ -1,5 +1,5 @@
 ---
-import {COPYRIGHT_NAME, GLOBAL_STYLE} from "../consts";
+import {COPYRIGHT_NAME} from "../consts";
 import "@/styles/components.scss";
 import {clsx} from "clsx";
 const today = new Date();
@@ -9,8 +9,6 @@ const today = new Date();
     id="footer-container"
     class={clsx(
       "card",
-      GLOBAL_STYLE === 'glass' && 'glass',
-      GLOBAL_STYLE === 'lightGlass' && 'light-glass',
     )}
 >
   <p>

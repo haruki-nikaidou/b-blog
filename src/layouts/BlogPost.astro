@@ -4,7 +4,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Card from "@/components/Card.astro";
-import {GLOBAL_STYLE, imageDeliveryUrl} from "../consts";
+import {imageDeliveryUrl} from "../consts";
 import "../styles/article.scss";
 
 type Props = CollectionEntry<"blog">["data"];
@@ -32,7 +32,7 @@ const {
 <body>
 <Header/>
 <main>
-  <Card variant={GLOBAL_STYLE}>
+  <Card>
     {
       heroImageId && (
             <img

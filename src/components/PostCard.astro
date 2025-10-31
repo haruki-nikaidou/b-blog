@@ -1,6 +1,6 @@
 ---
 import Card from "./Card.astro";
-import {GLOBAL_STYLE, imageDeliveryUrl} from "@/consts";
+import {imageDeliveryUrl} from "@/consts";
 import "@/styles/components.scss";
 import '@/styles/global.scss';
 
@@ -19,7 +19,6 @@ const {slug, heroImageId, title, pubDate, updatedDate, tags} = Astro.props
 
 <Card
     class="post-card"
-    variant={GLOBAL_STYLE}
 >
     <a
         class='img-container'

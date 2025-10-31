@@ -5,7 +5,6 @@ import Footer from '@/components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 import { getCollection } from 'astro:content';
 import Card from "../../components/Card.astro";
-import {GLOBAL_STYLE} from "../../consts";
 
 const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
 const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort();
@@ -19,7 +18,7 @@ const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort()
   <body>
     <Header />
     <main>
-      <Card variant={GLOBAL_STYLE} class="tags-card">
+      <Card class="tags-card">
         <h2>Tags</h2>
         <ul class="tag-list">
           {tags.map((tag) => (

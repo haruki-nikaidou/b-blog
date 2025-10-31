@@ -11,7 +11,7 @@ export const AVATAR_SRC = '/avatar.svg';
 
 export const BIO = "星に祈れど、空は答えず、堕ちるは常に、隕の石のみ。";
 
-export const GLOBAL_STYLE: 'quartz' | 'glass' | 'lightGlass' = 'lightGlass'
+// Blog now only supports light-glass style
 
 export const COPYRIGHT_NAME = 'Amaki Eureka';
 

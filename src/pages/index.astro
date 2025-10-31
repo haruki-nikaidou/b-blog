@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import {getCollection} from 'astro:content';
 import {SiGithub, SiReddit, SiMisskey} from 'solid-icons/si';
-import {SITE_TITLE, SITE_DESCRIPTION, GLOBAL_STYLE, AVATAR_SRC} from '../consts';
+import {SITE_TITLE, SITE_DESCRIPTION, AVATAR_SRC} from '../consts';
 import Card from '@/components/Card.astro';
 import PostCard from "../components/PostCard.astro";
 import BlueSky from '@/components/icons/BlueSky.astro';
@@ -24,7 +24,7 @@ const posts = (await getCollection('blog'))
 <body>
 <Header/>
 <main>
-    <Card variant={GLOBAL_STYLE} id="avatar-bio">
+    <Card id="avatar-bio">
         <img src={AVATAR_SRC} alt="avatar"/>
         <section id="bio">
             <h2 class="emphasize">
@@ -61,7 +61,7 @@ const posts = (await getCollection('blog'))
         </section>
     </Card>
 
-    <Card variant={GLOBAL_STYLE}>
+    <Card>
         <h3>
             Pinned Posts
         </h3>

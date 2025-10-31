@@ -6,7 +6,6 @@ import PostCard from '@/components/PostCard.astro';
 import {SITE_TITLE, SITE_DESCRIPTION} from '@/consts';
 import {getCollection} from 'astro:content';
 import Card from "../../components/Card.astro";
-import {GLOBAL_STYLE} from "../../consts";
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -28,7 +27,7 @@ const posts = (await getCollection('blog'))
 <body>
 <Header/>
 <main>
-  <Card variant={GLOBAL_STYLE} class="title-card">
+  <Card class="title-card">
     <h2>Tag: {tag}</h2>
   </Card>
   <section class="posts">

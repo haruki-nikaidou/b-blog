@@ -1,6 +1,6 @@
 ---
 import HeaderLink from './HeaderLink.astro';
-import {GLOBAL_STYLE, SITE_TITLE} from '../consts';
+import {SITE_TITLE} from '../consts';
 import "@/styles/components.scss";
 import {clsx} from "clsx";
 ---
@@ -9,8 +9,6 @@ import {clsx} from "clsx";
     class={clsx(
         "head-container",
         'card',
-        GLOBAL_STYLE === 'glass' && 'glass',
-        GLOBAL_STYLE === 'lightGlass' && 'light-glass',
     )}
 >
   <nav>
