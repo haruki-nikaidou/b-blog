@@ -1,8 +1,6 @@
 ---
 import type {CollectionEntry} from "astro:content";
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import RootLayout from "./RootLayout.astro";
 import Card from "@/components/Card.astro";
 import {imageDeliveryUrl} from "../consts";
 import "../styles/article.scss";
@@ -20,18 +18,11 @@ const {
 } = Astro.props;
 ---
 
-<html lang="en">
-<head>
-  <BaseHead
-      title={title}
-      description={description}
-      image={heroImageId ? imageDeliveryUrl(heroImageId, "small") : undefined}
-  />
-</head>
-
-<body>
-<Header/>
-<main>
+<RootLayout
+  title={title}
+  description={description}
+  image={heroImageId ? imageDeliveryUrl(heroImageId, "small") : undefined}
+>
   <Card>
     {
       heroImageId && (
@@ -89,10 +80,7 @@ const {
       <slot/>
     </article>
   </Card>
-</main>
-<Footer/>
-</body>
-</html>
+</RootLayout>
 
 <style lang="scss">
   @use "@/styles/colors";

@@ -1,7 +1,5 @@
 ---
-import BaseHead from '@/components/BaseHead.astro';
-import Header from '@/components/Header.astro';
-import Footer from '@/components/Footer.astro';
+import RootLayout from '@/layouts/RootLayout.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 import { getCollection } from 'astro:content';
 import Card from "../../components/Card.astro";
@@ -10,26 +8,16 @@ const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
 const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort();
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={`Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <Card class="tags-card">
-        <h2>Tags</h2>
-        <ul class="tag-list">
-          {tags.map((tag) => (
-              <li><a class="tag" href={`/tag/${tag}`}>{tag}</a></li>
-          ))}
-        </ul>
-      </Card>
-    </main>
-    <Footer />
-  </body>
-</html>
+<RootLayout title={`Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+  <Card class="tags-card">
+    <h2>Tags</h2>
+    <ul class="tag-list">
+      {tags.map((tag) => (
+          <li><a class="tag" href={`/tag/${tag}`}>{tag}</a></li>
+      ))}
+    </ul>
+  </Card>
+</RootLayout>
 
 <style>
   main {

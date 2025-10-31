@@ -1,7 +1,5 @@
 ---
-import BaseHead from '@/components/BaseHead.astro';
-import Header from '@/components/Header.astro';
-import Footer from '@/components/Footer.astro';
+import RootLayout from '@/layouts/RootLayout.astro';
 import PostCard from '@/components/PostCard.astro';
 import {SITE_TITLE, SITE_DESCRIPTION} from '@/consts';
 import {getCollection} from 'astro:content';
@@ -19,14 +17,7 @@ const posts = (await getCollection('blog'))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<!doctype html>
-<html lang="en">
-<head>
-  <BaseHead title={`${tag} | Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION}/>
-</head>
-<body>
-<Header/>
-<main>
+<RootLayout title={`${tag} | Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
   <Card class="title-card">
     <h2>Tag: {tag}</h2>
   </Card>
@@ -35,10 +26,7 @@ const posts = (await getCollection('blog'))
         <PostCard {...post.data} slug={post.slug}/>
     ))}
   </section>
-</main>
-<Footer/>
-</body>
-</html>
+</RootLayout>
 
 <style>
     .title-card {

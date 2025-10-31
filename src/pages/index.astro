@@ -1,7 +1,5 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import RootLayout from "../layouts/RootLayout.astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import { SITE_TITLE, SITE_DESCRIPTION, AVATAR_SRC } from "../consts";
@@ -13,106 +11,96 @@ const posts = (await getCollection("blog"))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    </head>
-    <body>
-        <Header />
-        <main>
-            <Card id="avatar-bio">
-                <img src={AVATAR_SRC} alt="avatar" />
-                <section id="bio">
-                    <h2 class="emphasize">
-                        {SITE_TITLE}
-                    </h2>
-                    <p>
-                        星に祈れど、空は答えず、<br />
-                        堕ちるは常に、隕の石のみ。
-                    </p>
-                    <div>
-                        <p>
-                            <strong> Contact me: </strong>
-                        </p>
-                        <div id="contact">
-                            <a
-                                class="icon-link"
-                                href="https://github.com/haruki-nikaidou"
-                                target="_blank"
-                                aria-label="GitHub"
-                            >
-                                <Icon
-                                    name="logos:github-icon"
-                                    width={32}
-                                    height={32}
-                                />
-                            </a>
-                            <a
-                                class="icon-link"
-                                href="https://bsky.app/profile/nkdharuki.bsky.social"
-                                target="_blank"
-                                aria-label="Blue Sky"
-                            >
-                                <Icon
-                                    name="logos:bluesky"
-                                    width={32}
-                                    height={32}
-                                />
-                            </a>
-                            <a
-                                class="icon-link"
-                                href="https://matrix.to/#/@nikaidou_haruki:matrix.org"
-                                target="_blank"
-                                aria-label="matrix"
-                            >
-                                <Icon
-                                    name="simple-icons:matrix"
-                                    width={32}
-                                    height={32}
-                                />
-                            </a>
-                            <a
-                                class="icon-link"
-                                href="https://misskey.io/@nkdharuki"
-                            >
-                                <Icon
-                                    name="simple-icons:misskey"
-                                    width={32}
-                                    height={32}
-                                />
-                            </a>
-                            <a
-                                class="icon-link"
-                                href="https://www.reddit.com/user/Acrobatic-Cat-2005/"
-                                target="_blank"
-                                aria-label="reddit"
-                            >
-                                <Icon
-                                    name="logos:reddit-icon"
-                                    width={32}
-                                    height={32}
-                                />
-                            </a>
-                        </div>
-                    </div>
-                </section>
-            </Card>
+<RootLayout title={SITE_TITLE} description={SITE_DESCRIPTION} width="md">
+    <Card id="avatar-bio">
+        <img src={AVATAR_SRC} alt="avatar" />
+        <section id="bio">
+            <h2 class="emphasize">
+                {SITE_TITLE}
+            </h2>
+            <p>
+                星に祈れど、空は答えず、<br />
+                堕ちるは常に、隕の石のみ。
+            </p>
+            <div>
+                <p>
+                    <strong> Contact me: </strong>
+                </p>
+                <div id="contact">
+                    <a
+                        class="icon-link"
+                        href="https://github.com/haruki-nikaidou"
+                        target="_blank"
+                        aria-label="GitHub"
+                    >
+                        <Icon
+                            name="logos:github-icon"
+                            width={32}
+                            height={32}
+                        />
+                    </a>
+                    <a
+                        class="icon-link"
+                        href="https://bsky.app/profile/nkdharuki.bsky.social"
+                        target="_blank"
+                        aria-label="Blue Sky"
+                    >
+                        <Icon
+                            name="logos:bluesky"
+                            width={32}
+                            height={32}
+                        />
+                    </a>
+                    <a
+                        class="icon-link"
+                        href="https://matrix.to/#/@nikaidou_haruki:matrix.org"
+                        target="_blank"
+                        aria-label="matrix"
+                    >
+                        <Icon
+                            name="simple-icons:matrix"
+                            width={32}
+                            height={32}
+                        />
+                    </a>
+                    <a
+                        class="icon-link"
+                        href="https://misskey.io/@nkdharuki"
+                    >
+                        <Icon
+                            name="simple-icons:misskey"
+                            width={32}
+                            height={32}
+                        />
+                    </a>
+                    <a
+                        class="icon-link"
+                        href="https://www.reddit.com/user/Acrobatic-Cat-2005/"
+                        target="_blank"
+                        aria-label="reddit"
+                    >
+                        <Icon
+                            name="logos:reddit-icon"
+                            width={32}
+                            height={32}
+                        />
+                    </a>
+                </div>
+            </div>
+        </section>
+    </Card>
 
-            <Card>
-                <h3>Pinned Posts</h3>
-            </Card>
-            <section id="pinned-container">
-                {
-                    posts.map((post) => (
-                        <PostCard {...post.data} slug={post.slug} />
-                    ))
-                }
-            </section>
-        </main>
-        <Footer />
-    </body>
-</html>
+    <Card>
+        <h3>Pinned Posts</h3>
+    </Card>
+    <section id="pinned-container">
+        {
+            posts.map((post) => (
+                <PostCard {...post.data} slug={post.slug} />
+            ))
+        }
+    </section>
+</RootLayout>
 
 <style>
     main {
@@ -135,6 +123,8 @@ const posts = (await getCollection("blog"))
         justify-content: center;
         align-items: center;
         gap: 3rem;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
     }
 
     #avatar-bio > img {
@@ -197,6 +187,6 @@ const posts = (await getCollection("blog"))
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 1rem;
-        margin-top: -1.5rem;
+        margin-top: 1rem;
     }
 </style>

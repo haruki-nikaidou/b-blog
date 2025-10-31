@@ -3,6 +3,7 @@ import HeaderLink from './HeaderLink.astro';
 import {SITE_TITLE} from '../consts';
 import "@/styles/components.scss";
 import {clsx} from "clsx";
+import ThemeToggle from './ThemeToggle.svelte';
 ---
 
 <header
@@ -21,6 +22,7 @@ import {clsx} from "clsx";
       <HeaderLink href="/">Home</HeaderLink>
       <HeaderLink href="/blog">Blog</HeaderLink>
       <HeaderLink href="/tag">Tags</HeaderLink>
+      <ThemeToggle client:load/>
     </div>
   </nav>
 </header>

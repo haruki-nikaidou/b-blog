@@ -1,7 +1,5 @@
 ---
-import BaseHead from '@/components/BaseHead.astro';
-import Header from '@/components/Header.astro';
-import Footer from '@/components/Footer.astro';
+import RootLayout from '@/layouts/RootLayout.astro';
 import {SITE_TITLE, SITE_DESCRIPTION} from '@/consts';
 import {getCollection} from 'astro:content';
 import PostCard from "@/components/PostCard.astro";
@@ -13,14 +11,7 @@ const posts = (await getCollection('blog'))
     );
 ---
 
-<!doctype html>
-<html lang="en">
-<head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}/>
-</head>
-<body>
-<Header/>
-<main>
+<RootLayout title={SITE_TITLE} description={SITE_DESCRIPTION} width="lg">
     <section>
         {
             posts.map((post) => (
@@ -28,10 +19,7 @@ const posts = (await getCollection('blog'))
             ))
         }
     </section>
-</main>
-<Footer/>
-</body>
-</html>
+</RootLayout>
 
 <style>
     section {
@@ -39,7 +27,7 @@ const posts = (await getCollection('blog'))
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 1rem;
         max-width: 90rem;
-        margin: 5rem auto;
+        margin: 2rem auto;
         padding: 2rem;
     }
 </style>
