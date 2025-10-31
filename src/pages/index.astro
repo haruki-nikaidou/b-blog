@@ -100,7 +100,7 @@ const posts = (await getCollection("blog"))
     <section id="pinned-container">
         {
             posts.map((post) => (
-                <PostCard {...post.data} slug={post.slug} />
+                <PostCard {...post.data} slug={post.id} />
             ))
         }
     </section>

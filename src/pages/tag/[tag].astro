@@ -26,7 +26,7 @@ const posts = (await getCollection('blog'))
   </Card>
   <section class="posts">
     {posts.map((post) => (
-        <PostCard {...post.data} slug={post.slug}/>
+        <PostCard {...post.data} slug={post.id}/>
     ))}
   </section>
 </RootLayout>
