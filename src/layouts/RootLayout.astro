@@ -2,7 +2,6 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { ModeWatcher } from "mode-watcher";
 
 interface Props {
   title: string;
@@ -20,7 +19,6 @@ const { title, description, image, width = 'md' } = Astro.props;
     <BaseHead title={title} description={description} image={image} />
   </head>
   <body>
-    <ModeWatcher client:load/>
     <Header />
     <main class={width}>
       <slot />

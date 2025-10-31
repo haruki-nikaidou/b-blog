@@ -2,6 +2,8 @@
     import { onMount } from "svelte";
     import Icon from "@iconify/svelte"
 
+    const KEY = "\u{1090C}theme";
+
     let isDark = $state(false);
 
     onMount(() => {
@@ -17,7 +19,7 @@
             document.documentElement.classList.remove("dark");
         }
         if (typeof localStorage !== "undefined") {
-            localStorage.setItem("theme", isDark ? "dark" : "light");
+            localStorage.setItem(KEY, isDark ? "dark" : "light");
         }
     }
 </script>

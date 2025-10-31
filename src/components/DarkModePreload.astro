@@ -1,12 +1,12 @@
 ---
-
+const KEY = "\u{1090C}theme";
 ---
 
 <script is:inline>
     const isBrowser = typeof localStorage !== "undefined";
     const getThemePreference = () => {
-        if (isBrowser && localStorage.getItem("theme")) {
-            return localStorage.getItem("theme");
+        if (isBrowser && localStorage.getItem(KEY)) {
+            return localStorage.getItem(KEY);
         }
         return window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
@@ -18,7 +18,7 @@
     if (isBrowser) {
         const observer = new MutationObserver(() => {
             const isDark = document.documentElement.classList.contains("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
+            localStorage.setItem(KEY, isDark ? "dark" : "light");
         });
         observer.observe(document.documentElement, {
             attributes: true,
