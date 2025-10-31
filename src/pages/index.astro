@@ -80,7 +80,6 @@ const posts = (await getCollection("blog"))
                                     name="simple-icons:misskey"
                                     width={32}
                                     height={32}
-                                    color="#A1CA03"
                                 />
                             </a>
                             <a
@@ -185,6 +184,12 @@ const posts = (await getCollection("blog"))
         width: 2rem;
         & > * {
             display: inline;
+        }
+    }
+
+    [data-icon="simple-icons:misskey"]{
+        * {
+            color: #A1CA03 !important;
         }
     }
 
