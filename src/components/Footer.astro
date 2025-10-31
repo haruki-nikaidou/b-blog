@@ -18,6 +18,11 @@ const today = new Date();
     Licensed under
     <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="link">CC BY-NC-SA 4.0</a>
   </p>
+  <p>
+    The background image is from
+    <a href="https://www.pixiv.net/artworks/72467113" class="link only-light">Pixiv: 72467113</a>
+    <a href="https://www.pixiv.net/artworks/68491808" class="link only-dark">Pixiv: 68491808</a>
+  </p>
 </footer>
 
 <style lang="scss">
@@ -32,5 +37,19 @@ const today = new Date();
 
   footer {
     text-align: center;
+  }
+
+  .only-light {
+    display: inline;
+    html.dark & {
+      display: none;
+    }
+  }
+
+  .only-dark {
+    display: none;
+    html.dark & {
+      display: inline;
+    }
   }
 </style>
