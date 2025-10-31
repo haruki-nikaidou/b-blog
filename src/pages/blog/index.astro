@@ -1,8 +1,11 @@
 ---
 import RootLayout from '@/layouts/RootLayout.astro';
-import {SITE_TITLE, SITE_DESCRIPTION} from '@/consts';
+import siteConfig from '../../../content/site.json';
 import {getCollection} from 'astro:content';
 import PostCard from "@/components/PostCard.astro";
+
+const SITE_TITLE = siteConfig.title;
+const SITE_DESCRIPTION = siteConfig.description;
 
 const posts = (await getCollection('blog'))
     .filter(post => !post.data.draft)

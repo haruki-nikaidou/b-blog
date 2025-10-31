@@ -1,9 +1,11 @@
 ---
 import HeaderLink from './HeaderLink.astro';
-import {SITE_TITLE} from '../consts';
+import siteConfig from '../../content/site.json';
 import "@/styles/components.scss";
 import {clsx} from "clsx";
 import ThemeToggle from './ThemeToggle.svelte';
+
+const SITE_TITLE = siteConfig.title;
 ---
 
 <header

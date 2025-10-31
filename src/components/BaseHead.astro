@@ -2,8 +2,10 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.scss';
-import {FAVICON_SRC} from "../consts";
+import siteConfig from '../../content/site.json';
 import Analytics from '@vercel/analytics/astro'
+
+const FAVICON_SRC = siteConfig.favicon;
 
 interface Props {
 	title: string;

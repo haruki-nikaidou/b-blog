@@ -1,9 +1,12 @@
 ---
 import RootLayout from '@/layouts/RootLayout.astro';
 import PostCard from '@/components/PostCard.astro';
-import {SITE_TITLE, SITE_DESCRIPTION} from '@/consts';
+import siteConfig from '../../../content/site.json';
 import {getCollection} from 'astro:content';
 import Card from "../../components/Card.astro";
+
+const SITE_TITLE = siteConfig.title;
+const SITE_DESCRIPTION = siteConfig.description;
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');

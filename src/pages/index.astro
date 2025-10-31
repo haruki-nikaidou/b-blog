@@ -2,10 +2,13 @@
 import RootLayout from "../layouts/RootLayout.astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import siteConfig from '../../content/site.json';
 import Card from "@/components/Card.astro";
 import PostCard from "../components/PostCard.astro";
 import BigAvatar from "@/components/avatar.svg";
+
+const SITE_TITLE = siteConfig.title;
+const SITE_DESCRIPTION = siteConfig.description;
 
 const posts = (await getCollection("blog"))
     .filter((post) => post.data.pinned)
