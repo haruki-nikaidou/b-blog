@@ -1,10 +1,13 @@
 import { defineConfig, passthroughImageService } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import sitemap from '@astrojs/sitemap';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 
 import solidJs from "@astrojs/solid-js";
+
+import expressiveCode from 'astro-expressive-code';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +15,8 @@ export default defineConfig({
     remarkPlugins: [remarkMath],
     rehypePlugins: [[rehypeKatex, {
       // Katex plugin options
+    }], [rehypeAutolinkHeadings, {
+      behavior: 'append',
     }]]
   },
 
@@ -33,5 +38,5 @@ export default defineConfig({
     }
   },
   site: 'https://blog.plr.moe',
-  integrations: [mdx(), sitemap(), solidJs()]
+  integrations: [expressiveCode(), mdx(), sitemap(), solidJs()]
 });
