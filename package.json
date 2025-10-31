@@ -28,7 +28,6 @@
     "astro-expressive-code": "^0.41.3",
     "astro-icon": "^1.1.5",
     "clsx": "^2.1.1",
-    "mode-watcher": "^1.1.0",
     "playwright": "^1.55.1",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-katex": "^7.0.1",

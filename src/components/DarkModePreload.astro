@@ -1,8 +1,8 @@
 ---
-const KEY = "\u{1090C}theme";
 ---
 
 <script is:inline>
+    const KEY = "\u{1090C}theme";
     const isBrowser = typeof localStorage !== "undefined";
     const getThemePreference = () => {
         if (isBrowser && localStorage.getItem(KEY)) {
