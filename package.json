@@ -28,6 +28,7 @@
     "astro-expressive-code": "^0.41.3",
     "astro-icon": "^1.1.5",
     "clsx": "^2.1.1",
+    "katex": "^0.16.25",
     "playwright": "^1.56.1",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-katex": "^7.0.1",
