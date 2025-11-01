@@ -8,7 +8,7 @@
   transition: background-color 0.25s ease;
 
   &:hover {
-    background-color: color-mix(in srgb, var(--color-highlight), transparent 90%);
+    background-color: color-mix(in srgb, var(--color-highlight), transparent 70%);
   }
 }
 
