@@ -2,7 +2,7 @@
 import RootLayout from "../layouts/RootLayout.astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
-import siteConfig from '../../content/site.json';
+import siteConfig from "../../content/site.json";
 import Card from "@/components/Card.astro";
 import PostCard from "../components/PostCard.astro";
 import BigAvatar from "@/components/avatar.svg";
@@ -17,14 +17,13 @@ const posts = (await getCollection("blog"))
 
 <RootLayout title={SITE_TITLE} description={SITE_DESCRIPTION} width="md">
     <Card id="avatar-bio">
-        <BigAvatar class="big-avatar"/>
+        <BigAvatar class="big-avatar" />
         <section id="bio">
             <h2 class="emphasize">
                 {SITE_TITLE}
             </h2>
             <p>
-                星に祈れど、空は答えず、<br />
-                堕ちるは常に、隕の石のみ。
+                <ruby>天<rt>あま</rt></ruby>すらも<br />救えぬ星の<br />石と化す
             </p>
             <div>
                 <p>
@@ -49,11 +48,7 @@ const posts = (await getCollection("blog"))
                         target="_blank"
                         aria-label="Blue Sky"
                     >
-                        <Icon
-                            name="logos:bluesky"
-                            width={32}
-                            height={32}
-                        />
+                        <Icon name="logos:bluesky" width={32} height={32} />
                     </a>
                     <a
                         class="icon-link"
@@ -67,10 +62,7 @@ const posts = (await getCollection("blog"))
                             height={32}
                         />
                     </a>
-                    <a
-                        class="icon-link"
-                        href="https://misskey.io/@nkdharuki"
-                    >
+                    <a class="icon-link" href="https://misskey.io/@nkdharuki">
                         <Icon
                             name="simple-icons:misskey"
                             width={32}
@@ -83,11 +75,7 @@ const posts = (await getCollection("blog"))
                         target="_blank"
                         aria-label="reddit"
                     >
-                        <Icon
-                            name="logos:reddit-icon"
-                            width={32}
-                            height={32}
-                        />
+                        <Icon name="logos:reddit-icon" width={32} height={32} />
                     </a>
                 </div>
             </div>
@@ -98,11 +86,7 @@ const posts = (await getCollection("blog"))
         <h3>Pinned Posts</h3>
     </Card>
     <section id="pinned-container">
-        {
-            posts.map((post) => (
-                <PostCard {...post.data} slug={post.id} />
-            ))
-        }
+        {posts.map((post) => <PostCard {...post.data} slug={post.id} />)}
     </section>
 </RootLayout>
 
@@ -139,6 +123,16 @@ const posts = (await getCollection("blog"))
 
     #bio {
         max-width: 20rem;
+
+        & > p {
+            line-height: 1.5;
+            letter-spacing: 0.02rem;
+            font-size: 1.125rem;
+
+            rt {
+                font-size: 0.7rem;
+            }
+        }
     }
 
     @media (max-width: 700px) {
@@ -181,9 +175,9 @@ const posts = (await getCollection("blog"))
         }
     }
 
-    [data-icon="simple-icons:misskey"]{
+    [data-icon="simple-icons:misskey"] {
         * {
-            color: #A1CA03 !important;
+            color: #a1ca03 !important;
         }
     }
 
