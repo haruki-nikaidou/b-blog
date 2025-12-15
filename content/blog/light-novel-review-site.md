@@ -2,11 +2,12 @@
 title: 'Building a Light Novel Review Site in 5 Hours'
 description: 'How I built a Japanese light novel review site in 5 hours with Astro, Svelte, and AI tooling-focusing on honest opinions over SEO, static generation over complexity, and CC0 licensing over gatekeeping.'
 pubDate: 'Oct 22 2025'
-heroImageId: 'ec4a0c4e-7e9a-4b19-1c5b-f1698cd73e00'
+heroImageId: '32004755-5e5d-4d6c-8e45-2d440f809e00'
 pinned: true
 tags:
   - Coding
   - Frontend
+  - ACGN
 ---
 
 I just wrapped up a new side project, a light novel review site for Japanese readers and serious enthusiasts. The entire thing, from initialization to deployment, took about 5 hours. Here's how modern tooling and smart architecture decisions made this possible.
