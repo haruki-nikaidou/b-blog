@@ -71,3 +71,5 @@ This pattern faces practical implementation challenges in contemporary realistic
 This structural constraint explains why Type II predominantly appears in *isekai* (異世界, alternative world) works. A paradigmatic example, and notably, a rare instance of symmetric Type II, is *86* (86-エイティシックス-). Given its prominence in English-language discourse, I will forgo plot summary. The work exemplifies how extreme wartime conditions can generate the alliance dynamic without requiring asymmetric complementarity: the specificity of not being a racist in The Republic of San Magnolia, and collective survival imperative prove sufficient to catalyze pure love between equals.
 
 These settings inherently provide the necessary external threats, like hostile environments, existential conflicts and survival imperatives, without requiring authors to justify their presence within contemporary social frameworks.
+
+### Type III: Asymmetric and Optimization
