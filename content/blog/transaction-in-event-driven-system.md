@@ -5,7 +5,11 @@ tags:
   - Distributed System
   - Coding
 pubDate: 'Oct 5 2025'
-heroImageId: 'ddf2d009-5622-4e40-fc9a-f84aacbe0f00'
+heroImageId: '14627615-0daa-4380-1161-88c270934400'
+heroImageSource: 'Pixiv'
+heroImageSourceUrl: 'https://www.pixiv.net/artworks/140516731'
+heroImageAuthor: 'ぺんたごん'
+heroImageAuthorUrl: 'https://www.pixiv.net/users/10950860'
 pinned: true
 ---
 

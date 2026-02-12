@@ -7,7 +7,11 @@ tags:
   - Game
   - FGO
   - Blue Archive
-heroImageId: '6d4828e4-e61f-4c79-4822-3cfef5800f00'
+heroImageId: '12be62ca-b75c-4dc7-2ad3-92998b647600'
+heroImageSource: 'Pixiv'
+heroImageSourceUrl: 'https://www.pixiv.net/artworks/110257210'
+heroImageAuthor: '冬灯'
+heroImageAuthorUrl: 'https://www.pixiv.net/users/62454088'
 ---
 
 Two years ago, I start playing Blue Archive. 

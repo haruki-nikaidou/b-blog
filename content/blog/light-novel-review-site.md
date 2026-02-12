@@ -3,6 +3,10 @@ title: 'Building a Light Novel Review Site in 5 Hours'
 description: 'How I built a Japanese light novel review site in 5 hours with Astro, Svelte, and AI tooling-focusing on honest opinions over SEO, static generation over complexity, and CC0 licensing over gatekeeping.'
 pubDate: 'Oct 22 2025'
 heroImageId: '32004755-5e5d-4d6c-8e45-2d440f809e00'
+heroImageSource: 'Pixiv'
+heroImageSourceUrl: 'https://www.pixiv.net/artworks/125004074'
+heroImageAuthor: '코쿠큐커'
+heroImageAuthorUrl: 'https://www.pixiv.net/users/6763792'
 pinned: true
 tags:
   - Coding

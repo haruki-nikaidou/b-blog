@@ -7,6 +7,7 @@ tags:
   - OpenWrt
 updatedDate: 'Nov 14 2024'
 heroImageId: '3c7ff10d-721c-4a50-bdbd-e2a2afc91200'
+heroImageOwned: true
 ---
 
 I thought I should buy a router before I would move to japan. 
