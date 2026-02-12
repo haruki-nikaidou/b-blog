@@ -1,9 +1,9 @@
 ---
-import type {CollectionEntry} from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import "katex/dist/katex.css";
 import RootLayout from "./RootLayout.astro";
 import Card from "@/components/Card.astro";
-import {imageDeliveryUrl} from "../utils";
+import { imageDeliveryUrl } from "../utils";
 import "../styles/article.scss";
 
 type Props = CollectionEntry<"blog">["data"];
@@ -14,6 +14,11 @@ const {
   pubDate,
   updatedDate,
   heroImageId,
+  heroImageSource,
+  heroImageSourceUrl,
+  heroImageAuthor,
+  heroImageAuthorUrl,
+  heroImageOwned,
   tags,
   draft,
 } = Astro.props;
@@ -27,12 +32,12 @@ const {
   <Card>
     {
       heroImageId && (
-            <img
-                src={imageDeliveryUrl(heroImageId, "public")}
-                alt={title}
-                loading="lazy"
-                class="hero-image"
-            />
+        <img
+          src={imageDeliveryUrl(heroImageId, "public")}
+          alt={title}
+          loading="lazy"
+          class="hero-image"
+        />
       )
     }
     <article>
@@ -42,43 +47,76 @@ const {
       <div class="meta">
         {
           draft && (
-                <p class="meta-text">
-                  <span class="tag">Draft</span>
-                </p>
+            <p class="meta-text">
+              <span class="tag">Draft</span>
+            </p>
           )
         }
         <p class="meta-text">
-              <span>
-                Published:
-                {pubDate.toLocaleDateString()}
-              </span>
+          This article is licensed under <a
+            href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >CC BY-NC-SA 4.0</a
+          >.
+        </p>
+        {
+          heroImageOwned && (
+            <p class="meta-text">
+              Hero image is by blog author. All rights reserved.
+            </p>
+          )
+        }
+        {
+          !heroImageOwned && (
+            <p class="meta-text">
+              Hero image by{" "}
+              {heroImageAuthorUrl ? (
+                <a href={heroImageAuthorUrl}>{heroImageAuthor}</a>
+              ) : (
+                heroImageAuthor
+              )}
+              on{" "}
+              {heroImageSourceUrl ? (
+                <a href={heroImageSourceUrl}>{heroImageSource}</a>
+              ) : (
+                heroImageSource
+              )}
+              . The hero image is <strong>not</strong> covered by the above
+              license. All rights belong to the original author.
+            </p>
+          )
+        }
+        <p class="meta-text">
+          <span>
+            Published:
+            {pubDate.toLocaleDateString()}
+          </span>
           {
             updatedDate && (
-                  <>
-                    <span>
-                      Updated:
-                      {updatedDate.toLocaleDateString()}
-                    </span>
-                  </>
+              <>
+                <span>
+                  Updated:
+                  {updatedDate.toLocaleDateString()}
+                </span>
+              </>
             )
           }
         </p>
         {
           tags && (
-                <p class="meta-text mini-tag-container">
-                  tags:
-                  {tags.map((tag) => (
-                      <a href={`/tag/${tag}`}>{tag}</a>
-                  ))}
-                </p>
+            <p class="mini-tag-container">
+              tags:
+              {tags.map((tag) => (
+                <a href={`/tag/${tag}`}>{tag}</a>
+              ))}
+            </p>
           )
         }
         <p class="description">
           {description}
         </p>
       </div>
-      <hr/>
-      <slot/>
+      <hr />
+      <slot />
     </article>
   </Card>
 </RootLayout>
@@ -105,12 +143,14 @@ const {
       font-size: 0.8rem;
     }
 
-    .meta-text.mini-tag-container {
+    .mini-tag-container {
       gap: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
     }
 
     .description {
-      font-size: 0.8rem;
+      font-size: 1rem;
     }
   }
 
