@@ -46,37 +46,19 @@ const {
         {title}
       </h1>
       <div class="meta">
-        {
-          draft && (
-            <p class="meta-text">
-              <span class="tag">Draft</span>
-            </p>
-          )
-        }
-        <p class="meta-text">
-          <span>
-            Published:
-            {pubDate.toLocaleDateString()}
-          </span>
+        <div class="meta-badges">
+          {draft && <span class="badge">Draft</span>}
+          <span class="badge">Published: {pubDate.toLocaleDateString()}</span>
           {
             updatedDate && (
-              <>
-                <span>
-                  Updated:
-                  {updatedDate.toLocaleDateString()}
-                </span>
-              </>
+              <span class="badge">
+                Updated: {updatedDate.toLocaleDateString()}
+              </span>
             )
           }
-        </p>
-        {
-          tags && (
-            <TagList tags={tags} />
-          )
-        }
-        <p class="description">
-          {description}
-        </p>
+        </div>
+        {tags && <TagList tags={tags} />}
+        <p class="description">{description}</p>
       </div>
       <hr />
       <slot />
@@ -130,17 +112,32 @@ const {
   }
 
   .meta {
-    & > * {
-      margin-block: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .meta-text {
-      display: flex;
-      gap: 1rem;
+    .badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 5rem;
+      background-color: color-mix(in srgb, var(--color-card), transparent 30%);
+      color: var(--color-muted-foreground);
+      font-family: "Comic Neue", "Klee One", sans-serif;
+      font-size: 0.75rem;
+      white-space: nowrap;
     }
 
     .description {
-      font-size: 1rem;
+      color: var(--color-muted-foreground);
+      font-size: 0.875rem;
+      font-style: italic;
     }
   }
 
