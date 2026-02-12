@@ -62,7 +62,10 @@ const {
       </div>
       <hr />
       <slot />
-      <hr />
+    </article>
+  </Card>
+  <Card class="footer-card">
+    <article>
       <p class="meta-text">
         This article is licensed under <a
           href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
@@ -148,5 +151,9 @@ const {
     height: 100%;
     object-fit: cover;
     aspect-ratio: 21/9;
+  }
+
+  .footer-card {
+    margin-top: 1rem;
   }
 </style>
