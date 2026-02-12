@@ -1,5 +1,6 @@
 ---
 import Card from "./Card.astro";
+import TagList from "./TagList.astro";
 import {imageDeliveryUrl} from "@/utils";
 import "@/styles/components.scss";
 import '@/styles/global.scss';
@@ -31,11 +32,7 @@ const {slug, heroImageId, title, pubDate, updatedDate, tags} = Astro.props
             {title}
         </a>
     </h4>
-    <div class="tag-list">
-        {tags.map((tag) => (
-            <a class="tag" href={`/tag/${tag}`}>{tag}</a>
-        ))}
-    </div>
+    <TagList tags={tags} />
     <div class="date-container">
         <p class="date">
             {updatedDate && "Published at "}{pubDate.toLocaleDateString()}
@@ -77,25 +74,6 @@ const {slug, heroImageId, title, pubDate, updatedDate, tags} = Astro.props
         .date {
             color: var(--color-muted-foreground);
             font-size: 0.875rem;
-        }
-    }
-
-    .tag-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.25rem;
-        margin: 0;
-
-        .tag {
-            padding: 0.125rem 0.5rem;
-            border-radius: 5rem;
-            background-color: color-mix(in srgb, var(--color-card), transparent 30%);
-            color: var(--color-muted-foreground);
-            font-size: 0.75rem;
-            margin-right: 0.25rem;
-            margin-bottom: 0.25rem;
-            cursor: pointer;
-            transition: background-color 0.25s ease-in-out;
         }
     }
 

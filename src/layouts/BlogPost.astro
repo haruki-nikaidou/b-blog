@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import "katex/dist/katex.css";
 import RootLayout from "./RootLayout.astro";
 import Card from "@/components/Card.astro";
+import TagList from "@/components/TagList.astro";
 import { imageDeliveryUrl } from "../utils";
 import "../styles/article.scss";
 
@@ -53,39 +54,6 @@ const {
           )
         }
         <p class="meta-text">
-          This article is licensed under <a
-            href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-            >CC BY-NC-SA 4.0</a
-          >.
-        </p>
-        {
-          heroImageOwned && (
-            <p class="meta-text">
-              Hero image is by blog author. All rights reserved.
-            </p>
-          )
-        }
-        {
-          !heroImageOwned && (
-            <p class="meta-text">
-              Hero image by{" "}
-              {heroImageAuthorUrl ? (
-                <a href={heroImageAuthorUrl}>{heroImageAuthor}</a>
-              ) : (
-                heroImageAuthor
-              )}
-              on{" "}
-              {heroImageSourceUrl ? (
-                <a href={heroImageSourceUrl}>{heroImageSource}</a>
-              ) : (
-                heroImageSource
-              )}
-              . The hero image is <strong>not</strong> covered by the above
-              license. All rights belong to the original author.
-            </p>
-          )
-        }
-        <p class="meta-text">
           <span>
             Published:
             {pubDate.toLocaleDateString()}
@@ -103,12 +71,7 @@ const {
         </p>
         {
           tags && (
-            <p class="mini-tag-container">
-              tags:
-              {tags.map((tag) => (
-                <a href={`/tag/${tag}`}>{tag}</a>
-              ))}
-            </p>
+            <TagList tags={tags} />
           )
         }
         <p class="description">
@@ -117,6 +80,40 @@ const {
       </div>
       <hr />
       <slot />
+      <hr />
+      <p class="meta-text">
+        This article is licensed under <a
+          href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+          >CC BY-NC-SA 4.0</a
+        >.
+      </p>
+      {
+        heroImageOwned && (
+          <p class="meta-text">
+            Hero image is by blog author. All rights reserved.
+          </p>
+        )
+      }
+      {
+        !heroImageOwned && heroImageAuthor && heroImageSource && (
+          <p class="meta-text">
+            Hero image by{" "}
+            {heroImageAuthorUrl ? (
+              <a href={heroImageAuthorUrl}>{heroImageAuthor}</a>
+            ) : (
+              heroImageAuthor
+            )}
+            on{" "}
+            {heroImageSourceUrl ? (
+              <a href={heroImageSourceUrl}>{heroImageSource}</a>
+            ) : (
+              heroImageSource
+            )}
+            . The hero image is <strong>not</strong> covered by the above
+            license. All rights belong to the original author.
+          </p>
+        )
+      }
     </article>
   </Card>
 </RootLayout>
@@ -140,13 +137,6 @@ const {
     .meta-text {
       display: flex;
       gap: 1rem;
-      font-size: 0.8rem;
-    }
-
-    .mini-tag-container {
-      gap: 0.5rem;
-      display: flex;
-      flex-wrap: wrap;
     }
 
     .description {

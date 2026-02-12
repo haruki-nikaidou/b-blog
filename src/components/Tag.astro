@@ -1,0 +1,23 @@
+---
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+---
+
+<a class="tag" href={`/tag/${tag}`}>{tag}</a>
+
+<style>
+  .tag {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 5rem;
+    background-color: color-mix(in srgb, var(--color-card), transparent 30%);
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease-in-out;
+  }
+</style>
