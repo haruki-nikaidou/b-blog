@@ -5,14 +5,14 @@ pubDate: 'Aug 29 2024'
 tags:
   - Router
   - OpenWrt
-updatedDate: 'Nov 14 2024'
+updatedDate: 'Mar 03 2026'
 heroImageId: '3c7ff10d-721c-4a50-bdbd-e2a2afc91200'
 heroImageOwned: true
 ---
 
-I thought I should buy a router before I would move to japan. 
+Since I need a small wifi router with acceptable performance and openwrt support, I started searching routers.
 
-For
+With needs:
 
 1. OpenWrt Installable: I love openwrt, because of providing many unique functions like global transparent proxy.
 2. Internal Antenna: Takes up less space and is neater.
@@ -25,7 +25,7 @@ You can find the [tutorial](https://openwrt.org/toh/tp-link/xdr-6086) easily in 
 
 ## Common knowledge you must know
 
-It should be considered unusual that you can replace your router's operating system. Similar to gaining root access on an Android phone, this involves obtaining permissions that manufacturers intentionally restrict, typically through exploiting system vulnerabilities.
+It should be considered unusual that you can replace your router's operating system. Similar to gaining root access on an Android phone, this involves obtaining permissions that manufacturers intentionally restrict, typically through exploiting system vulnerabilities. You'd better think this operation will void the warranty.
 
 If you do what I did but in your case your router can never boot again, not my fault. It works on my machine.
 
@@ -166,4 +166,3 @@ Cut off the power of router, then power up. If going well, the LED should blinks
 As of August 29, 2024, XDR-6086 is not fully supported by OpenWrt. It is quite difficult to find OpenWrt firmware that is compatible with XDR-6086.
 
 I find compatible one in a Chinese forum called En Shan Forum (恩山论坛).
-
