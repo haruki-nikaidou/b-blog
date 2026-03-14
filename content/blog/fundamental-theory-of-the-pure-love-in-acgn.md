@@ -80,8 +80,22 @@ Pure love demands bilateral consensus, yet the process of falling in love can be
 
 Because this pattern operates like a genuine optimization algorithm, osananajimi (幼馴染, childhood friend) characters are structurally disadvantaged. Their relationship has already converged to a local optimum; the unexplored search space available to them is far narrower than that of later-arriving rivals, leaving them with little capacity to escape that local minimum.
 
-The canonical examples of this type share an author. *Saekano: How to Raise a Boring Girlfriend* (冴えない彼女の育てかた) stages the optimization across multiple heroines navigating creative labor and romantic ambition in parallel. But the paradigmatic case is *WHITE ALBUM 2*, a visual novel that places the optimization directly in the player's hands, allowing the audience to experience its agonizing calculus firsthand. Both works were written by [Fumiaki Maruto](https://ja.wikipedia.org/wiki/%E4%B8%B8%E6%88%B8%E5%8F%B2%E6%98%8E).
+The canonical examples of this type share an author. _Saekano: How to Raise a Boring Girlfriend_ (冴えない彼女の育てかた) stages the optimization across multiple heroines navigating creative labor and romantic ambition in parallel. But the paradigmatic case is _WHITE ALBUM 2_, a visual novel that places the optimization directly in the player's hands, allowing the audience to experience its agonizing calculus firsthand. Both works were written by [Fumiaki Maruto](https://ja.wikipedia.org/wiki/%E4%B8%B8%E6%88%B8%E5%8F%B2%E6%98%8E).
 
 Type III is the most controversial of the four conditions. Audiences, as the works intend, find themselves second-guessing the characters, convinced they could navigate the same situation toward a better outcome. The irony is that they sometimes can. When the audience perceives the outcome as clearly suboptimal, it is rarely because the author got stuck in a local minimum. It is because the author was optimizing a different objective function altogether. Narrative coherence, thematic resonance, personal brief: these constraints produce a solution that is optimal within the author's formulation while appearing simply wrong to an audience applying a different one. Whether an optimization process that operates on an undisclosed or ill-defined objective function deserves the name at all is, perhaps, a genuine philosophical question.
 
-### Type IV: destiny
+### Type IV: Destiny
+
+Type IV captures an edge case that resists easy categorization: love that is directed, yet directed by no one. It is a posterior category for niche configurations: structurally inevitable, yet impersonal. If an identifiable agent can be found to have engineered the outcome, it falls outside this type. Pure love, by definition, cannot be willed into existence by a third party.
+
+Instances of this kind are extremely rare, appearing most commonly in visual novels. Several subcategories can be identified:
+
+1. **Novikov self-consistency principle**. The relationship is a fixed point in a closed causal loop; it could not have been otherwise.
+2. **Miracle engineering**. The love is deliberately arranged, but the success probability is so vanishingly small that the outcome must be regarded as a miracle rather than a plan.
+3. **The unique match**. Both parties possess preferences so niche or idiosyncratic that each is, across the entirety of human history, the other's only viable counterpart.
+
+What unites these subcategories is a structural property: the absence of a responsible subject, no human will stands behind the outcome. The cause could be either the universe's own causal architecture, the noise floor of probability, or a combinatorial space so vast it collapses agency into coincidence.
+
+Examples are difficult to give without spoilers, but one can be offered: _The Story of a Girl Who Isn't My Girlfriend Coming Over at 2 A.M. to Make Fried Rice_ (彼女でもない女の子が深夜二時に炒飯作りにくる話) is a case of subcategory 3. It is available on _Kindle Unlimited_, and no translation exists. Recommended.
+
+Type IV rarely anchors a romantic narrative directly. Instead, it tends to function as foreshadowing, or as load-bearing infrastructure in the world-building itself. The resources required to establish a convincing Type IV destiny are so substantial that they typically implicate the structure of the world entire. This should not be taken to mean that any narrative of world-spanning scope qualifies. _DATE A LIVE_, for instance, does not.
