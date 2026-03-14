@@ -20,7 +20,7 @@ const posts = (await getCollection('blog'))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<RootLayout title={`${tag} | Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+<RootLayout title={`${tag} | Tags | ${SITE_TITLE}`} description={SITE_DESCRIPTION} robots="noindex,follow">
   <Card class="title-card">
     <h2>Tag: {tag}</h2>
   </Card>

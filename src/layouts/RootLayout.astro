@@ -7,16 +7,17 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  robots?: string;
   width?: 'lg' | 'md' | 'sm';
 }
 
-const { title, description, image, width = 'md' } = Astro.props;
+const { title, description, image, robots = 'index,follow', width = 'md' } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead title={title} description={description} image={image} robots={robots} />
   </head>
   <body>
     <Header />

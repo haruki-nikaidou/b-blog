@@ -4,9 +4,10 @@ interface Props {
 }
 
 const { tag } = Astro.props;
+const encodedTag = encodeURIComponent(tag);
 ---
 
-<a class="tag" href={`/tag/${tag}`}>{tag}</a>
+<a class="tag" href={`/tag/${encodedTag}`}>{tag}</a>
 
 <style>
   .tag {

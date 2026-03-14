@@ -6,14 +6,14 @@ const SITE_TITLE = siteConfig.title;
 const SITE_DESCRIPTION = siteConfig.description;
 
 export async function GET(context) {
-	const posts = await getCollection('blog');
+	const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
 		site: context.site,
 		items: posts.map((post) => ({
 			...post.data,
-			link: `/blog/${post.slug}/`,
+			link: new URL(`/blog/${post.id}`, context.site).toString(),
 		})),
 	});
 }
