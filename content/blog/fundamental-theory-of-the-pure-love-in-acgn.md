@@ -115,3 +115,27 @@ What unites them is that their unclassifiability is not incidental. It arises fr
 These are not rhetorical questions. Six works instantiate them: four visual novels, one light novel, and one anime. All six are real.
 
 The corpus is arguably large enough to warrant promoting these edge cases to a fifth type. But the definitional problem remains open. Type V, if it exists, cannot be characterized by what happens to the characters. It must be characterized by what happens to _identity itself_ as a precondition for love. Whether that problem is best resolved by a new type, or by reallocating some cases to Type IV under a broader reading of "directed by no one," is a question I leave to future work.
+
+## Patterns and Tactics in Light Novel
+
+My most experienced type of ACGN is light novel, which I've read more than 1000 books, most of which are in Traditional Chinese. For anime, it's about 10TB in Blu-ray or DVD. For manga, nearly 100 books. For game, only about 80GB.
+
+My major is mathematics (not computer science btw), so probably I can't do better than ones in literature major, but enough to write this article.
+
+### Theory Stem on Threat & Movie
+
+> outline:
+>
+> light novels are novel. Novel tells story, just like threat and movie.
+> 
+> use Chevel's Gun as regular example
+>
+> use Mise en Abyme as niche example
+
+### Common Patterns and Blunders
+
+## We've Pushed the Creativity too Far
+
+> need to mention manifold hypothesis
+
+> Why the light novel's title are getting longer and longer
