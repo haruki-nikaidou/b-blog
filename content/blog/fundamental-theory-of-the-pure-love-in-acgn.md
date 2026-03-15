@@ -99,3 +99,19 @@ What unites these subcategories is a structural property: the absence of a respo
 Examples are difficult to give without spoilers, but one can be offered: _The Story of a Girl Who Isn't My Girlfriend Coming Over at 2 A.M. to Make Fried Rice_ (彼女でもない女の子が深夜二時に炒飯作りにくる話) is a case of subcategory 3. It is available on _Kindle Unlimited_, and no translation exists. Recommended.
 
 Type IV rarely anchors a romantic narrative directly. Instead, it tends to function as foreshadowing, or as load-bearing infrastructure in the world-building itself. The resources required to establish a convincing Type IV destiny are so substantial that they typically implicate the structure of the world entire. This should not be taken to mean that any narrative of world-spanning scope qualifies. _DATE A LIVE_, for instance, does not.
+
+### Type V?
+
+As noted earlier, the sufficient and necessary conditions of pure love are _almost_ entirely encompassed by the union of the four types above. That qualifier deserves examination.
+
+A counterexample exists: [_Rewrite_](<https://en.wikipedia.org/wiki/Rewrite_(video_game)>), a visual novel by Key. Spoilers preclude elaboration. To my knowledge, there are six works that resist classification under any of the four types, and they share a structural property.
+
+What unites them is that their unclassifiability is not incidental. It arises from the same class of philosophical problems as an advanced variant of the swampman thought experiment: questions about identity persistence under radical substitution. Borrowed from version control, three failure modes emerge:
+
+- **Merge**: A character's personality is synthesized from multiple parallel universes or possibility simulations, each of which instantiates a distinct type of pure love, or none at all. What type, if any, does the resulting relationship belong to?
+- **Rebase**: A magical mechanism rolls back a timeline and restores all memory and psychological state, including the phenomenology of falling in love, to the relevant parties. When the rollback precedes the original falling-in-love, and the restored memories are recovered. Is this pure love at all? And if so, whose?
+- **Cherry-pick**: Two people fall in love, then forget each other through force majeure, though residual traces persist. Using only those traces, they fall in love again, without knowing they had before. If the rebase mechanism subsequently restores everything, should the result be reclassified as merge?
+
+These are not rhetorical questions. Six works instantiate them: four visual novels, one light novel, and one anime. All six are real.
+
+The corpus is arguably large enough to warrant promoting these edge cases to a fifth type. But the definitional problem remains open. Type V, if it exists, cannot be characterized by what happens to the characters. It must be characterized by what happens to _identity itself_ as a precondition for love. Whether that problem is best resolved by a new type, or by reallocating some cases to Type IV under a broader reading of "directed by no one," is a question I leave to future work.
