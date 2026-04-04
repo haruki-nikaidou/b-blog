@@ -124,15 +124,21 @@ My major is mathematics (not computer science btw), so probably I can't do bette
 
 ### Theory Stem on Threat & Movie
 
-> outline:
->
-> light novels are novel. Novel tells story, just like threat and movie.
-> 
-> use Chevel's Gun as regular example
->
-> use Mise en Abyme as niche example
+Comparing to pure literature and regular novels, light novel are more focus on telling story. Thus, is understandable that light novel inherit tactic from both novels and threat or movies.
 
-### Common Patterns and Blunders
+Usually, to keep it light, light novel usually don't use complex metaphors, allusions or even complex narrative structures. In other words, there are exceptions. Here are two novels with similar themes for comparison: _The Eminence in Shadow_ (陰の実力者になりたくて!) vs _Tearmoon Empire_ (ティアムーン帝国物語 ～断頭台から始まる、姫の転生逆転ストーリー～). They both involve complex sociological, economic, and political topic. However, _Tearmoon Empire_ uses third-person narration, shifts in perspective, and jumps in the timeline to depict the political and economic impact and role of the protagonist’s actions, whereas _The Eminence in Shadow_ does not do so at all. They all feature a dual-misperception structure: other characters tend to overestimate the protagonist, while readers tend to underestimate them.
+
+Some concept are wide used in regular novels and theater may also be used in light novel, like Chekhov's gun. A reasonable example following Chekhov's gun is 転校先の清楚可憐な美少女が、昔男子と思って一緒に遊んだ幼馴染だった件, where my original character's prototype comes from, having no translation so I can't even give a English name here, theming personal growth, challenging and family bonds. It follow Chekhov's gun because it conveys sophisticated and intricate concepts, which need to reduce the noise of hanging narrative. Mainwhile, following Chekhov's gun in some works is weird, like _Full Clearing Another World under a Goddess with Zero Believers_ (信者ゼロの女神サマと始める異世界攻略) and 無双ゲーに転生したと思ったら、どうやらここはハードな鬱ゲーだったらしい, both of which can be categorized into [なろう系](https://ja.wikipedia.org/wiki/%E3%81%AA%E3%82%8D%E3%81%86%E7%B3%BB), which are generally considered formulaic and naive. Just telling they are following Chekhov's gun may lead to spoilers, so I won't introduce.
+
+Besides that, some light novel may even use some niche tactic in theater. One example is _Saekano: How to Raise a Boring Girlfriend_ (冴えない彼女の育てかた), which features Mise en Abyme.
+
+### Common Blunders
+
+Irocly, there are some many common blunders in light novels, that if a work don't blunder any of them, it can be considered as a desent work.
+
+The most blunder is specification mismatch, including mismatch of character and its behavior, mismatch of character and additudes towads him, and mismatch between the theme and the plot. A legendary light novel blundering all of there types is _My Youth Romantic Comedy Is Wrong, as I Expected_ (やはり俺の青春ラブコメはまちがっている。). Another epic light novel blundering first two of three types is _Alya Sometimes Hides Her Feelings in Russian_ (時々ボソッとロシア語でデレる隣のアーリャさん). This kind of blunder are commonly lead by the author wanting the character doing something they rationally never do.
+
+Following specification mismatch, the secondly common blunder is overly naive. Unlike that, this one is undeniably a skill issue. A criticism towards light novel in 2010~2015 is the MC is gentle, and nothing else, playing a part like a cameraman. This blunder push that further. 
 
 ## We've Pushed the Creativity too Far
 
