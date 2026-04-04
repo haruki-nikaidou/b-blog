@@ -1,7 +1,7 @@
 ---
 title: "Fundamental Theory of The Pure Love in ACGN"
 description: "An exploration of the foundational principles that govern romantic relationships in ACGN culture."
-pubDate: "Apr 05, 2025"
+pubDate: "Apr 05, 2026"
 heroImageId: "ec4a0c4e-7e9a-4b19-1c5b-f1698cd73e00"
 tags:
   - ACGN
