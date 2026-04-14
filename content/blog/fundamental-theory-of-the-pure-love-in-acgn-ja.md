@@ -7,7 +7,7 @@ tags:
   - ACGN
 ---
 
-> この記事はClaude Sonnet 4.6によって英語から翻訳されるものです。原文： <https://blog.plr.moe/blog/fundamental-theory-of-the-pure-love-in-acgn>
+> この記事はClaude Sonnet 4.6によって英語から翻訳されたものです。原文： <https://blog.plr.moe/blog/fundamental-theory-of-the-pure-love-in-acgn>
 
 純愛とは、自然で、利他的で、対等で、強制がなく、不純な動機を持たない愛のことを指す。文学・映画のジャンルとしての純愛作品は、日本の経済バブル崩壊を背景に、2000年代初頭の日本で花開いた。作家やクリエイターたちは、バブル時代を象徴していた消費主義・資本主義の侵食に対する文化的抵抗の手段として、このジャンルを活用した。
 
