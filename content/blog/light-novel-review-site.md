@@ -7,7 +7,6 @@ heroImageSource: 'Pixiv'
 heroImageSourceUrl: 'https://www.pixiv.net/artworks/125004074'
 heroImageAuthor: '코쿠큐커'
 heroImageAuthorUrl: 'https://www.pixiv.net/users/6763792'
-pinned: true
 tags:
   - Coding
   - Frontend
