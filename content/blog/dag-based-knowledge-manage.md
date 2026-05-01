@@ -2,6 +2,10 @@
 title: "Knowledge Has a Shape, and That Shape Is a DAG"
 description: "Why most things you find hard to learn aren't hard — you're just missing a prerequisite, and lists and trees can't show you which one."
 pubDate: "May 02 2026"
+heroImageSource: 'Pixiv'
+heroImageSourceUrl: 'https://www.pixiv.net/artworks/143902452'
+heroImageAuthor: '半分まろん2'
+heroImageAuthorUrl: 'https://www.pixiv.net/users/117706407'
 heroImageId: "6a47ecf7-d2e8-4dfa-b04a-aa3dbab30000"
 tags:
   - Data Structure
