@@ -32,6 +32,9 @@ importers:
       '@fontsource-variable/jetbrains-mono':
         specifier: ^5.2.8
         version: 5.2.8
+      '@fontsource-variable/m-plus-1-code':
+        specifier: ^5.2.10
+        version: 5.2.10
       '@fontsource/comic-neue':
         specifier: ^5.2.7
         version: 5.2.7
@@ -561,6 +564,9 @@ packages:
 
   '@fontsource-variable/jetbrains-mono@5.2.8':
     resolution: {integrity: sha512-WBA9elru6Jdp5df2mES55wuOO0WIrn3kpXnI4+W2ek5u3ZgLS9XS4gmIlcQhiZOWEKl95meYdvK7xI+ETLCq/Q==}
+
+  '@fontsource-variable/m-plus-1-code@5.2.10':
+    resolution: {integrity: sha512-uSrs8Z10+/zukQA7F0nmdaT7v0JUsJl8hGPKBdxpS9QI1gxFV1aKihUYY82FH4wpJEAWecpT+w+cf8XG6v6gcg==}
 
   '@fontsource/comic-neue@5.2.7':
     resolution: {integrity: sha512-tNi0Nxbz0QMwHvZWJSP5G0SXq8CeX5b+K3l3q/afPmJ/WlQ+i3/NfOYWBzsojCZko1lNplfmjbsOGMuBs4WmcA==}
@@ -3553,6 +3559,8 @@ snapshots:
       '@expressive-code/core': 0.41.7
 
   '@fontsource-variable/jetbrains-mono@5.2.8': {}
+
+  '@fontsource-variable/m-plus-1-code@5.2.10': {}
 
   '@fontsource/comic-neue@5.2.7': {}
 

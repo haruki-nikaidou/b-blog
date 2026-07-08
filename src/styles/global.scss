@@ -1,5 +1,9 @@
 @use "colors";
 
+html {
+  font-size: 18px;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -55,7 +59,7 @@ li,
 td,
 th
 {
-  font-family: 'Comic Neue', 'Klee One', sans-serif;
+  font-family: 'M PLUS 1 Code Variable', monospace;
   letter-spacing: .75px;
   word-spacing: 1px;
 }

@@ -25,11 +25,7 @@ const { title, description, image = '/bg-dark.avif', robots = 'index,follow' } =
 const canonicalPath = normalizeCanonicalPath(Astro.url.pathname);
 const canonicalURL = new URL(canonicalPath, Astro.site);
 
-import '@fontsource/comic-neue/300.css';
-import '@fontsource/comic-neue/400.css';
-import '@fontsource/comic-neue/700.css';
-import '@fontsource/klee-one/400.css';
-import '@fontsource/klee-one/600.css';
+import '@fontsource-variable/m-plus-1-code/wght.css';
 import '@fontsource-variable/jetbrains-mono';
 import DarkModePreload from './DarkModePreload.astro';
 ---
