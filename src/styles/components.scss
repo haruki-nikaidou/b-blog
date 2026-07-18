@@ -16,7 +16,7 @@
 .card {
   padding: 1rem;
   border-radius: 1rem;
-  background-color: color-mix(in srgb, var(--color-card), transparent 80%);
+  background-color: color-mix(in srgb, var(--color-card), transparent 25%);
   backdrop-filter: blur(24px);
 
   border: none;
