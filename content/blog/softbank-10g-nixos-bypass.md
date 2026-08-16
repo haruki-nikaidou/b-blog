@@ -1,6 +1,6 @@
 ---
 title: "Bypassing the SoftBank 光 10ギガ HGW with NixOS and systemd-networkd"
-description:
+description: ""
 pubDate: "Aug 15 2026"
 tags:
  - Router
@@ -13,21 +13,20 @@ heroImageAuthorUrl: 'https://www.pixiv.net/users/16148853'
 draft: true
 ---
 
-*Draft. All personal addresses, prefixes, and MACs below are redacted — placeholders are marked with `X` or angle brackets.*
+*All personal addresses, prefixes, and MACs below are redacted — placeholders are marked with `X` or angle brackets.*
 
 ## TL;DR
 
 - SoftBank 光 10ギガ is **neither DS-Lite nor MAP-E**, despite what most Japanese blog posts say. It is a plain RFC 2473 IPv4-in-IPv6 tunnel (`ip6tnl`, Next Header 4) with a **dedicated** global IPv4 — all 65535 ports are yours.
 - The three parameters you need (BR address, CE address, public IPv4) can be read off a **single captured tunnel packet**. No RADIUS decoding, no vendor dictionary, no reverse engineering.
-- You must clone the HGW's WAN MAC **and** pin its DHCPv6 DUID. Cloning the MAC alone is not enough.
+- You must clone the HGW's WAN MAC, pin its DHCPv6 DUID and DHCPv6 IAID. Cloning the MAC alone is not enough. Bindings key on both. Getting this wrong gave me a total outage every 4 hours, on the dot — see Part 9.
 - It works on NixOS with `systemd.network`. Total config is about 40 lines.
 - MSS clamping is mandatory, not optional — without it every first connection to an IPv4-only site hangs for 40 seconds.
-- **Capture the DHCPv6 IAID, not just the DUID.** Bindings key on both. Getting this wrong gave me a total outage every 4 hours, on the dot — see Part 9.
 - You must keep renting the HGW. This is a bypass, not a cancellation.
 
 ## Background
 
-I have SoftBank 光 10ギガ in Osaka (so NTT West, フレッツ光クロス underneath). SoftBank shipped me a **ホームゲートウェイ（S）**, model `10G E-WMTA1.0` — internally a Sercomm **EVO310G**. This is the newer single-box unit that SoftBank started shipping in April 2025; it replaces the older XG-100NE + 光BBユニット combination and folds both roles into one device.
+I have SoftBank 光 10ギガ in Nara (so NTT West, フレッツ光クロス underneath). SoftBank shipped me a **ホームゲートウェイ（S）**, model `10G E-WMTA1.0` — internally a Sercomm **EVO310G**. This is the newer single-box unit that SoftBank started shipping in April 2025; it replaces the older XG-100NE + 光BBユニット combination and folds both roles into one device.
 
 That distinction matters, because nearly every existing write-up assumes an XG-100NE, and several of the tricks in those posts don't apply:
 
@@ -44,7 +43,7 @@ My router is a NixOS box with four interfaces:
 - `enp4s0` — 10G RJ45
 - `enp7s0` — 1G RJ45
 
-`enp1s0f1` is bridged into `br-lan`. Everything is configured with `systemd.network`, deployed from my laptop with `nixos-rebuild --target-host`.
+`enp1s0f1` is bridged into `br-lan`. Everything is configured with `systemd.network`, deployed from my workstation with `nixos-rebuild --target-host`.
 
 ## Part 1: What protocol is this, actually?
 
@@ -84,7 +83,7 @@ The first three are free. The rest require putting yourself on the wire between 
 
 ### Topology
 
-I originally planned to use a spare port for a temporary uplink so the house stayed online during the capture. Then I realised: **`nixos-rebuild --target-host` builds on the laptop and pushes the closure over the LAN. The router never needs internet to be reconfigured.** Tethering the laptop to my phone was enough, which freed both RJ45 ports for the tap.
+I originally planned to use a spare port for a temporary uplink so the house stayed online during the capture. Then I realised: **`nixos-rebuild --target-host` builds on the workstation and pushes the closure over the LAN. The router never needs internet to be reconfigured.** Tethering the workstation to my phone was enough, which freed both RJ45 ports for the tap.
 
 ```
 ONU ──────► enp4s0 (10G) ┐
@@ -124,7 +123,7 @@ boot.blacklistedKernelModules = [ "br_netfilter" ];
 
 Blacklisting `br_netfilter` matters: if it loads, your nftables rules start inspecting bridged frames and can silently eat the HGW's traffic, which looks exactly like "the tap is broken."
 
-Do **not** clone the MAC yet. While `enp4s0` is a bridge port it has no address of its own and forwards frames unmodified — that's what makes the tap transparent. Cloning now would put two devices with the same MAC on one segment and thrash the bridge FDB.
+> Do **not** clone the MAC yet. While `enp4s0` is a bridge port it has no address of its own and forwards frames unmodified — that's what makes the tap transparent. Cloning now would put two devices with the same MAC on one segment and thrash the bridge FDB.
 
 ### Getting the BR address
 
@@ -133,7 +132,7 @@ This is the part I over-thought. Everyone describes sniffing the RADIUS `Access-
 ```
 $ sudo tcpdump -nn -i br-tap -c 20 'ip6 proto 4'
 
-IP6 2400:2000:4:0:a000::XXXX > 2400:2650:XXXX:XX00:1111:1111:1111:1111: \
+IP6 2400:2000:4:0:a000::XXXX > 2400:2650:XXXX:XXXX:1111:1111:1111:1111: \
     IP 198.51.100.42.44424 > <MY_IPV4>.10000: Flags [S], seq ..., length 0
     ^^^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     BR = tunnel Remote       CE = tunnel Local          inner: your IPv4
@@ -144,6 +143,8 @@ No HGW reboot needed — this traffic flows constantly. Cross-check the CE addre
 ### Things the capture told me for free
 
 **The IPv4 really is dedicated.** Almost everything in my capture was inbound scan traffic — SYNs to ports 10000, 8181, 63500, 3128, 31038, 19998 from hosts all over the world. Boring in itself, but a positive result: on a port-sharing MAP-E deployment you would only see packets landing in your assigned port range. Arbitrary low and high ports arriving means all 65535 are mine. That settles the MAP-E question empirically, for my line, without trusting anyone's blog post.
+
+> This is background radius of internet. Hackers may use your device to launch attack on someone else or your other devices. Keep you firewall on at public direction.
 
 **The BR block.** Mine lives in `2400:2000:4:0:a000::/64`. Others have published `::1919` and `::1999` from that same /64. Different host, same BBIX block — consistent with per-region BRs. Yours will differ; capture your own.
 
@@ -246,7 +247,7 @@ let
   # payload ONLY — networkd prepends the 2-byte type field itself.
   # Captured DUID is 00:03:00:01:98:2c:c6:XX:XX:XX; drop the leading 00:03.
   hgwDuid = "00:01:98:2c:c6:XX:XX:XX";
-  ceAddr  = "2400:2650:XXXX:XX00:1111:1111:1111:1111";
+  ceAddr  = "2400:2650:XXXX:XXXX:1111:1111:1111:1111";
   brAddr  = "2400:2000:4:0:a000::XXXX";
   myV4    = "<MY_IPV4>";
 in
@@ -302,36 +303,6 @@ This is worth calling out. `.link` files are applied by **udev at device-add tim
 
 The interface name doesn't change when the MAC does — `enp4s0` is derived from the PCI path, not the address.
 
-### `DUIDType` has no `raw` value, and networkd will not tell you loudly
-
-I originally wrote `DUIDType = "raw"`. That is not a valid value — the accepted set is `vendor`, `uuid`, `link-layer-time`, `link-layer`. networkd's response:
-
-```
-systemd-networkd[701]: /etc/systemd/network/10-wan.network:16:
-    Failed to parse DUID type 'raw', ignoring.
-```
-
-**One `journalctl` line, at info level, and then it carries on.** The directive was dropped, `DUIDRawData` went with it, and the client silently fell back to DUID-EN — so for hours I was presenting Anthropic's enterprise number to NTT's DHCPv6 server while believing I was presenting the HGW's identity. Nothing failed loudly. The config *looked* right in the Nix source and in `/etc/systemd/network/`.
-
-Two lessons worth more than the fix itself:
-
-- **networkd is permissive by design.** It drops bad directives and continues. A typo degrades to a default rather than to an error, which is the worst possible failure mode for something you're deploying blind over SSH.
-- **Gate every WAN change on a parse check:**
-  ```sh
-  journalctl -u systemd-networkd -b | grep -iE 'ignoring|failed to parse'
-  ```
-  This belongs in the deploy script, not in your memory.
-
-And verify the bytes on the wire rather than trusting the config:
-
-```sh
-sudo tcpdump -nn -i enp4s0 -w /tmp/v.pcap 'udp port 546 or udp port 547' &
-networkctl reconfigure enp4s0
-tshark -r /tmp/v.pcap -Y 'dhcpv6.msgtype == 1' -V | grep -A6 'Client Identifier'
-```
-
-It must be byte-identical to what you captured from the HGW.
-
 ### `EncapsulationLimit = "none"` is not optional
 
 By default the kernel adds an IPv6 Destination Options header carrying a tunnel encapsulation limit. Some BRs drop those. Check with `ip -d link show sbtun`: if it says `encaplimit 4` instead of `encaplimit none`, that's your bug. This is the classic cause of "tunnel is up, nothing passes."
@@ -354,7 +325,7 @@ With no `allowedTCPPorts` anywhere, the input chain defaults to drop on every un
 
 Three things change at cutover.
 
-**1. `nat.externalInterface` must move to `sbtun`.** Masquerading on `enp4s0` would be applied to an interface carrying only IPv6 and encapsulated frames; LAN traffic would leave the tunnel with RFC1918 sources and vanish.
+**1. `nat.externalInterface` must move to `sbtun`, obviously.** Masquerading on `enp4s0` would be applied to an interface carrying only IPv6 and encapsulated frames; LAN traffic would leave the tunnel with RFC1918 sources and vanish.
 
 **2. Default-deny will silently kill your tunnel.** Encapsulated return traffic arrives as an IPv6 packet with next header 4, and netfilter's input hook runs *before* the kernel hands it to the decapsulator. The drop policy eats it. `sbtun` shows UP and counts zero RX. You must allow protocol 4 explicitly:
 
@@ -382,18 +353,18 @@ networking.firewall.extraForwardRules = ''
 
 Keep `checkReversePath = "loose"`. Strict RPF and a `/32` on a point-to-point tunnel with an on-link default route do not get along.
 
-### Verify from outside, not from the LAN
-
-```sh
-nmap -Pn -p 22,19999,80,443 <MY_IPV4>
-nmap -6 -Pn -p 22,19999 <a LAN device's global IPv6>
-```
-
-The second one is the test that actually matters, and it's the one people skip. Run both from a phone hotspot — you won't have NAT loopback until you configure it, so testing from inside proves nothing.
+> Verify the firewall from outside, not from the LAN
+>
+> ```sh
+> nmap -Pn -p 22,19999,80,443 <MY_IPV4>
+> nmap -6 -Pn -p 22,19999 <a LAN device's global IPv6>
+> ```
+>
+> The second one is the test that actually matters, and it's the one people skip. Run both from a phone hotspot — you won't have NAT loopback until you configure it, so testing from inside proves nothing.
 
 ## Part 6: Deploying without internet
 
-The premise worth attacking: **the router never needs internet to be rebuilt.** `nixos-rebuild --target-host` evaluates and builds entirely on the laptop and pushes the closure over SSH on the LAN. The router is a dumb recipient.
+The premise worth attacking: **the router never needs internet to be rebuilt.** `nixos-rebuild --target-host` evaluates and builds entirely on the workstation and pushes the closure over SSH on the LAN. The router is a dumb recipient.
 
 ```sh
 # once, while online — pull inputs and prebuild the closure
@@ -427,32 +398,22 @@ Two more things that shorten the loop a lot:
 - **Don't rebuild to test the tunnel.** It's five `ip` commands. Iterate in a shell until packets flow, *then* translate to Nix once.
 - **Use a specialisation** for the risky config, so the boot default stays the known-good state and a power cycle is the escape hatch.
 
-### Laptop routing gotcha
-
-With the laptop tethered *and* on the LAN, most systems prefer wired — so it routes to a router that has no internet. Either drop the wired default route or raise its metric:
-
-```sh
-nmcli connection modify <wired-conn> ipv4.never-default yes
-```
-
-You still reach the router directly since the subnet route stays. Check with `ip route get 1.1.1.1` and `ip route get <router-ip>`.
-
 ## Part 7: Cutover checklist
 
 Before unplugging the HGW:
 
-- [ ] BR IPv6 recorded from `ip6 proto 4` source
-- [ ] CE IPv6 copied **verbatim** — don't invent an interface ID
-- [ ] Public IPv4 matches the HGW setup menu
-- [ ] WAN MAC recorded (and the burned-in MAC saved via `ethtool -P`, for reverting)
-- [ ] DHCPv6 Client Identifier bytes recorded — **payload is 8 bytes, not 10**
-- [ ] **DHCPv6 IAID recorded** (IA_PD option, same Solicit)
-- [ ] IA_PD T1/T2/preferred/valid lifetimes noted — the valid lifetime is your fuse length
-- [ ] `ls /etc/systemd/network/*.link` — no strays renaming the WAN interface
-- [ ] pcap copied off the router
-- [ ] `ss -tlnp` audited for anything bound to `0.0.0.0` / `::`
-- [ ] Closure prebuilt on the laptop
-- [ ] Phone tethered
+- BR IPv6 recorded from `ip6 proto 4` source
+- CE IPv6 copied **verbatim** — don't invent an interface ID
+- Public IPv4 matches the HGW setup menu
+- WAN MAC recorded (and the burned-in MAC saved via `ethtool -P`, for reverting)
+- DHCPv6 Client Identifier bytes recorded — **payload is 8 bytes, not 10**
+- **DHCPv6 IAID recorded** (IA_PD option, same Solicit)
+- IA_PD T1/T2/preferred/valid lifetimes noted — the valid lifetime is your fuse length
+- `ls /etc/systemd/network/*.link` — no strays renaming the WAN interface
+- pcap copied off the router
+- `ss -tlnp` audited for anything bound to `0.0.0.0` / `::`
+- Closure prebuilt on the workstation
+- Phone tethered
 
 Verification order after activation:
 
@@ -475,7 +436,9 @@ Diagnostic shortcuts:
 
 ## Part 8: First bug — every first request to an IPv4-only site hung
 
-Symptom: opening a site with no AAAA record hung for ~40 seconds. Retry, on any machine, was instant. Looked like DNS. Wasn't.
+Symptom: opening a site with no AAAA record hung for ~40 seconds. Retry, on any machine, was instant. It looks like a DNS issue, but wasn't.
+
+> This blog only doesn't have AAAA record. You can test with this blog.
 
 The tell is that it tracked exactly with "does this site have IPv6" — dual-stack sites were fine because that path is native `enp4s0` at MTU 1500 with no encapsulation. Only IPv4 goes through `sbtun` at 1460.
 
@@ -652,29 +615,6 @@ systemd.network.netdevs."20-sbtun".tunnelConfig.Independent = true;
 which decouples tunnel creation from the underlying link's state. **Not yet verified** — test it on a `test` activation you can reboot out of.
 
 Alternative explanation: the HGW still held the BBIX session and the reboot simply bought elapsed time. Less likely given it was already unplugged, but it would produce identical symptoms with no config defect at all.
-
-## TODO / plan
-
-- [x] ~~**Diagnose the 4-hour outage.**~~ Done — see Part 9. Missing IAID plus a malformed DUID payload meant the router never held its own lease.
-- [ ] **Watch hour 8.** The HGW advertised `Reconfigure Accept`, and the known odhcp6c failure on 光クロス is a DHCPv6 Reconfigure at the 8-hour mark killing the lease. systemd-networkd is a different implementation but advertises the same option, and nobody has published a result for it on this line. Failure mode: IPv6 dies while IPv4 keeps working, since the tunnel endpoints are static.
-  ```sh
-  journalctl -u systemd-networkd --since "8 hours ago" | grep -i 'dhcp\|prefix'
-  ```
-- [x] ~~**MSS clamping.**~~ Done — see Part 8. It was not a future concern; it broke every first request to an IPv4-only site within hours.
-- [x] ~~**Fix the `DUIDType` value.**~~ Done — `raw` is not valid, use `link-layer`.
-- [ ] **Build a RADIUS client.** Downgraded from urgent now that the router holds its own DHCPv6 lease — but still the thing that would let it recover from a genuine reprovisioning without an HGW round-trip. `User-Name` is the delegated prefix; the Access-Accept returns VSA 204 (IPv4) and VSA 207 (BR address). My `sb.pcap` has a complete worked exchange. Turns "hardcoded and fragile" into something that reconverges on its own — and it's a decent excuse for a Rust project.
-- [ ] **Stop hardcoding `ceAddr`.** At minimum, derive the interface ID from whatever prefix arrives:
-  ```nix
-  systemd.network.networks."10-wan".ipv6AcceptRAConfig.Token =
-    "static:::1111:1111:1111:1111";
-  ```
-  The tunnel's `Local=` still needs a literal, so this also needs a unit that recreates `sbtun` on prefix change. But the address should follow the prefix rather than silently pointing at nothing.
-- [ ] **Verify `Independent = true`** actually fixes the ordering issue.
-- [ ] **Benchmark against the EVO310G.** Software `ip6tnl` + NAT on x86 isn't offloaded. The HGW reportedly manages several Gbps on its own, so the throughput win may be zero — the real gain here is control, not speed.
-- [ ] **Clean up the scaffolding.** `br-tap`, the `05-*` units, and the `enp7s0` uplink are dead weight now. Doing this while everything works is much nicer than later.
-- [ ] **Confirm the rollback path.** The last rebuild was `switch`, so the bridge config is one generation back rather than one power cycle away. Check `nixos-rebuild list-generations` and practice selecting it at boot *before* needing to.
-- [ ] Set up DNS properly (currently `UseDNS = false` everywhere).
-- [ ] Re-pin flake inputs and prebuild the working closure as a recovery artifact.
 
 ## Caveats
 
