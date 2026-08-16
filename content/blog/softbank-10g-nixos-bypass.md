@@ -1,7 +1,7 @@
 ---
 title: "Bypassing the SoftBank 光 10ギガ HGW with NixOS and systemd-networkd"
-description: ""
-pubDate: "Aug 15 2026"
+description: "Replacing the SoftBank 光 10ギガ HGW with a NixOS router. Reading the three tunnel parameters off a single captured packet, cloning the HGW's MAC, DUID, and IAID with systemd-networkd, and the two bugs that cost me a 40-second hang and a total outage every 4 hours."
+pubDate: "Aug 17 2026"
 tags:
  - Router
  - NixOS
@@ -10,7 +10,6 @@ heroImageSource: 'Pixiv'
 heroImageSourceUrl: 'https://www.pixiv.net/artworks/137277047'
 heroImageAuthor: 'Tinia'
 heroImageAuthorUrl: 'https://www.pixiv.net/users/16148853'
-draft: true
 ---
 
 *All personal addresses, prefixes, and MACs below are redacted — placeholders are marked with `X` or angle brackets.*
